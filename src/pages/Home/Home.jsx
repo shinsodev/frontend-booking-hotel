@@ -13,7 +13,7 @@ const Home = () => {
           <BookForm />
         </div>
       </div>
-        <Rooms />
+      <Rooms />
     </>
   )
 }

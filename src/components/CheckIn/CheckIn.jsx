@@ -10,7 +10,7 @@ const CheckIn = () => {
 
     return (
         <div className="relative flex-1 items-center h-full">
-            <div className="absolute z-10 pr-8 right-0 top-7">
+            <div className="absolute z-10 pr-8 right-0 top-[1.55rem]">
                 <div>
                     <BsCalendar className="text-accent text-base"/>
                 </div>

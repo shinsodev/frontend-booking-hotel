@@ -1,9 +1,13 @@
 // import React from 'react'
 import { Link } from "react-router-dom"
 import { BsArrowsFullscreen, BsPeople } from "react-icons/bs"
+import PropTypes from 'prop-types';
+
 
 const Room = ({room}) => {
-    const { id, capacity, image, name, price, amenities, size, description } = room;
+    // const { id, capacity, image, name, price, amenities, size, description } = room;
+    const { id, maxPerson, image, name, price, size, description } = room;
+
   return (
     <div className="bg-white shadow-2xl min-h-[500px] group">
         {/* img  */}
@@ -35,7 +39,7 @@ const Room = ({room}) => {
                     </div>
                     <div className="flex gap-x-1">
                         <div>max people</div>
-                        <div>{capacity}</div>
+                        <div>{maxPerson}</div>
                     </div>
                 </div>
 
@@ -63,5 +67,17 @@ const Room = ({room}) => {
     </div>
   )
 }
+
+Room.propTypes = {
+    room: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        image: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        maxPerson: PropTypes.number.isRequired,
+        size: PropTypes.number.isRequired,
+        description: PropTypes.string.isRequired,
+    }).isRequired,
+};
 
 export default Room
