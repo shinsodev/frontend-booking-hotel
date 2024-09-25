@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react"
 import LogoWhite from "../../assets/img/logo-white.svg"
 import LogoDark from "../../assets/img/logo-dark.svg"
+import Logo from "../../assets/img/LogoHotel.jpg"
 
 const Header = () => {
   const [header, setHeader] = useState(false);
@@ -13,18 +14,18 @@ const Header = () => {
 
   return (
     <header className={`${
-      header ? 'bg-white py-6 shadow-lg' : 'bg-transparent py-8'
+      header ? 'bg-white py-1 shadow-lg' : 'bg-transparent py-5'
     } fixed z-50 w-full transition-all duration-300`}>
 
-      <div className="container mx-auto flex flex-col items-center gap-y-6
+      <div className="container mx-auto flex flex-col items-center 
       lg:flex-row lg:justify-between lg:gap-y-0
       ">
         {/* logo  */}
         <a href="/">
           {header ? (
-            <img className="w-[160px]" src={LogoDark} alt="logodark" />
+            <img className="w-20" src={Logo} alt="logodark" />
           ) : (
-            <img className="w-[160px]" src={LogoWhite} alt="logowhite" />
+            <img className="w-20" src={Logo} alt="logowhite" />
           )}
         </a>
 
@@ -38,6 +39,11 @@ const Header = () => {
           <a href="" className="hover:text-accent transition"> Restaurant </a>
           <a href="" className="hover:text-accent transition"> Spa </a>
           <a href="" className="hover:text-accent transition"> Contact </a>
+
+          <button className="btn btn-sm btn-primary mx-auto">
+            Book Now
+          </button>
+
           
         </nav>
       </div>

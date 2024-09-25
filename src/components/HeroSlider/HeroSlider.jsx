@@ -9,6 +9,13 @@ import Img1 from "../../assets/img/HeroSlider/1.jpg"
 import Img2 from "../../assets/img/HeroSlider/2.jpg"
 import Img3 from "../../assets/img/HeroSlider/3.jpg"
 
+import Hotel from "../../assets/img/hotel.svg"
+import Bed from "../../assets/img/bed.svg"
+import Amenitities from "../../assets/img/amenitities.svg"
+import Contact from "../../assets/img/contact.svg"
+
+import { FaHotel, FaSwimmingPool, FaHeadset, FaBed } from "react-icons/fa"
+
 const slides = [
   {
     title: 'Your Luxury Hotel For Vacation',
@@ -68,6 +75,30 @@ const HeroSlider = () => {
             </div>
 
             <div className="absolute w-full h-full bg-black/70"></div>
+
+            <div className="container  flex flex-row justify-between absolute uppercase font-tertiary tracking-[6px] mt-8
+            text-white text-center bottom-14">
+              <a href="" className="flex flex-col justify-center items-center">
+                <img src={Hotel} className="size-24 py-4"/>
+                <div>about the hotel</div>
+              </a>
+              
+              <a href="" className="flex flex-col justify-center items-center">
+                <img src={Bed} className="size-24 py-4"/>
+                <div>accommodations</div>
+              </a>
+
+              <a href="" className="flex flex-col justify-center items-center">
+                <img src={Amenitities} className="size-24 py-4"/>
+                <div>amenities</div>
+              </a>
+
+              <a href="" className="flex flex-col justify-center items-center">
+                <img src={Contact} className="size-24 py-4"/>
+                <div>contact</div>
+              </a>
+
+            </div>
           </SwiperSlide>
         );
       })}

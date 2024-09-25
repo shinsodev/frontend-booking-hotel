@@ -75,7 +75,7 @@ const RoomDetails = () => {
             <div className="mt-12">
               <h3 className="h3 mb-3">Room Facilities</h3>
               <p className="mb-12">
-                fhawhfuhw ubjf abfbsadj jsba jfsbajgjkafgknavbifbhuagbhabgh bacvbjaksbv
+              You are welcome to see the rooms, whose luxury and comfort will help you rest and relax after a whole day of sightseeing and admiring the capital city of Wielkopolska.
               </p>
             </div>
 
@@ -120,7 +120,7 @@ const RoomDetails = () => {
             <div>
               <h3 className="h3">Hotel Rules</h3>
               <p className="mb-6">
-                hfhjhfjd ajbnjadhnj najsn jansk naklmnv klamkl mkaldm kamknfjvnjfvjnvjnd
+              Hotel management will highly appreciate your collaboration in abiding by these rules and regulations, whose aim is to ensure peaceful and safe stay for our Guests.
               </p>
 
               <ul className="flex flex-col gap-y-4">

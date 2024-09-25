@@ -6,6 +6,7 @@ import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 
 import Home from './pages/Home/Home'
+import RoomPage from './pages/RoomPage/RoomPage'
 import RoomDetails from './pages/RoomDetails/RoomDetails'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
+  },
+  {
+    path: '/rooms',
+    element: <RoomPage />,
   },
   {
     path: '/room/:id',
