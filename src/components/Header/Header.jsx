@@ -13,9 +13,12 @@ const Header = () => {
   })
 
   return (
-    <header className={`${
-      header ? 'bg-white py-1 shadow-lg' : 'bg-transparent py-5'
-    } fixed z-50 w-full transition-all duration-300`}>
+    // ${
+      // header ? 'bg-white py-1 shadow-lg' : 'bg-transparent py-5'
+    // } 
+    <header className="
+      bg-white py-1 shadow-lg
+      fixed z-50 w-full transition-all duration-300">
 
       <div className="container mx-auto flex flex-col items-center 
       lg:flex-row lg:justify-between lg:gap-y-0
@@ -30,10 +33,10 @@ const Header = () => {
         </a>
 
         {/* nav  */}
-        <nav className={`${header ? 'text-primary' : 'text-white'}
+        <nav className="text-primary
           flex gap-x-4 font-tertiary tracking-[3px] text-[15px]
-          items-center uppercase lg:gap-x-8
-        `}>
+          items-center uppercase lg:gap-x-8"
+        >
           <a href="" className="hover:text-accent transition"> Home </a>
           <a href="" className="hover:text-accent transition"> Rooms </a>
           <a href="" className="hover:text-accent transition"> Restaurant </a>

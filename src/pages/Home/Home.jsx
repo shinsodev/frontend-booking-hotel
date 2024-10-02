@@ -81,6 +81,9 @@ const Home = () => {
           <h3 className="h3 text-[30px] mb-4 text-white">
             Get in the mood with our gallery
           </h3>
+          
+          <div className=""></div>
+
         
         </div>
         

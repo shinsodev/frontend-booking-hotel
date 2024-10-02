@@ -10,6 +10,7 @@ import RoomPage from './pages/RoomPage/RoomPage'
 import RoomDetails from './pages/RoomDetails/RoomDetails'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import SignUp from './pages/SignUp/SignUp'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: '/room/:id',
     element: <RoomDetails />,
+  },
+  {
+    path: '/signup',
+    element: <SignUp />,
   },
 ]);
 
