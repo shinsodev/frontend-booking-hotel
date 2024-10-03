@@ -37,7 +37,7 @@ const Home = () => {
                   Experience Elegance at Aurora Grand
                 </h3>
 
-                <p className="text-[#444]">
+                <p className="text-gray-600">
                   At Aurora Grand, we offer more than just a place to stay; we
                   provide an unforgettable experience. With modern architecture,
                   attentive service, and luxurious surroundings, our hotel is

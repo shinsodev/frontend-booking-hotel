@@ -10,7 +10,7 @@ import RoomPage from './pages/RoomPage/RoomPage'
 import RoomDetails from './pages/RoomDetails/RoomDetails'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import SignUp from './pages/SignUp/SignUp'
+import Login from './pages/Login/Login'
 
 const router = createBrowserRouter([
   {
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
     element: <RoomDetails />,
   },
   {
-    path: '/signup',
-    element: <SignUp />,
+    path: '/login',
+    element: <Login />,
   },
 ]);
 
