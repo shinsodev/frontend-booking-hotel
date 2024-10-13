@@ -5,7 +5,7 @@ import KidsDropdown from "../../components/KidsDropdown/KidsDropdown"
 import CheckIn from "../../components/CheckIn/CheckIn"
 import CheckOut from "../../components/CheckOut/CheckOut"
 
-import ScrollToTop from "../../components/ScrollToTop/ScrollToTop"
+// import ScrollToTop from "../../components/ScrollToTop/ScrollToTop"
 
 import { RoomContext } from "../../context/RoomContext"
 
@@ -46,7 +46,7 @@ const RoomDetails = () => {
 
   return (
     <section>
-      <ScrollToTop/>
+      {/* <ScrollToTop/> */}
       {/* banner */}
       <div className="bg-room bg-cover bg-center h-[560px] relative flex
       justify-center items-center">

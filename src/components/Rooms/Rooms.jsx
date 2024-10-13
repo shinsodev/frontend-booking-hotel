@@ -8,7 +8,7 @@ const Rooms = () => {
     const {rooms, loading} = useContext(RoomContext);
 
   return (
-    <section className="py-24">
+    <section className="py-28">
         {/* loading  */}
         {loading && (
             <div className="h-screen fixed bottom-0 top-0 bg-black/90 w-full
@@ -20,7 +20,7 @@ const Rooms = () => {
         <div className="container mx-auto lg:px-0">
             <div className="text-center">
                 <div className="font-tertiary uppercase text-[15px] tracking-[6px]">
-                    Hotel & Spa Adina
+                    Aurora Grand
                 </div>
                 <h2 className="font-primary text-[45px] mb-4">Room & Suites</h2>
             </div>

@@ -4,9 +4,16 @@ import App from './App.jsx'
 import './index.css'
 
 import RoomProvider from './context/RoomContext.jsx'
+import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
-  <RoomProvider>
-    <App />
-  </RoomProvider>
+  // <RoomProvider>
+  //   <App />
+  // </RoomProvider>
+
+  <BrowserRouter>
+    <RoomProvider>
+      <App />
+    </RoomProvider>
+  </BrowserRouter>
 )
