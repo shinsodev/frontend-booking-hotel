@@ -11,6 +11,8 @@ import RoomDetails from './pages/RoomDetails/RoomDetails'
 
 // import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
 import Sidebar from './components/Sidebar/Sidebar'
@@ -49,6 +51,14 @@ function App() {
           element={
               <Layout>
                 <Login/>
+              </Layout>
+          }>
+        </Route>
+
+        <Route path="register"
+          element={
+              <Layout>
+                <Register></Register>
               </Layout>
           }>
         </Route>

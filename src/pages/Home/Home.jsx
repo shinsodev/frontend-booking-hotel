@@ -171,7 +171,7 @@ const Home = () => {
           <div className="grid grid-cols-4 gap-4">
             <div className="bg-white rounded-xl p-4 shadow-2xl">
               <div className="flex flex-row items-center">
-                <div><img src={User1} alt="" className="w-10 h-10"/></div>
+                <div className="w-12 h-12 rounded-full flex items-center"><img src={User1} alt="" className="w-full"/></div>
                 <div className="pl-2">
                   <div className="text-[20px] font-medium font-primary">Jeanne</div>
                   <Rating/>
@@ -189,7 +189,7 @@ const Home = () => {
             {/* test  */}
             <div className="bg-white rounded-xl p-4 shadow-2xl">
               <div className="flex flex-row items-center">
-                <div><img src={User1} alt="" className="w-10 h-10"/></div>
+                <div className="w-12 h-12 rounded-full flex items-center"><img src={User1} alt="" className="w-full"/></div>
                 <div className="pl-2">
                   <div className="text-[20px] font-medium font-primary">Jeanne</div>
                   <Rating/>
@@ -199,7 +199,7 @@ const Home = () => {
 
             </div><div className="bg-white rounded-xl p-4 shadow-2xl">
               <div className="flex flex-row items-center">
-                <div><img src={User1} alt="" className="w-10 h-10"/></div>
+                <div className="w-12 h-12 rounded-full flex items-center"><img src={User1} alt="" className="w-full"/></div>
                 <div className="pl-2">
                   <div className="text-[20px] font-medium font-primary">Jeanne</div>
                   <Rating/>
@@ -209,7 +209,7 @@ const Home = () => {
 
             </div><div className="bg-white rounded-xl p-4 shadow-2xl">
               <div className="flex flex-row items-center">
-                <div><img src={User1} alt="" className="w-10 h-10"/></div>
+                <div className="w-12 h-12 rounded-full flex items-center"><img src={User1} alt="" className="w-full"/></div>
                 <div className="pl-2">
                   <div className="text-[20px] font-medium font-primary">Jeanne</div>
                   <Rating/>
@@ -218,6 +218,8 @@ const Home = () => {
               <p className="text-gray-500 pt-4">trai nghiem tuyet voi</p>
 
             </div>
+            
+            
 
 
           </div>
