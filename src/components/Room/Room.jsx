@@ -52,7 +52,7 @@ const Room = ({room}) => {
                 <h3 className="h3">{name}</h3>
             {/* </Link> */}
             <p className="max-w-[300px] mx-auto mb-3 lg:mb-6">
-                {description}
+                {description.slice(0, 126)}
             </p>
         </div>
 

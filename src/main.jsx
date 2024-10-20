@@ -4,6 +4,8 @@ import App from './App.jsx'
 import './index.css'
 
 import RoomProvider from './context/RoomContext.jsx'
+import AuthProvider from './context/AuthContext.jsx'
+
 import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
@@ -12,8 +14,10 @@ createRoot(document.getElementById('root')).render(
   // </RoomProvider>
 
   <BrowserRouter>
-    <RoomProvider>
-      <App />
-    </RoomProvider>
+    <AuthProvider>  
+      <RoomProvider>
+        <App />
+      </RoomProvider>
+    </AuthProvider>
   </BrowserRouter>
 )

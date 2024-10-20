@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import User1 from "../../assets/img/user1.png";
 import { NavLink, useLocation } from 'react-router-dom';
 import { CiGrid41 } from "react-icons/ci";
@@ -11,27 +11,48 @@ import { CgProductHunt } from "react-icons/cg";
 import { TbCurrencyDollar } from "react-icons/tb";
 import { FiUser } from "react-icons/fi";
 import { FaPlusCircle } from "react-icons/fa";
+import { MdOutlineBedroomParent } from "react-icons/md";
+
+import { AuthContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import ModalConfirm from '../ModalConfirm/ModalConfirm';
+import logoutImage from '../../assets/img/logout.jpg';
+import Logo from '../../assets/img/LogoHotel.jpg'
 
 const Sidebar = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();  // Gọi hàm logout từ context
+    navigate('/'); // Điều hướng đến trang home sau khi logout
+  };
+
   // const location = useLocation();
   const role = "admin";
 
   // Corrected template literal for dynamic classes
   const getNavLinkClass = (isActive) =>
-    `flex items-center gap-3 mb-2 p-4 rounded-lg hover:text-white hover:bg-accent hover:scale-105 text-[17px] font-medium transition-all duration-300 ease-in-out ${
+    `flex items-center gap-3 mb-2 p-4 rounded-lg text-white hover:bg-accent hover:scale-105 text-[17px] font-medium transition-all duration-300 ease-in-out ${
       isActive ? 'text-white bg-accent' : ''
     }`;
 
   return (
     <>
-      <section className="flex flex-col justify-between h-full">
-        <div className="profile flex items-center text-center justify-center gap-8 flex-col mb-8">
+      <section className="flex flex-col min-h-screen">
+        {/* <div className="profile flex items-center text-center justify-center gap-8 flex-col mb-8">
           <img src={User1} alt="" className="w-32 h-32 rounded-full object-cover" />
           <div>
             <h1 className="capitalize">Sunil B.K</h1>
             <div>example@gmail.com</div>
           </div>
-        </div>
+        </div> */}
+        
+        <NavLink to="/" className='flex items-center mb-6'>
+          <div className='w-16'><img src={Logo} alt="" /></div>
+          <div className='pl-2 text-[25px] font-primary text-white'>Aurora Grand</div>
+        </NavLink>
 
         <div>
           <NavLink to="/dashboard" className={({ isActive }) => getNavLinkClass(isActive)}>
@@ -41,9 +62,9 @@ const Sidebar = () => {
             <span>Dashboard</span>
           </NavLink>
 
-          {(role === "seller" || role === "admin") && (
+          {(role === "admin") && (
             <>
-              <NavLink
+              {/* <NavLink
                 to="/product"
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >
@@ -51,15 +72,15 @@ const Sidebar = () => {
                   <MdOutlineCategory size={22} />
                 </span>
                 <span>My Products</span>
-              </NavLink>
+              </NavLink> */}
               <NavLink
-                to="/add"
+                to="/admin/createroom"
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >
                 <span>
                   <FaPlusCircle size={22} />
                 </span>
-                <span>Create Product</span>
+                <span>Create Room</span>
               </NavLink>
             </>
           )}
@@ -67,65 +88,71 @@ const Sidebar = () => {
           {role === "admin" && (
             <>
               <NavLink
-                to="/userlist"
+                to="/admin/userlist"
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >
                 <span>
                   <FiUser size={22} />
                 </span>
-                <span>All User</span>
+                <span>All Users</span>
               </NavLink>
 
               <NavLink
-                to="/product/admin"
+                to="/admin/roomlist"
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >
                 <span>
-                  <CgProductHunt size={22} />
+                  <MdOutlineBedroomParent size={22}/>
                 </span>
-                <span>All Product List</span>
+                <span>All Rooms List</span>
               </NavLink>
 
               <NavLink
-                to="/category"
+                to="/admin/events"
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >
                 <span>
                   <MdOutlineCategory size={22} />
                 </span>
-                <span>Categories</span>
+                <span>Events</span>
               </NavLink>
 
               <NavLink
-                to="/admin/income"
+                to="/admin/report"
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >
                 <span>
                   <TbCurrencyDollar size={22} />
                 </span>
-                <span>Income</span>
+                <span>Report</span>
               </NavLink>
             </>
           )}
 
-          <NavLink
-            to="/winning-products"
-            className={({ isActive }) => getNavLinkClass(isActive)}
-          >
-            <span>
-              <RiAuctionLine size={22} />
-            </span>
-            <span>Winning Bids</span>
-          </NavLink>
-          <NavLink
-            to="/favorites"
-            className={({ isActive }) => getNavLinkClass(isActive)}
-          >
-            <span>
-              <IoIosHeartEmpty size={22} />
-            </span>
-            <span>My Favorites</span>
-          </NavLink>
+          {(role === "user") && (
+            <>
+              <NavLink
+                to="/Paymnent"
+                className={({ isActive }) => getNavLinkClass(isActive)}
+              >
+                <span>
+                  <TbCurrencyDollar size={22} />
+                </span>
+                <span>Payment</span>
+              </NavLink>
+              <NavLink
+                to="/favorites"
+                className={({ isActive }) => getNavLinkClass(isActive)}
+              >
+                <span>
+                  <IoIosHeartEmpty size={22} />
+                </span>
+                <span>My Favorites</span>
+              </NavLink>
+            </>
+          )}
+
+          
           <NavLink
             to="/profile"
             className={({ isActive }) => getNavLinkClass(isActive)}
@@ -137,13 +164,24 @@ const Sidebar = () => {
           </NavLink>
 
           <div className='flex items-center justify-center m-5 hover:opacity-60 text-center'>
-            <button className="flex items-center gap-3 text-white bg-red-500 py-4 px-12 rounded-full">
+            <button onClick={() => setModalOpen(true)} className="flex items-center gap-3 text-white bg-red-500 py-4 px-12 rounded-full">
               <span>
                 <IoIosLogOut size={22} />
               </span>
               <span>Log Out</span>
             </button>
           </div>
+
+          <ModalConfirm
+            open={isModalOpen}
+            onClose={() => setModalOpen(false)}
+            title="Confirm Logout"
+            message="Are you sure you want to log out?"
+            onConfirm={handleLogout}
+            image={logoutImage} 
+
+          />
+
         </div>
       </section>
     </>

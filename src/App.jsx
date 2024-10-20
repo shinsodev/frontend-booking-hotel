@@ -22,6 +22,7 @@ import UserList from './pages/Sidebar/UserList'
 import UserProfile from './pages/Sidebar/UserProfile'
 // import PrivateRoute from './router/PrivateRoutes'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
+import AdminRoomList from './components/AdminRoomList/AdminRoomList'
 
 
 function App() {
@@ -49,17 +50,17 @@ function App() {
 
         <Route path="login" 
           element={
-              <Layout>
+              // <Layout>
                 <Login/>
-              </Layout>
+              // </Layout>
           }>
         </Route>
 
         <Route path="register"
           element={
-              <Layout>
-                <Register></Register>
-              </Layout>
+              // <Layout>
+                <Register/>
+              // </Layout>
           }>
         </Route>
 
@@ -67,11 +68,11 @@ function App() {
             path="/dashboard"
             element={
               // <PrivateRoute>
-                <Layout>
+                // <Layout>
                   <DashboardLayout>
                     <Dashboard />
                   </DashboardLayout>
-                </Layout>
+                // </Layout>
               // </PrivateRoute>
             }
         />
@@ -80,24 +81,37 @@ function App() {
             path="/profile"
             element={
               // <PrivateRoute>
-                <Layout>
+                // <Layout>
                   <DashboardLayout>
                     <UserProfile />
                   </DashboardLayout>
-                </Layout>
+                // </Layout>
               // </PrivateRoute>
             }
         />
 
         <Route
-          path="/userlist"
+          path="/admin/userlist"
           element={
             // <PrivateRoute>
-              <Layout>
+              // <Layout>
                 <DashboardLayout>
                   <UserList />
                 </DashboardLayout>
-              </Layout>
+              // </Layout>
+            // </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/roomlist"
+          element={
+            // <PrivateRoute>
+              // <Layout>
+                <DashboardLayout>
+                  <AdminRoomList/>
+                </DashboardLayout>
+              // </Layout>
             // </PrivateRoute>
           }
         />

@@ -78,25 +78,25 @@ const HeroSlider = () => {
 
             <div className="container  flex flex-row justify-between absolute uppercase font-tertiary tracking-[6px] mt-8
             text-white text-center bottom-14">
-              <a href="" className="flex flex-col justify-center items-center">
+              <div className="flex flex-col justify-center items-center">
                 <img src={Hotel} className="size-24 py-4"/>
-                <div>about the hotel</div>
-              </a>
+                <div className="hidden md:block">about the hotel</div>
+              </div>
               
-              <a href="" className="flex flex-col justify-center items-center">
+              <div className="flex flex-col justify-center items-center">
                 <img src={Bed} className="size-24 py-4"/>
-                <div>accommodations</div>
-              </a>
+                <div className="hidden md:block">accommodations</div>
+              </div>
 
-              <a href="" className="flex flex-col justify-center items-center">
+              <div className="flex flex-col justify-center items-center">
                 <img src={Amenitities} className="size-24 py-4"/>
-                <div>amenities</div>
-              </a>
+                <div className="hidden md:block">amenities</div>
+              </div>
 
-              <a href="" className="flex flex-col justify-center items-center">
+              <div className="flex flex-col justify-center items-center">
                 <img src={Contact} className="size-24 py-4"/>
-                <div>contact</div>
-              </a>
+                <div className="hidden md:block">contact</div>
+              </div>
 
             </div>
           </SwiperSlide>

@@ -1,22 +1,45 @@
+import React, { useState } from 'react';
 import Sidebar from "../Sidebar/Sidebar";
+import DashboardHeader from "../DashboardHeader/DashboardHeader";
 
 const DashboardLayout = ({ children }) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false); // State to track sidebar visibility
   const role = "admin";
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen); // Toggle the sidebar visibility
+  };
 
   return (
     <>
-      <section className="bg-gray-200 pb-8">
-        <div className="pt-28 mx-0 flex flex-row">
-            {/* <div className="flex flex-row"> */}
-            <div className="w-[20%] bg-white rounded-2xl shadow-2xl px-2 py-4">
-                <Sidebar role={role} />
-            </div>
-            <div className="w-[80%] mx-10 bg-white rounded-2xl shadow-2xl">{children}</div>
-            {/* </div> */}
+      <section>
+        <div className="flex flex-row">
+          {/* Sidebar */}
+          <div 
+            className={`${
+              isSidebarOpen ? 'block' : 'hidden'
+            } lg:block fixed lg:static z-40 top-0 left-0 w-[65%] lg:w-[20%] bg-neutral-700 px-2 py-4 transition-transform lg:transition-none`}
+          >
+            <Sidebar role={role} />
+          </div>
+
+          {/* Content area */}
+          <div className="w-full lg:w-[80%] bg-white">
+            <DashboardHeader toggleSidebar={toggleSidebar} /> {/* Pass the toggleSidebar function */}
+            {children}
+          </div>
         </div>
+
+        {/* Overlay for small screens when sidebar is open */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black opacity-50 z-30 lg:hidden"
+            onClick={toggleSidebar} // Close sidebar when clicking on overlay
+          ></div>
+        )}
       </section>
     </>
   );
 };
 
-export default DashboardLayout
+export default DashboardLayout;

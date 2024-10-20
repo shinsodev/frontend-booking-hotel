@@ -29,13 +29,14 @@ const Header = () => {
   };
 
   const isHomePage = location.pathname === "/";
+  const isRoomPage = location.pathname === "/rooms";
 
   return (
     // ${
       // header ? 'bg-white py-1 shadow-lg' : 'bg-transparent py-5'
     // } 
     <header className={`${
-      isHomePage && !isScrolled ? 'bg-transparent py-5 text-white' : 'bg-white py-1 shadow-lg'
+      (isHomePage || isRoomPage) && !isScrolled ? 'bg-transparent py-5 text-white' : 'bg-white py-1 shadow-lg'
     } fixed z-50 w-full transition-all duration-300`}>
 
       <div className="container mx-auto flex flex-col items-center 
@@ -53,7 +54,7 @@ const Header = () => {
         </Link>
 
         {/* nav  */}
-        <nav className="isHomePage && !isScrolled ? (text-white) : (text-primary) flex
+        <nav className="(isHomePage || isRoomPage) && !isScrolled ? (text-white) : (text-primary) flex
           gap-x-4 font-tertiary tracking-[3px] text-[15px]
           items-center uppercase lg:gap-x-8"
         >
@@ -65,9 +66,9 @@ const Header = () => {
             Book Now
           </NavLink> */}
 
-          <NavLink to="/login" className="bg-accent px-4 py-2 rounded-2xl text-white hover:opacity-60">
+          {/* <NavLink to="/login" className="bg-accent px-4 py-2 rounded-lg text-white hover:opacity-60">
             Login
-          </NavLink>
+          </NavLink> */}
 
           <NavLink to="/dashboard" className="w-10 h-10">
             <img src={User1} alt="" className="w-full h-full object-cover"/>

@@ -48,22 +48,22 @@ const RoomDetails = () => {
     <section>
       {/* <ScrollToTop/> */}
       {/* banner */}
-      <div className="bg-room bg-cover bg-center h-[560px] relative flex
+      {/* <div className="bg-room bg-cover bg-center h-[560px] relative flex
       justify-center items-center">
         
-        {/* overlay */}
+        overlay
         <div className="absolute w-full h-full bg-black/70">
 
         </div>
 
-        {/* title  */}
+        title 
         <h1 className="text-6xl text-white z-20 font-primary text-center">
           {name} Details
         </h1>
-      </div>
+      </div> */}
 
       <div className="container mx-auto">
-        <div className="flex flex-col lg:flex-row h-full py-24">
+        <div className="flex flex-col lg:flex-row h-full pb-24 pt-32">
           {/* left  */}
           <div className="w-full h-full lg:w-[60%] px-6">
             <h2 className="h2">{name}</h2>

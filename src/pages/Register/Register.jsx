@@ -1,18 +1,28 @@
 import { useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import Logo from "../../assets/img/Rooms/room12.jpg"; // Matching image with Login
+import GoogleImg from "../../assets/img/google.svg"; // Matching the Google sign-up button
+import { IoHome } from "react-icons/io5";
 
-const Signup = () => {
+
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [username, setUserName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-
   const [error, setError] = useState(null);
-  // const history = useHistory();
+
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    // Kiểm tra username không có khoảng trắng
+    if (/\s/.test(username)) {
+      setError('Username cannot contain spaces.');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:8080/auth/register', {
@@ -24,26 +34,31 @@ const Signup = () => {
       });
 
       if (response.ok) {
-        console.log('Signup successful!');
-        // history.push('/login');  // Chuyển hướng sang trang đăng nhập sau khi đăng ký thành công
+        console.log('Register successful!');
+        navigate('/login');  // Chuyển hướng sang trang đăng nhập sau khi đăng ký thành công
       } else {
-        const errorMessage = await response.text();
-        setError(errorMessage);
-        console.error('Signup failed:', errorMessage);
+        setError('Register failed. Username already exists.');
       }
     } catch (error) {
-      setError('Đã xảy ra lỗi khi đăng ký.');
+      setError('Failed to register');
       console.error('Error:', error);
     }
   };
 
   return (
-    <section className="bg-accent/50 flex items-center justify-center pt-28 pb-6">
-      <div className="bg-gray-50 flex rounded-2xl shadow-2xl max-w-[900px] max-h-[500px] items-center">
-        <div className="md:w-1/2 px-10">
-          <h2 className="font-bold text-4xl text-primary h2 text-center mt-10">Signup</h2>
+    <section className="flex items-center justify-center bg-accent/30 h-screen">
+      <Link to="/" className='absolute flex items-center left-10 top-10'><IoHome size={22}/><div className='px-1 text-[17px] font-medium hover:underline'>Home</div></Link>
 
-          {/* {error && <p className="text-red-500 text-center">{error}</p>} Hiển thị lỗi nếu có */}
+      <div className="bg-gray-50 flex rounded-2xl shadow-2xl max-w-[900px] max-h-[500px] items-center justify-center">
+        <div className='hidden md:block h-[500px] w-[500px] overflow-hidden rounded-l-2xl'>
+          <img src={Logo} alt="" className='h-full w-full object-cover'/>
+        </div>
+
+        <div className="w-[380px] px-10">
+          <h2 className="font-bold text-4xl text-primary h2 text-center mt-10">Register</h2>
+
+          {/* Display error message */}
+          {error && <p className="text-red-500 text-center">{error}</p>} 
 
           <form onSubmit={handleSignup} className="flex flex-col gap-4">
             <input
@@ -55,6 +70,8 @@ const Signup = () => {
               onChange={(e) => setName(e.target.value)}
               required
             />
+
+            {/* Input username */}
             <input
               className="p-2 border-b border-black outline-none"
               type="text"
@@ -64,15 +81,19 @@ const Signup = () => {
               onChange={(e) => setUserName(e.target.value)}
               required
             />
+
+            {/* Input phone number */}
             <input
               className="p-2 border-b border-black outline-none"
-              type="text"
+              type="number"
               name="phoneNumber"
               placeholder="Phone Number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
+
+            {/* Input email */}
             <input
               className="p-2 border-b border-black outline-none"
               type="email"
@@ -82,6 +103,8 @@ const Signup = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
+            {/* Input password */}
             <input
               className="p-2 w-full border-b border-black outline-none"
               type="password"
@@ -91,15 +114,18 @@ const Signup = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
             <button className="bg-accent rounded-xl text-white py-2 hover:scale-105 duration-300">
-              Signup
+              Register
             </button>
           </form>
 
+          
+
           <div className="mt-3 text-xs flex justify-between items-center mb-10">
-            <p>Already have an account?</p>
+            <div>Already have an account?</div>
             <button
-              // onClick={() => history.push('/login')}
+              onClick={() => navigate('/login')}
               className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 border-gray-400"
             >
               Login
@@ -107,12 +133,10 @@ const Signup = () => {
           </div>
         </div>
 
-        <div className="md:block hidden w-1/2 overflow-hidden pr-10">
-          <img className="rounded-2xl object-cover w-full h-full" src="../../assets/img/room.jpg" alt="Signup Background" />
-        </div>
+        
       </div>
     </section>
   );
 };
 
-export default Signup;
+export default Register;

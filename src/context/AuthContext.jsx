@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from 'react';
 // Tạo context để quản lý thông tin người dùng
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
   
     useEffect(() => {
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   
     const fetchUserData = async (token) => {
       try {
-        const response = await fetch('http://localhost:8080/api/user/me', {
+        const response = await fetch('http://localhost:8080/get_info', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -44,3 +44,4 @@ export const AuthProvider = ({ children }) => {
     );
   };
   
+  export default AuthProvider  

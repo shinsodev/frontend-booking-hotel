@@ -20,22 +20,28 @@ const UserProfile = () => {
           <div className="flex items-center gap-5 mt-10">
             <div className="w-full">
               <div className="mb-2">Full Name </div>
-              <input type="text" className={`capitalize ${commonClassNameOfInput}`} placeholder="Sunil" readOnly />
+              <input type="text" className={`capitalize ${commonClassNameOfInput}`} placeholder="Sunil" disabled />
             </div>
           </div>
           <div className="flex items-center gap-5 mt-10">
             <div className="w-1/2">
               <div className="mb-2">Contact Number</div>
-              <input type="tel" className={commonClassNameOfInput} placeholder="Contact Number" />
+              <input type="tel" className={commonClassNameOfInput} placeholder="02877768486" />
             </div>
             <div className="w-1/2">
               <div className="mb-2">Email</div>
               <input type="email" className={commonClassNameOfInput} placeholder="example@gmail.com" disabled />
             </div>
           </div>
-          <div className="my-8">
-            <div className="mb-2">Role</div>
-            <input type="text" className={commonClassNameOfInput} placeholder="admin" required />
+          <div className="flex items-center gap-5 mt-10">
+            <div className="w-1/2">
+              <div className="mb-2">Role</div>
+              <input type="text" className={commonClassNameOfInput} placeholder="admin" disabled />
+            </div>
+            <div className="w-1/2">
+              <div className="mb-2">ID</div>
+              <input type="number" className={commonClassNameOfInput} placeholder="ID" disabled/>
+            </div>
           </div>
           <div className="my-8">
             <div className="mb-2">Profile Picture</div>

@@ -77,6 +77,169 @@ const UserList = () => {
               </td>
 
             </tr>
+
+            <tr className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">1</td>
+              <td className="px-6 py-4 capitalize">Sunil BK</td>
+              <td className="px-6 py-4">example@gmail.com</td>
+              <td className="px-6 py-4 capitalize">Admin</td>
+              <td className="px-6 py-4">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full">
+                  <img src={User1} alt="" />
+                </div>
+              </td>
+              <td className="px-6 py-4">Dec 20 2024</td>
+              
+              {/* <td className="py-4 px-8">
+                <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <TiEyeOutline size={25} />
+                </NavLink>
+              </td> */}
+
+              <td className="px-6 py-4 text-center">
+                <div className="flex items-center gap-3">
+                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                    <TiEyeOutline size={25} />
+                  </NavLink>
+                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
+                    <CiEdit size={25} />
+                  </NavLink>
+                  <button className="font-medium text-red-500">
+                    <MdOutlineDeleteOutline size={25} />
+                  </button>
+                </div>
+              </td>
+
+            </tr><tr className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">1</td>
+              <td className="px-6 py-4 capitalize">Sunil BK</td>
+              <td className="px-6 py-4">example@gmail.com</td>
+              <td className="px-6 py-4 capitalize">Admin</td>
+              <td className="px-6 py-4">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full">
+                  <img src={User1} alt="" />
+                </div>
+              </td>
+              <td className="px-6 py-4">Dec 20 2024</td>
+              
+              {/* <td className="py-4 px-8">
+                <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <TiEyeOutline size={25} />
+                </NavLink>
+              </td> */}
+
+              <td className="px-6 py-4 text-center">
+                <div className="flex items-center gap-3">
+                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                    <TiEyeOutline size={25} />
+                  </NavLink>
+                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
+                    <CiEdit size={25} />
+                  </NavLink>
+                  <button className="font-medium text-red-500">
+                    <MdOutlineDeleteOutline size={25} />
+                  </button>
+                </div>
+              </td>
+
+            </tr><tr className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">1</td>
+              <td className="px-6 py-4 capitalize">Sunil BK</td>
+              <td className="px-6 py-4">example@gmail.com</td>
+              <td className="px-6 py-4 capitalize">Admin</td>
+              <td className="px-6 py-4">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full">
+                  <img src={User1} alt="" />
+                </div>
+              </td>
+              <td className="px-6 py-4">Dec 20 2024</td>
+              
+              {/* <td className="py-4 px-8">
+                <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <TiEyeOutline size={25} />
+                </NavLink>
+              </td> */}
+
+              <td className="px-6 py-4 text-center">
+                <div className="flex items-center gap-3">
+                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                    <TiEyeOutline size={25} />
+                  </NavLink>
+                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
+                    <CiEdit size={25} />
+                  </NavLink>
+                  <button className="font-medium text-red-500">
+                    <MdOutlineDeleteOutline size={25} />
+                  </button>
+                </div>
+              </td>
+
+            </tr><tr className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">1</td>
+              <td className="px-6 py-4 capitalize">Sunil BK</td>
+              <td className="px-6 py-4">example@gmail.com</td>
+              <td className="px-6 py-4 capitalize">Admin</td>
+              <td className="px-6 py-4">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full">
+                  <img src={User1} alt="" />
+                </div>
+              </td>
+              <td className="px-6 py-4">Dec 20 2024</td>
+              
+              {/* <td className="py-4 px-8">
+                <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <TiEyeOutline size={25} />
+                </NavLink>
+              </td> */}
+
+              <td className="px-6 py-4 text-center">
+                <div className="flex items-center gap-3">
+                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                    <TiEyeOutline size={25} />
+                  </NavLink>
+                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
+                    <CiEdit size={25} />
+                  </NavLink>
+                  <button className="font-medium text-red-500">
+                    <MdOutlineDeleteOutline size={25} />
+                  </button>
+                </div>
+              </td>
+
+            </tr><tr className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">1</td>
+              <td className="px-6 py-4 capitalize">Sunil BK</td>
+              <td className="px-6 py-4">example@gmail.com</td>
+              <td className="px-6 py-4 capitalize">Admin</td>
+              <td className="px-6 py-4">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full">
+                  <img src={User1} alt="" />
+                </div>
+              </td>
+              <td className="px-6 py-4">Dec 20 2024</td>
+              
+              {/* <td className="py-4 px-8">
+                <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <TiEyeOutline size={25} />
+                </NavLink>
+              </td> */}
+
+              <td className="px-6 py-4 text-center">
+                <div className="flex items-center gap-3">
+                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                    <TiEyeOutline size={25} />
+                  </NavLink>
+                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
+                    <CiEdit size={25} />
+                  </NavLink>
+                  <button className="font-medium text-red-500">
+                    <MdOutlineDeleteOutline size={25} />
+                  </button>
+                </div>
+              </td>
+
+            </tr>
+
           </tbody>
         </table>
       </div>

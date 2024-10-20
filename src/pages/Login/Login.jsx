@@ -1,18 +1,24 @@
-import { useState, useContext } from 'react';
-// import { useHistory } from 'react-router-dom'; // Dùng để điều hướng
-// import { AuthContext } from '../../contexts/AuthContext'; // Lấy context từ AuthProvider
-import Logo from "../../assets/img/room.jpg";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Logo from "../../assets/img/Rooms/room.jpg";
 import GoogleImg from "../../assets/img/google.svg";
+import { IoHome } from "react-icons/io5";
+
 
 const Login = () => {
-  const [username, setUserName] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null); // Để lưu thông báo lỗi
-  // const { setUser } = useContext(AuthContext); // Lấy hàm setUser từ context
-  // const history = useHistory(); // Dùng để điều hướng sau khi đăng nhập thành công
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    // Kiểm tra username không có khoảng trắng
+    if (/\s/.test(username)) {
+      setError('Username cannot contain spaces.');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:8080/auth/login', {
@@ -25,43 +31,34 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Login successful!', data);
-
-        // Lưu token vào localStorage
         localStorage.setItem('token', data.token);
-
-        // Lưu thông tin người dùng vào context
-        // setUser(data.user);
-
-        // Chuyển hướng đến trang dashboard sau khi đăng nhập thành công
-        // history.push('/dashboard');
+        navigate('/');
       } else {
-        const errorMessage = await response.text(); // Lấy thông báo lỗi từ backend
-        setError(errorMessage); // Hiển thị lỗi cho người dùng
-        console.error('Login failed:', errorMessage);
+        setError('Login failed. Please check your email and password.');
       }
     } catch (error) {
-      setError('Đã xảy ra lỗi khi đăng nhập.');
+      setError('Failed to login');
       console.error('Error:', error);
     }
   };
 
   return (
-    <section className="bg-accent/50 flex items-center justify-center pt-28 pb-6">
-      <div className="bg-gray-50 flex rounded-2xl shadow-2xl max-w-[900px] max-h-[500px] items-center">
-        <div className="md:w-1/2 px-10">
+    <section className="flex items-center justify-center bg-accent/30 h-screen relative">
+      <Link to="/" className='absolute flex items-center left-10 top-10'><IoHome size={22}/><div className='px-1 text-[17px] font-medium hover:underline'>Home</div></Link>
+      <div className="bg-gray-50 flex rounded-2xl shadow-2xl max-w-[900px] max-h-[500px] items-center justify-center">
+        <div className="w-[380px] px-10">
           <h2 className="font-bold text-4xl text-primary h2 text-center mt-10">Login</h2>
 
-          {/* {error && <p className="text-red-500 text-center">{error}</p>} Hiển thị lỗi nếu có */}
+          {error && <p className="text-red-500 text-center">{error}</p>}
 
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
             <input
               className="p-2 border-b border-black outline-none"
-              type="username"
+              type="text"
               name="username"
               placeholder="Username"
               value={username}
-              onChange={(e) => setUserName(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
             <div className="relative">
@@ -75,6 +72,11 @@ const Login = () => {
                 required
               />
             </div>
+            
+            <Link to="/" className="text-xs text-gray-500">
+              <div className='hover:underline'>Forgot password?</div>
+            </Link>
+
             <button className="bg-accent rounded-xl text-white py-2 hover:scale-105 duration-300">
               Login
             </button>
@@ -90,15 +92,19 @@ const Login = () => {
           </button>
 
           <div className="mt-3 text-xs flex justify-between items-center mb-10">
-            <p>{"Don't have an account?"}</p>
-            <button className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 border-gray-400">
+            <div>{"Don't have an account?"}</div>
+            <button
+              onClick={() => navigate('/register')}
+              className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 border-gray-400"
+            >
               Register
             </button>
           </div>
         </div>
 
-        <div className="md:block hidden w-1/2 overflow-hidden pr-10">
-          <img className="rounded-2xl object-cover w-full h-full" src={Logo} alt="Login Background" />
+        {/* Image only visible on medium screens and larger */}
+        <div className='hidden md:block h-[500px] w-[500px] overflow-hidden rounded-r-2xl'>
+          <img src={Logo} alt="" className='h-full w-full object-cover'/>
         </div>
       </div>
     </section>

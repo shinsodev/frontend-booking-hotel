@@ -126,10 +126,22 @@ export const Dashboard = () => {
 
 
 
-      <>
-        <section className="bg-pink-400">
-            div
-        </section>
-      </>
+<>
+  <section className="bg-pink-400">
+    <div className="h-screen overflow-hidden relative">
+      <img
+        src="https://storage.googleapis.com/download/storage/v1/b/hotelbooking-fc85a.appspot.com/o/80e3e333-3d5d-4665-8de7-e1801a69a3fa-ish-consul-ccKvfKSKH-k-unsplash.jpg?generation=1729243810898183&alt=media"
+        alt=""
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 w-full h-full bg-black/40"></div> {/* Add position and size */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-white h2 text-[100px]">Welcome</div>
+      </div>
+    </div>
+  </section>
+</>
+
+
   );
 };
