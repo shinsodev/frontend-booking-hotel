@@ -3,23 +3,25 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from "../../assets/img/Rooms/room.jpg";
 import GoogleImg from "../../assets/img/google.svg";
 import { IoHome } from "react-icons/io5";
-
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { fetchUserData } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     // Kiểm tra username không có khoảng trắng
     if (/\s/.test(username)) {
       setError('Username cannot contain spaces.');
       return;
     }
-
+  
     try {
       const response = await fetch('http://localhost:8080/auth/login', {
         method: 'POST',
@@ -28,17 +30,21 @@ const Login = () => {
         },
         body: JSON.stringify({ username, password }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
+        
+        // Fetch user data after login
+        fetchUserData(data.token); // Call the fetchUserData function here
+        
         navigate('/');
       } else {
-        setError('Login failed. Please check your email and password.');
+        setError('Login failed. Please check your username and password.');
       }
     } catch (error) {
       setError('Failed to login');
-      console.error('Error:', error);
+      // console.error('Error:', error);
     }
   };
 

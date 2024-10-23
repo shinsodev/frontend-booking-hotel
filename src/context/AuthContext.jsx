@@ -10,12 +10,13 @@ const AuthProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (token) {
         fetchUserData(token);
+        // console.log(token);
       }
     }, []);
   
     const fetchUserData = async (token) => {
       try {
-        const response = await fetch('http://localhost:8080/get_info', {
+        const response = await fetch('http://localhost:8080/users/get_info', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -23,8 +24,11 @@ const AuthProvider = ({ children }) => {
         });
   
         if (response.ok) {
-          const userData = await response.json();
+          const data = await response.json();
+          const userData = data.user;  // Chỉ lấy phần 'user'
           setUser(userData);
+          // console.log(userData);
+          localStorage.setItem('user', JSON.stringify(userData));
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -34,14 +38,16 @@ const AuthProvider = ({ children }) => {
     // Hàm để xử lý đăng xuất
     const logout = () => {
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       setUser(null);  // Reset lại user về null
     };
   
     return (
-      <AuthContext.Provider value={{ user, setUser, logout }}>
+      <AuthContext.Provider value={{ user, setUser, logout, fetchUserData }}>
         {children}
       </AuthContext.Provider>
     );
+    
   };
   
   export default AuthProvider  
