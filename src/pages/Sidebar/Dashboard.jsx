@@ -7,7 +7,7 @@ import { MdDashboard, MdOutlineCategory } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { HiOutlineUsers } from "react-icons/hi2";
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const role = "admin";
   return (
 //     <>
@@ -145,3 +145,4 @@ export const Dashboard = () => {
 
   );
 };
+export default Dashboard

@@ -34,19 +34,20 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
-        
-        // Fetch user data after login
-        fetchUserData(data.token); // Call the fetchUserData function here
-        
-        navigate('/');
+  
+        // Fetch user data after login and wait for it to finish
+        await fetchUserData(data.token);
+  
+        navigate('/dashboard'); // Chuyển hướng sau khi lấy xong thông tin người dùng
       } else {
         setError('Login failed. Please check your username and password.');
       }
     } catch (error) {
       setError('Failed to login');
-      // console.error('Error:', error);
+      console.error('Error:', error);
     }
   };
+  
 
   return (
     <section className="flex items-center justify-center bg-accent/30 h-screen relative">

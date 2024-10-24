@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdNotifications } from "react-icons/io";
-import User1 from "../../assets/img/user1.png";
+import User1 from "../../assets/img/user1.png"; // Hình ảnh người dùng (có thể thay đổi)
+
+import { AuthContext } from '../../context/AuthContext'; // Đảm bảo import đúng đường dẫn
 
 const DashboardHeader = ({ toggleSidebar }) => {
+  const { user } = useContext(AuthContext); // Lấy thông tin người dùng từ context
+
   return (
     <div className="flex items-center justify-between lg:justify-end py-4 px-6 shadow-lg">
       {/* Hamburger menu */}
@@ -18,11 +22,12 @@ const DashboardHeader = ({ toggleSidebar }) => {
         </button>
         <div className="flex">
           <div className="flex items-center justify-center">
-            <img src={User1} alt="" className="w-10 object-cover rounded-full" />
+            <img src={User1} alt="User Profile" className="w-10 object-cover rounded-full" />
           </div>
           <div className="flex flex-col mx-4">
-            <div className="font-medium text-[17px]">Jeanne</div>
-            <div className="text-gray-500 text-[12px]">Admin</div>
+            {/* Hiển thị tên và vai trò của người dùng */}
+            <div className="font-medium text-[17px]">{user ? user.name : 'User'}</div>
+            <div className="text-gray-500 text-[12px]">{user ? user.role : 'Guest'}</div>
           </div>
         </div>
       </nav>
