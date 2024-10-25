@@ -127,7 +127,7 @@ const Dashboard = () => {
 
 
 <>
-  <section className="bg-pink-400">
+  <section className="bg-slate-400">
     <div className="h-screen overflow-hidden relative">
       <img
         src="https://storage.googleapis.com/download/storage/v1/b/hotelbooking-fc85a.appspot.com/o/80e3e333-3d5d-4665-8de7-e1801a69a3fa-ish-consul-ccKvfKSKH-k-unsplash.jpg?generation=1729243810898183&alt=media"

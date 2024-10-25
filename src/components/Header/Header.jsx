@@ -48,7 +48,7 @@ const Header = () => {
         } flex gap-x-4 font-tertiary tracking-[3px] text-[15px] items-center uppercase lg:gap-x-8`}>
           <NavLink to="/" className="hover:text-accent transition"> Home </NavLink>
           <NavLink to="/rooms" className="hover:text-accent transition"> Rooms </NavLink>
-          <NavLink to="/" className="hover:text-accent transition"> Contact </NavLink>
+          <NavLink to="/contact" className="hover:text-accent transition"> Contact </NavLink>
           
           <NavLink to="/dashboard" className="flex items-center w-10 h-10">
             <img src={User1} alt="" className="w-full h-full object-cover"/>

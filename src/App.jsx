@@ -16,6 +16,11 @@ import AdminRoomList from './components/AdminRoomList/AdminRoomList';
 import PrivateRoute from './admin/PrivateRoute'; 
 import PublicRoute from './public/PublicRoute'; // Import PublicRoute
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage'; // Import NotFoundPage
+import AddRoom from './pages/Sidebar/AddRoom';
+import Report from './pages/Sidebar/Report';
+import DiscountEvents from './pages/Sidebar/DiscountEvents';
+import Contact from './pages/Contact/Contact';
+import BookedRooms from './pages/Sidebar/BookedRooms';
 
 function App() {
   return (
@@ -28,6 +33,15 @@ function App() {
           element={
             <Layout>
               <Home />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/contact"
+          element={
+            <Layout>
+              <Contact/>
             </Layout>
           }
         />
@@ -74,6 +88,17 @@ function App() {
           }
         />
 
+        <Route
+          path="/bookedrooms"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <BookedRooms/>
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
         {/* Route cho Profile */}
         <Route
           path="/profile"
@@ -104,6 +129,39 @@ function App() {
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
                 <AdminRoomList />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/addroom"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <AddRoom/>
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/report"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <Report/>
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/events"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <DiscountEvents/>
               </DashboardLayout>
             </PrivateRoute>
           }

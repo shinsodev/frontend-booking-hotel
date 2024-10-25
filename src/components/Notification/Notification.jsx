@@ -7,7 +7,7 @@ const Notification = ({ message, onClose }) => {
     <div className="fixed inset-0 flex justify-center items-center bg-white z-50">
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-accent rounded-xl shadow-2xl px-20 py-16 transition-all scale-100 opacity-100"
+        className="bg-slate-500 rounded-xl shadow-2xl px-20 py-16 transition-all scale-100 opacity-100"
       >
 
         <button

@@ -52,10 +52,10 @@ const Sidebar = () => {
           {/* Mục hiển thị cho Admin */}
           {user?.role === "ADMIN" && (
             <>
-              <NavLink to="/admin/createroom" className={({ isActive }) => getNavLinkClass(isActive)}>
+              {/* <NavLink to="/admin/createroom" className={({ isActive }) => getNavLinkClass(isActive)}>
                 <FaPlusCircle size={22} />
                 <span>Create Room</span>
-              </NavLink>
+              </NavLink> */}
 
               <NavLink to="/admin/userlist" className={({ isActive }) => getNavLinkClass(isActive)}>
                 <FiUser size={22} />
@@ -80,17 +80,22 @@ const Sidebar = () => {
           )}
 
           {/* Mục hiển thị cho User */}
-          {user?.role === "user" && (
+          {user?.role === "USER" && (
             <>
-              <NavLink to="/payment" className={({ isActive }) => getNavLinkClass(isActive)}>
+              {/* <NavLink to="/payment" className={({ isActive }) => getNavLinkClass(isActive)}>
                 <TbCurrencyDollar size={22} />
                 <span>Payment</span>
+              </NavLink> */}
+
+              <NavLink to="/bookedrooms" className={({ isActive }) => getNavLinkClass(isActive)}>
+                <TbCurrencyDollar size={22} />
+                <span>Booked Rooms</span>
               </NavLink>
 
-              <NavLink to="/favorites" className={({ isActive }) => getNavLinkClass(isActive)}>
+              {/* <NavLink to="/favorites" className={({ isActive }) => getNavLinkClass(isActive)}>
                 <IoIosHeartEmpty size={22} />
                 <span>My Favorites</span>
-              </NavLink>
+              </NavLink> */}
             </>
           )}
 

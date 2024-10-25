@@ -4,7 +4,8 @@ import { AuthContext } from '../context/AuthContext';
 import Notification from '../components/Notification/Notification'; // Đảm bảo import đúng đường dẫn
 
 const PublicRoute = ({ children }) => {
-  const user = localStorage.getItem('user');
+  // const user = localStorage.getItem('user');
+  const { user } = useContext(AuthContext); // Get user from AuthContext
   const [showNotification, setShowNotification] = useState(false);
   const [redirect, setRedirect] = useState(false);
 

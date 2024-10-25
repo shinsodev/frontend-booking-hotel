@@ -1,13 +1,25 @@
 import { TiEyeOutline } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import room1 from "../../assets/img/Rooms/room4.jpg"
+import { useState } from "react";
 
 const Table = () => {
+  const [isAddRoomOpen, setIsAddRoomOpen] = useState(false);
   return (
     <>
       <div className="relative overflow-x-auto rounded-lg">
+        <div className="flex justify-end mb-4">
+          {/* Nút Thêm Phòng Mới */}
+          <Link to="/admin/addroom"
+            onClick={() => setIsAddRoomOpen(true)}
+            className="bg-accent hover:opacity-60 transition-all text-white font-medium text-[17px] py-2 px-4 rounded-lg"
+          >
+            Add new room
+          </Link>
+        </div>
+
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>

@@ -34,7 +34,7 @@ const Register = () => {
       });
 
       if (response.ok) {
-        console.log('Register successful!');
+        // console.log('Register successful!');
         navigate('/login');  // Chuyển hướng sang trang đăng nhập sau khi đăng ký thành công
       } else {
         setError('Register failed. Username already exists.');
