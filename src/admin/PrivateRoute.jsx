@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import ForbiddenPage from '../pages/ForbiddenPage/ForbiddenPage';
 import { SpinnerDotted } from 'spinners-react';
 
-const PrivateRoute = ({ children, adminOnly }) => {
+const PrivateRoute = ({ children, adminOnly, userOnly }) => {
   const { user, loading } = useContext(AuthContext);
 
   if (loading) {
@@ -25,6 +25,11 @@ const PrivateRoute = ({ children, adminOnly }) => {
 
   if (adminOnly && user.role !== 'ADMIN') {
     // If user is not an admin, show the ForbiddenPage
+    return <ForbiddenPage />;
+  }
+
+  if (userOnly && user.role !== 'USER') {
+    
     return <ForbiddenPage />;
   }
 

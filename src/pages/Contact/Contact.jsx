@@ -1,12 +1,15 @@
-import React from 'react';
+import React from "react";
 
 const Contact = () => {
   return (
-    <section className="bg-slate-500 py-16">
+    <section className="bg-slate-500 py-24 lg:py-16">
       <div className="container mx-auto lg:px-0">
-        <h3 className="h3 text-[45px] text-white text-center py-12">Contact Us</h3>
+        <h3 className="h3 text-[45px] text-white text-center py-12">
+          Contact Us
+        </h3>
         <p className="text-center text-lg text-white mb-8">
-          We're here to help! If you have any questions or need assistance, feel free to reach out to us.
+          We're here to help! If you have any questions or need assistance, feel
+          free to reach out to us.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Contact Form */}
@@ -52,11 +55,21 @@ const Contact = () => {
           {/* Contact Information */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h4 className="text-xl font-semibold mb-4">Contact Information</h4>
-            <p className="mb-2"><strong>Address:</strong> 123 Hotel St, City, Country</p>
-            <p className="mb-2"><strong>Phone:</strong> (123) 456-7890</p>
-            <p className="mb-2"><strong>Email:</strong> info@yourhotel.com</p>
-            <p className="mb-2"><strong>Website:</strong> www.yourhotel.com</p>
-            <p className="mt-4 text-gray-600">Follow us on social media for updates!</p>
+            <p className="mb-2">
+              <strong>Address:</strong> 123 Hotel St, City, Country
+            </p>
+            <p className="mb-2">
+              <strong>Phone:</strong> (123) 456-7890
+            </p>
+            <p className="mb-2">
+              <strong>Email:</strong> info@yourhotel.com
+            </p>
+            <p className="mb-2">
+              <strong>Website:</strong> www.yourhotel.com
+            </p>
+            <p className="mt-4 text-gray-600">
+              Follow us on social media for updates!
+            </p>
           </div>
         </div>
       </div>

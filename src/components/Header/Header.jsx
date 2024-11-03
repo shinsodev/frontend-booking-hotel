@@ -1,27 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { FiMenu, FiX } from "react-icons/fi";
 import Logo from "../../assets/img/LogoHotel.jpg";
 import User1 from "../../assets/img/User1.png";
-import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
+import { AuthContext } from "../../context/AuthContext";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useContext(AuthContext); // Lấy thông tin người dùng
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    // Thêm sự kiện scroll
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup sự kiện khi component unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []); // Mảng rỗng để chỉ chạy khi component mount/unmount
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -31,33 +30,81 @@ const Header = () => {
   const isRoomPage = window.location.pathname === "/rooms";
 
   return (
-    <header className={`${
-      (isHomePage || isRoomPage) && !isScrolled ? 'bg-transparent py-5 text-white' : 'bg-white py-1 shadow-lg'
-    } fixed z-50 w-full transition-all duration-300`}>
-      
-      <div className="container mx-auto flex flex-col items-center lg:flex-row lg:justify-between lg:gap-y-0">
+    <header
+      className={`${
+        (isHomePage || isRoomPage) && !isScrolled
+          ? "bg-transparent py-5 text-white lg:text-primary" // text-primary for larger screens
+          : "bg-white py-1 shadow-lg text-black lg:text-primary" // text-black for mobile
+      } fixed z-50 w-full transition-all duration-300`}
+    >
+      <div className="container mx-auto flex items-center justify-between p-4 lg:p-0">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center space-x-2">
           <img className="w-20" src={Logo} alt="Logo" />
-          <span className="pl-2 text-[25px] font-primary">Aurora Grand</span>
+          <span
+            className={`pl-2 text-[25px] font-primary hidden lg:block transition-all ${
+              isScrolled ? "text-black" : "text-white"
+            }`}
+          >
+            Aurora Grand
+          </span>
         </Link>
 
+        {/* Hamburger Icon */}
+        <button onClick={toggleMenu} className="lg:hidden text-2xl">
+          {isOpen ? <FiX size={30} /> : <FiMenu size={30} />}
+        </button>
+
         {/* Navigation */}
-        <nav className={`${
-          (isHomePage || isRoomPage) && !isScrolled ? 'text-white' : 'text-primary'
-        } flex gap-x-4 font-tertiary tracking-[3px] text-[15px] items-center uppercase lg:gap-x-8`}>
-          <NavLink to="/" className="hover:text-accent transition"> Home </NavLink>
-          <NavLink to="/rooms" className="hover:text-accent transition"> Rooms </NavLink>
-          <NavLink to="/contact" className="hover:text-accent transition"> Contact </NavLink>
-          
-          <NavLink to="/dashboard" className="flex items-center w-10 h-10">
-            <img src={User1} alt="" className="w-full h-full object-cover"/>
+        <nav
+          className={`${
+            isOpen ? "flex" : "hidden"
+          } lg:flex flex-col gap-4 items-center absolute lg:static top-full left-0 right-0 lg:gap-x-8 lg:top-0 lg:flex-row ${
+            (isHomePage || isRoomPage) && !isScrolled
+              ? "text-black lg:text-white" // text-black on mobile, white on large screens
+              : "text-black"
+          } bg-white lg:bg-transparent lg:w-auto w-full p-5 lg:p-0 shadow-md lg:shadow-none transition-all duration-300`}
+        >
+          <NavLink
+            to="/"
+            onClick={() => setIsOpen(false)}
+            className="hover:text-accent transition-all"
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/rooms"
+            onClick={() => setIsOpen(false)}
+            className="hover:text-accent transition-all"
+          >
+            Rooms
+          </NavLink>
+          <NavLink
+            to="/contact"
+            onClick={() => setIsOpen(false)}
+            className="hover:text-accent transition-all"
+          >
+            Contact
+          </NavLink>
+
+          {/* Avatar and Username */}
+          <div className="flex items-center space-x-2 lg:ml-4">
+            <NavLink
+              to="/dashboard"
+              className="w-10 h-10 hover:text-accent transition-all"
+            >
+              <img
+                src={User1}
+                alt="User avatar"
+                className="w-full h-full object-cover rounded-full"
+              />
+            </NavLink>
             {user && (
-              <span className="ml-2 font-medium text-[15px]">
-                {user.name} {/* Hiển thị tên người dùng */}
+              <span className="font-medium text-[15px] whitespace-nowrap">
+                {user.name}
               </span>
             )}
-          </NavLink>
+          </div>
         </nav>
       </div>
     </header>
