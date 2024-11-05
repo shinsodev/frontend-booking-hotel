@@ -7,7 +7,7 @@ const AdminRoomList = () => {
       <section className="p-8">
         <div>
             <h2 className="font-medium text-3xl">
-            User Lists
+            Room List
             </h2>
         </div>
         <hr className="my-5" />

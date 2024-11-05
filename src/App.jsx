@@ -21,6 +21,8 @@ import Report from "./pages/Sidebar/Report";
 import DiscountEvents from "./pages/Sidebar/DiscountEvents";
 import Contact from "./pages/Contact/Contact";
 import BookedRooms from "./pages/Sidebar/BookedRooms";
+import UpdateRoom from './components/UpdateRoom/updateRoom';
+import ViewRoom from './components/ViewRoom/viewRoom';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -142,6 +144,32 @@ function App() {
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
                 <AddRoom />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/updateRoom/:roomId"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+
+                <UpdateRoom />
+
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/viewRoom"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+
+                <ViewRoom />
+
               </DashboardLayout>
             </PrivateRoute>
           }
