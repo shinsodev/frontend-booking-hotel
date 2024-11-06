@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { roomData } from "../data";
 import { getAllRooms, deleteRoom } from "../services/RoomService";
+import { useContext } from "react";
 
 export const RoomContext = createContext();
 
@@ -34,10 +35,10 @@ const RoomProvider = ({ children }) => {
   const fetchRoom = async () => {
     try {
       const result = await getAllRooms();
-      // console.log("Fetched rooms:", result);
       setRoom(result.roomList);
+      console.log(result.roomList);
     } catch (error) {
-      console.log("fail");
+      console.log(error.message);
     }
   };
 

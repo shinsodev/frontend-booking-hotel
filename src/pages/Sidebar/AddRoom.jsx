@@ -28,7 +28,7 @@ const AddRoom = () => {
     roomCapacity: "",
     roomAmount: "",
     roomDescription: "",
-    roomPhotoURL: null,
+    roomPhotoUrl: null,
     drinkInfo: false,
     gymInfo: false,
     breakfastInfo: false,
@@ -49,7 +49,7 @@ const AddRoom = () => {
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
 
-    setNewRoom({ ...newRoom, roomPhotoURL: selectedImage });
+    setNewRoom({ ...newRoom, roomPhotoUrl: selectedImage });
     setImageReview(URL.createObjectURL(selectedImage));
   };
 
@@ -73,7 +73,7 @@ const AddRoom = () => {
       //   roomCapacity: "",
       //   roomAmount: "",
       //   roomDescription: "",
-      //   roomPhotoURL: null,
+      //   roomPhotoUrl: null,
       //   drinkInfo: false,
       //   gymInfo: false,
       //   breakfastInfo: false,
@@ -323,13 +323,13 @@ const AddRoom = () => {
             </div>
             <div>
               <label
-                htmlFor="roomPhotoURL"
+                htmlFor="roomPhotoUrl"
                 className="block text-gray-700 font-medium"
               >
                 Upload Image
               </label>
               <input
-                name="roomPhotoURL"
+                name="roomPhotoUrl"
                 type="file"
                 onChange={handleImageChange}
                 className="w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 py-6"

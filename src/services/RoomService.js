@@ -48,12 +48,12 @@ export async function addRoom(roomData) {
   );
 
   // Thêm file ảnh nếu có
-  if (roomData.roomPhotoURL) {
-    // console.log("roomPhotoURL:", roomData.roomPhotoURL); // Kiểm tra giá trị
-    if (roomData.roomPhotoURL instanceof File) {
-      formData.append("file", roomData.roomPhotoURL);
+  if (roomData.roomPhotoUrl) {
+    // console.log("roomPhotoUrl:", roomData.roomPhotoUrl); // Kiểm tra giá trị
+    if (roomData.roomPhotoUrl instanceof File) {
+      formData.append("file", roomData.roomPhotoUrl);
     } else {
-      console.warn("roomPhotoURL is not a valid file.");
+      console.warn("roomPhotoUrl is not a valid file.");
     }
   }
 
@@ -147,8 +147,8 @@ export async function updateRoom(roomId, roomData) {
   );
 
   // Thêm file ảnh nếu có
-  if (roomData.roomPhotoURL) {
-    formData.append("file", roomData.roomPhotoURL);
+  if (roomData.roomPhotoUrl) {
+    formData.append("file", roomData.roomPhotoUrl);
   }
 
   // Gửi yêu cầu
