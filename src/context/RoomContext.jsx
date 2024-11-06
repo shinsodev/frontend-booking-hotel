@@ -1,38 +1,50 @@
-import { createContext, useEffect, useState } from "react"
-import PropTypes from 'prop-types';
-import { roomData } from '../data';
+import { createContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { roomData } from "../data";
+import { getAllRooms, deleteRoom } from "../services/RoomService";
 
 export const RoomContext = createContext();
 
 const RoomProvider = ({ children }) => {
-    const [rooms, setRooms] = useState(roomData);
-    const [adults, setAdults] = useState('1 Adult');
-    const [kids, setKids] = useState('0 Kid');
-    const [total, setTotal] = useState(0);
-    const [loading, setLoading] = useState(false);
+  // const [rooms, setRooms] = useState(roomData);
+  const [adults, setAdults] = useState("1 Adult");
+  const [kids, setKids] = useState("0 Kid");
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [rooms, setRoom] = useState([]);
 
-    useEffect(() => {
-      setTotal(Number(adults[0]) + Number(kids[0]));
-    })
+  useEffect(() => {
+    setTotal(Number(adults[0]) + Number(kids[0]));
+  });
 
-    const handleClick = (e) => {
-      e.preventDefault();
-      setLoading(true);
+  // const handleClick = (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
 
-      const newRooms = roomData.filter((room)=> { 
-        return total <= room.maxPerson;
-      });
+  //   const newRooms = roomData.filter((room) => {
+  //     return total <= room.maxPerson;
+  //   });
 
-      setTimeout(() => {
-        setRooms(newRooms);
-        setLoading(false);
-      }, 3000);
-      
+  //   setTimeout(() => {
+  //     setRooms(newRooms);
+  //     setLoading(false);
+  //   }, 3000);
+  // };
+
+  const fetchRoom = async () => {
+    try {
+      const result = await getAllRooms();
+      // console.log("Fetched rooms:", result);
+      setRoom(result.roomList);
+    } catch (error) {
+      console.log("fail");
     }
-
+  };
 
   return (
-    <RoomContext.Provider value={{ rooms, adults, setAdults, kids, setKids, handleClick, loading }}>
+    <RoomContext.Provider
+      value={{ rooms, adults, setAdults, kids, setKids, fetchRoom, loading }}
+    >
       {children}
     </RoomContext.Provider>
   );

@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { fetchUserInfo } from "../services/UserService";
 import { fetchAllUsers } from "../services/UserService";
+// import { fetchRoom } from "../context/RoomContext";
 import axios from "axios";
 
 // Tạo context để quản lý thông tin người dùng
@@ -39,7 +40,12 @@ const AuthProvider = ({ children }) => {
         // If the user is an admin, fetch the userList and start polling every 3 seconds
         if (userData.role === "ADMIN") {
           await fetchAllUsersData(token);
-          const id = setInterval(() => fetchAllUsersData(token), 3000); // Poll every 3 seconds
+          // await fetchRoom();
+          const id = setInterval(async () => {
+            await fetchAllUsersData(token);
+            // await fetchRoom();
+          }, 3000);
+
           setIntervalId(id);
         }
       } else {

@@ -29,8 +29,7 @@ const Login = () => {
         toast.success(data.message);
         navigate("/dashboard");
       } else {
-        const errorData = await response.json();
-        toast.error(errorData.message || "Login failed.");
+        toast.error("Login failed.");
       }
     } catch (error) {
       toast.error("Login failed. Please check your email and password.");

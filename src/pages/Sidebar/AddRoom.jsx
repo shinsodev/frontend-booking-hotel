@@ -1,7 +1,10 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { addRoom } from '../../services/RoomService';
+import React, { useState, useContext, useEffect } from "react";
+import { addRoom } from "../../services/RoomService";
 import { Link } from "react-router-dom";
-import { RoomContext } from '../../context/RoomContext';
+import { RoomContext } from "../../context/RoomContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 import {
   FaWifi,
   FaCoffee,
@@ -11,9 +14,12 @@ import {
   FaHotdog,
   FaStopwatch,
   FaCocktail,
-} from 'react-icons/fa';
+} from "react-icons/fa";
 
 const AddRoom = () => {
+  const { fetchRoom } = useContext(RoomContext);
+  const navigate = useNavigate();
+
   const [newRoom, setNewRoom] = useState({
     roomType: "",
     roomSize: "",
@@ -30,31 +36,21 @@ const AddRoom = () => {
     parkingInfo: false,
     bathInfo: false,
     coffeeInfo: false,
-    wifiInfo: false
+    wifiInfo: false,
   });
 
-
-
   const [imageReview, setImageReview] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const { fileName, setFileName } = useContext(RoomContext);
 
   const handleRoomInputChange = (e) => {
     const { name, value } = e.target;
     setNewRoom({ ...newRoom, [name]: value });
   };
 
-  useEffect(() => {
-    console.log("Updated fileName:", fileName);
-  }, [fileName]);
-
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
+
     setNewRoom({ ...newRoom, roomPhotoURL: selectedImage });
     setImageReview(URL.createObjectURL(selectedImage));
-    setFileName(selectedImage.name);
-    // console.log("NAME", fileName )
   };
 
   const handleFacilityChange = (e) => {
@@ -65,47 +61,57 @@ const AddRoom = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const success = await addRoom(newRoom);
+    // console.log(success);
     if (success) {
-      setSuccessMessage("A new room was added to the database");
       // Reset form
-      setNewRoom({
-        roomType: "",
-        roomSize: "",
-        roomPrice: "",
-        roomStatus: "",
-        roomCapacity: "",
-        roomAmount: "",
-        roomDescription: "",
-        roomPhotoURL: null,
-        drinkInfo: false,
-        gymInfo: false,
-        breakfastInfo: false,
-        poolInfo: false,
-        parkingInfo: false,
-        bathInfo: false,
-        coffeeInfo: false,
-        wifiInfo: false
-      });
-      setImageReview("");
-      setErrorMessage("");
-      // setFileName("");
+
+      // setNewRoom({
+      //   roomType: "",
+      //   roomSize: "",
+      //   roomPrice: "",
+      //   roomStatus: "",
+      //   roomCapacity: "",
+      //   roomAmount: "",
+      //   roomDescription: "",
+      //   roomPhotoURL: null,
+      //   drinkInfo: false,
+      //   gymInfo: false,
+      //   breakfastInfo: false,
+      //   poolInfo: false,
+      //   parkingInfo: false,
+      //   bathInfo: false,
+      //   coffeeInfo: false,
+      //   wifiInfo: false,
+      // });
+      // setImageReview("");
+
+      await fetchRoom();
+      navigate("/admin/roomlist");
+      toast.success("Add room successfully!");
     } else {
-      setErrorMessage("Error adding room");
+      toast.error("Error adding room");
     }
   };
 
-
   return (
-    <section className="p-8">
+    <section className="p-8 relative">
       <div>
         <h2 className="font-medium text-3xl">Add New Room</h2>
       </div>
       <hr className="my-5" />
       <div className="flex justify-center">
         <div className="w-[80%] shadow-lg border-2 border-gray-200 rounded-lg">
-          <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4 bg-white p-6 rounded-lg"
+          >
             <div>
-              <label htmlFor="status" className="block text-gray-700 font-medium">Room Status</label>
+              <label
+                htmlFor="status"
+                className="block text-gray-700 font-medium"
+              >
+                Room Status
+              </label>
               <select
                 name="roomStatus" // Thêm thuộc tính name
                 value={newRoom.roomStatus}
@@ -119,10 +125,10 @@ const AddRoom = () => {
               </select>
             </div>
 
-
-
             <div>
-              <label htmlFor="type" className="block text-gray-700 font-medium">Room Type</label>
+              <label htmlFor="type" className="block text-gray-700 font-medium">
+                Room Type
+              </label>
               <select
                 name="roomType" // Thêm thuộc tính name
                 value={newRoom.roomType}
@@ -137,9 +143,13 @@ const AddRoom = () => {
               </select>
             </div>
 
-
             <div>
-              <label htmlFor="roomAmount" className="block text-gray-700 font-medium">Room Amount</label>
+              <label
+                htmlFor="roomAmount"
+                className="block text-gray-700 font-medium"
+              >
+                Room Amount
+              </label>
               <input
                 name="roomAmount" // Thêm thuộc tính name
                 type="number"
@@ -152,7 +162,12 @@ const AddRoom = () => {
             </div>
 
             <div>
-              <label htmlFor="roomPrice" className="block text-gray-700 font-medium">Price (per night)</label>
+              <label
+                htmlFor="roomPrice"
+                className="block text-gray-700 font-medium"
+              >
+                Price (per night)
+              </label>
               <input
                 name="roomPrice" // Thêm thuộc tính name
                 type="number"
@@ -164,10 +179,13 @@ const AddRoom = () => {
               />
             </div>
 
-
-
             <div>
-              <label htmlFor="roomSize" className="block text-gray-700 font-medium">Room Size</label>
+              <label
+                htmlFor="roomSize"
+                className="block text-gray-700 font-medium"
+              >
+                Room Size
+              </label>
               <input
                 name="roomSize"
                 type="text"
@@ -180,7 +198,12 @@ const AddRoom = () => {
             </div>
 
             <div>
-              <label htmlFor="roomCapacity" className="block text-gray-700 font-medium">Room capacity</label>
+              <label
+                htmlFor="roomCapacity"
+                className="block text-gray-700 font-medium"
+              >
+                Room capacity
+              </label>
               <input
                 name="roomCapacity" // Thêm thuộc tính name
                 type="text"
@@ -193,7 +216,12 @@ const AddRoom = () => {
             </div>
 
             <div>
-              <label htmlFor="roomDescription" className="block text-gray-700 font-medium">Room Description</label>
+              <label
+                htmlFor="roomDescription"
+                className="block text-gray-700 font-medium"
+              >
+                Room Description
+              </label>
               <input
                 name="roomDescription" // Thêm thuộc tính name
                 type="text"
@@ -205,51 +233,101 @@ const AddRoom = () => {
               />
             </div>
 
-            <label htmlFor="roomCapacity" className="block text-gray-700 font-medium">Room Facility</label>
+            <label
+              htmlFor="roomCapacity"
+              className="block text-gray-700 font-medium"
+            >
+              Room Facility
+            </label>
             <div className="grid grid-cols-4 gap-4">
               <div className="flex flex-col items-center">
                 <FaWifi className="text-2xl" />
                 <label className="mt-2">Wifi</label>
-                <input type="checkbox" name="wifiInfo" checked={newRoom.wifiInfo} onChange={handleFacilityChange} />
+                <input
+                  type="checkbox"
+                  name="wifiInfo"
+                  checked={newRoom.wifiInfo}
+                  onChange={handleFacilityChange}
+                />
               </div>
               <div className="flex flex-col items-center">
                 <FaCoffee className="text-2xl" />
                 <label className="mt-2">Coffee</label>
-                <input type="checkbox" name="coffeeInfo" checked={newRoom.coffeeInfo} onChange={handleFacilityChange} />
+                <input
+                  type="checkbox"
+                  name="coffeeInfo"
+                  checked={newRoom.coffeeInfo}
+                  onChange={handleFacilityChange}
+                />
               </div>
               <div className="flex flex-col items-center">
                 <FaBath className="text-2xl" />
                 <label className="mt-2">Bath</label>
-                <input type="checkbox" name="bathInfo" checked={newRoom.bathInfo} onChange={handleFacilityChange} />
+                <input
+                  type="checkbox"
+                  name="bathInfo"
+                  checked={newRoom.bathInfo}
+                  onChange={handleFacilityChange}
+                />
               </div>
               <div className="flex flex-col items-center">
                 <FaParking className="text-2xl" />
                 <label className="mt-2">Parking</label>
-                <input type="checkbox" name="parkingInfo" checked={newRoom.parkingInfo} onChange={handleFacilityChange} />
+                <input
+                  type="checkbox"
+                  name="parkingInfo"
+                  checked={newRoom.parkingInfo}
+                  onChange={handleFacilityChange}
+                />
               </div>
               <div className="flex flex-col items-center">
                 <FaSwimmingPool className="text-2xl" />
                 <label className="mt-2">Pool</label>
-                <input type="checkbox" name="poolInfo" checked={newRoom.poolInfo} onChange={handleFacilityChange} />
+                <input
+                  type="checkbox"
+                  name="poolInfo"
+                  checked={newRoom.poolInfo}
+                  onChange={handleFacilityChange}
+                />
               </div>
               <div className="flex flex-col items-center">
                 <FaHotdog className="text-2xl" />
                 <label className="mt-2">Breakfast</label>
-                <input type="checkbox" name="breakfastInfo" checked={newRoom.breakfastInfo} onChange={handleFacilityChange} />
+                <input
+                  type="checkbox"
+                  name="breakfastInfo"
+                  checked={newRoom.breakfastInfo}
+                  onChange={handleFacilityChange}
+                />
               </div>
               <div className="flex flex-col items-center">
                 <FaStopwatch className="text-2xl" />
                 <label className="mt-2">Gym</label>
-                <input type="checkbox" name="gymInfo" checked={newRoom.gymInfo} onChange={handleFacilityChange} />
+                <input
+                  type="checkbox"
+                  name="gymInfo"
+                  checked={newRoom.gymInfo}
+                  onChange={handleFacilityChange}
+                />
               </div>
               <div className="flex flex-col items-center">
                 <FaCocktail className="text-2xl" />
                 <label className="mt-2">Drink</label>
-                <input type="checkbox" name="drinkInfo" checked={newRoom.drinkInfo} onChange={handleFacilityChange} />
+                <input
+                  type="checkbox"
+                  name="drinkInfo"
+                  checked={newRoom.drinkInfo}
+                  onChange={handleFacilityChange}
+                />
               </div>
             </div>
             <div>
-              <label htmlFor="roomPhotoURL" className="block text-gray-700 font-medium">Upload Image</label>
+              <label
+                htmlFor="roomPhotoURL"
+                className="block text-gray-700 font-medium"
+              >
+                Upload Image
+              </label>
               <input
                 name="roomPhotoURL"
                 type="file"
@@ -258,9 +336,7 @@ const AddRoom = () => {
                 accept="image/*"
                 required
               />
-              {fileName && ( // Hiển thị tên file nếu có
-                <p className="mt-2 text-gray-600">{fileName}</p>
-              )}
+
               {imageReview && (
                 <img
                   src={imageReview}
@@ -272,7 +348,10 @@ const AddRoom = () => {
             </div>
 
             <div className="flex justify-between items-center">
-              <Link to="/admin/roomlist" className="text-accent hover:underline transition-all">
+              <Link
+                to="/admin/roomlist"
+                className="text-accent hover:underline transition-all"
+              >
                 Back to room list
               </Link>
               <button
@@ -284,9 +363,9 @@ const AddRoom = () => {
             </div>
           </form>
         </div>
-      </div >
-    </section >
-  )
-}
+      </div>
+    </section>
+  );
+};
 
-export default AddRoom
+export default AddRoom;

@@ -1,23 +1,22 @@
 // import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
 
-import RoomProvider from './context/RoomContext.jsx'
-import AuthProvider from './context/AuthContext.jsx'
+import RoomProvider from "./context/RoomContext.jsx";
+import AuthProvider from "./context/AuthContext.jsx";
 
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from "react-router-dom";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   // <RoomProvider>
   //   <App />
   // </RoomProvider>
-
-  <BrowserRouter>
-    <AuthProvider>  
-      <RoomProvider>
+  <AuthProvider>
+    <RoomProvider>
+      <BrowserRouter>
         <App />
-      </RoomProvider>
-    </AuthProvider>
-  </BrowserRouter>
-)
+      </BrowserRouter>
+    </RoomProvider>
+  </AuthProvider>
+);
