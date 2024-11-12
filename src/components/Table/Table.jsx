@@ -8,6 +8,7 @@ import User1 from "../../assets/img/user1.png";
 import { toast } from "react-toastify";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import ModalConfirm from "../ModalConfirm/ModalConfirm";
+import ReactPaginate from "react-paginate";
 
 import {
   FaWifi,
@@ -24,6 +25,8 @@ const Table = () => {
   const [rooms, setRoom] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [roomToDelete, setRoomToDelete] = useState(null); // State to store room ID to delete
+  const [page, setPage] = useState(0); // Số trang hiện tại
+  const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
 
   const handleDeleteRoom = (id) => {
     setRoomToDelete(id); // Store the room ID to be deleted
@@ -31,16 +34,21 @@ const Table = () => {
   };
 
   useEffect(() => {
-    fetchRoom();
-  }, []);
+    fetchRoom(page);
+  }, [page]);
 
-  const fetchRoom = async () => {
+  const fetchRoom = async (page) => {
     try {
-      const result = await getAllRooms();
+      const result = await getAllRooms(page);
       setRoom(result.roomList);
+      setTotalPages(result.totalPages); // Cập nhật tổng số trang
     } catch (error) {
       toast(error.message);
     }
+  };
+
+  const handlePageClick = (event) => {
+    setPage(event.selected);
   };
 
   const handleDelete = async () => {
@@ -122,7 +130,11 @@ const Table = () => {
                   <td className="px-6 py-4">{room.roomType}</td>
                   <td className="px-6 py-4">{room.roomSize}</td>
                   <td className="px-6 py-4">${room.roomPrice}</td>
-                  <td className="px-6 py-4">{room.roomDescription}</td>
+                  <td className="px-6 py-4">
+                    {room.roomDescription.length > 30
+                      ? room.roomDescription.slice(0, 30) + "..."
+                      : room.roomDescription}
+                  </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
                       <div
@@ -145,7 +157,7 @@ const Table = () => {
                     />
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex flex-wrap justify-left">
+                    <div className="flex flex-wrap justify-left gap-1">
                       {room.facility ? (
                         <>
                           {room.facility.drinkInfo && (
@@ -263,6 +275,27 @@ const Table = () => {
         title="Confirm delete?"
         message="Are you sure you want to delete this room?"
         onConfirm={handleDelete} // Call handleDelete when confirmed
+      />
+
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="NEXT →"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={totalPages}
+        previousLabel="← PREVIOUS"
+        className="flex space-x-2 items-center justify-center my-8"
+        pageClassName="page-item"
+        pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+        activeLinkClassName="active bg-black text-white" // Active page style
+        previousClassName="page-item"
+        previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        nextClassName="page-item"
+        nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        disabledLinkClassName="text-gray-400 cursor-not-allowed"
+        containerClassName="pagination"
       />
     </>
   );

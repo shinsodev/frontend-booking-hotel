@@ -32,21 +32,29 @@ const ModalConfirm = ({ open, onClose, title, message, onConfirm, image }) => {
           </div>
         )}
 
-        <p className="mb-4">{message}</p>
-        <div className="flex justify-center items-center">
-          <button
-            onClick={onClose}
-            className="mr-10 py-3 px-10 rounded-md bg-gray-300 hover:bg-gray-400 shadow-lg"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="py-3 px-10 rounded-md bg-red-500 text-white hover:bg-red-600 shadow-lg"
-          >
-            Confirm
-          </button>
-        </div>
+        <div className="mb-4">{message}</div>
+
+        {/* Render Cancel and Confirm buttons only if onClose and onConfirm are provided */}
+        {onClose && onConfirm && (
+          <div className="flex justify-center items-center">
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="mr-10 py-3 px-10 rounded-md bg-gray-300 hover:bg-gray-400 shadow-lg"
+              >
+                Cancel
+              </button>
+            )}
+            {onConfirm && (
+              <button
+                onClick={onConfirm}
+                className="py-3 px-10 rounded-md bg-red-500 text-white hover:bg-red-600 shadow-lg"
+              >
+                Confirm
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

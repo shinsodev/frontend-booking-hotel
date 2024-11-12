@@ -12,11 +12,12 @@ createRoot(document.getElementById("root")).render(
   // <RoomProvider>
   //   <App />
   // </RoomProvider>
-  <RoomProvider>
-    <AuthProvider>
-      <BrowserRouter>
+
+  <BrowserRouter>
+    <RoomProvider>
+      <AuthProvider>
         <App />
-      </BrowserRouter>
-    </AuthProvider>
-  </RoomProvider>
+      </AuthProvider>
+    </RoomProvider>
+  </BrowserRouter>
 );

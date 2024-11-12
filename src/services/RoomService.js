@@ -77,13 +77,14 @@ export async function addRoom(roomData) {
   }
 }
 
-export async function getAllRooms() {
+export async function getAllRooms(page) {
   try {
     const token = localStorage.getItem("token");
     const result = await api.get("/rooms/get-all", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params: { page },
     });
     return result.data;
   } catch (error) {
@@ -178,7 +179,8 @@ export async function getRoomById(roomId) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return result.data;
+
+    return result.data.room;
   } catch (error) {
     throw new Error(`Error fetching room ${error.message}`);
   }

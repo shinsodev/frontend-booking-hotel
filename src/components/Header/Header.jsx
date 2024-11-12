@@ -3,6 +3,8 @@ import { Link, NavLink } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import Logo from "../../assets/img/LogoHotel.jpg";
 import User1 from "../../assets/img/User1.png";
+import UserIcon from "../../assets/img/userIcon.png";
+
 import { AuthContext } from "../../context/AuthContext";
 
 const Header = () => {
@@ -94,7 +96,7 @@ const Header = () => {
               className="w-10 h-10 hover:text-accent transition-all"
             >
               <img
-                src={User1}
+                src={user?.imageUrl || UserIcon}
                 alt="User avatar"
                 className="w-full h-full object-cover rounded-full"
               />

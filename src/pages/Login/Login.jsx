@@ -27,7 +27,7 @@ const Login = () => {
         await fetchUserData(data.token);
 
         toast.success(data.message);
-        navigate("/dashboard");
+        navigate("/");
       } else {
         toast.error("Login failed.");
       }

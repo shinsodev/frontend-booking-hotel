@@ -1,19 +1,18 @@
-// import React from 'react'
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getRoomById } from "../../services/RoomService";
+import { toast } from "react-toastify";
 import AdultsDropdown from "../../components/AdultsDropdown/AdultsDropdown";
 import KidsDropdown from "../../components/KidsDropdown/KidsDropdown";
 import CheckIn from "../../components/CheckIn/CheckIn";
 import CheckOut from "../../components/CheckOut/CheckOut";
-
-// import ScrollToTop from "../../components/ScrollToTop/ScrollToTop"
-
-import { RoomContext } from "../../context/RoomContext";
-
-import { FaCheck } from "react-icons/fa";
-import { useParams } from "react-router-dom";
-
+import {
+  checkAvailableRooms,
+  userBooking,
+} from "../../services/BookingService";
 import {
   FaWifi,
+  FaCheck,
   FaCoffee,
   FaBath,
   FaParking,
@@ -24,41 +23,74 @@ import {
 } from "react-icons/fa";
 
 const RoomDetails = () => {
-  const { rooms } = useContext(RoomContext);
-
   const { id } = useParams();
+  const [room, setRoom] = useState(null);
+  const [checkInDate, setCheckInDate] = useState("");
+  const [checkOutDate, setCheckOutDate] = useState("");
+  const [numOfAdults, setNumOfAdults] = useState(2);
+  const [numOfChildren, setNumOfChildren] = useState(0);
+  const [checkAvailable, setCheckAvailable] = useState(false);
 
-  const room = rooms.find((room) => {
-    return room.id === Number(id);
-  });
+  // Sử dụng useEffect để lấy dữ liệu phòng khi component được mount
+  useEffect(() => {
+    const fetchRoomData = async () => {
+      try {
+        const roomData = await getRoomById(id);
+        setRoom(roomData);
+      } catch (error) {
+        console.error("Lỗi khi lấy thông tin phòng:", error);
+      }
+    };
 
-  console.log(room);
+    fetchRoomData();
+  }, [id]);
 
-  // const { name, description, facilities, image, price } = room;
+  const handleChecking = async () => {
+    try {
+      const totalGuests = numOfAdults + numOfChildren;
+      const result = await checkAvailableRooms(
+        checkInDate,
+        checkOutDate,
+        totalGuests,
+        room.id
+      );
+
+      if (result.status === 200) {
+        setCheckAvailable(true);
+        toast.success("Còn phòng");
+      }
+    } catch (error) {
+      toast.error("Hết phòng");
+    }
+  };
+
+  const handleBooking = async () => {
+    try {
+      const totalNumOfGuest = numOfAdults + numOfChildren;
+      const result = await userBooking(
+        checkInDate,
+        checkOutDate,
+        numOfChildren,
+        numOfAdults,
+        totalNumOfGuest,
+        room.id
+      );
+      console.log(result);
+      if (result.status === 200) {
+        toast.success("Book thành công");
+      }
+    } catch (error) {
+      toast.error("Lỗi booking");
+    }
+  };
 
   return (
     <section>
-      {/* <ScrollToTop/> */}
-      {/* banner */}
-      {/* <div className="bg-room bg-cover bg-center h-[560px] relative flex
-      justify-center items-center">
-        
-        overlay
-        <div className="absolute w-full h-full bg-black/70">
-
-        </div>
-
-        title 
-        <h1 className="text-6xl text-white z-20 font-primary text-center">
-          {name} Details
-        </h1>
-      </div> */}
-
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row h-full pb-24 pt-32">
           {/* left  */}
           <div className="w-full h-full lg:w-[60%] px-6">
-            <h2 className="h2">{room?.roomType}</h2>
+            <h2 className="h2">Room Detail - {room?.roomType}</h2>
             <p className="mb-8">{room?.roomDescription}</p>
             <img className="mb-8" src={room?.roomPhotoUrl} alt="" />
 
@@ -73,12 +105,11 @@ const RoomDetails = () => {
             </div>
 
             {/* grid */}
-
             <div className="flex flex-wrap">
               {room?.facility ? (
                 <>
                   {room.facility.drinkInfo && (
-                    <div className="flex items-center justify-center w-1/4 mb-8">
+                    <div className="w-1/4 mb-8">
                       <FaCocktail
                         className="text-yellow-500 text-3xl"
                         title="Drink Available"
@@ -86,7 +117,7 @@ const RoomDetails = () => {
                     </div>
                   )}
                   {room.facility.gymInfo && (
-                    <div className="flex items-center justify-center w-1/4 mb-8">
+                    <div className="w-1/4 mb-8">
                       <FaStopwatch
                         className="text-yellow-500 text-3xl"
                         title="Gym Available"
@@ -94,7 +125,7 @@ const RoomDetails = () => {
                     </div>
                   )}
                   {room.facility.breakfastInfo && (
-                    <div className="flex items-center justify-center w-1/4 mb-8">
+                    <div className="w-1/4 mb-8">
                       <FaHotdog
                         className="text-yellow-500 text-3xl"
                         title="Breakfast Included"
@@ -102,7 +133,7 @@ const RoomDetails = () => {
                     </div>
                   )}
                   {room.facility.poolInfo && (
-                    <div className="flex items-center justify-center w-1/4 mb-8">
+                    <div className="w-1/4 mb-8">
                       <FaSwimmingPool
                         className="text-yellow-500 text-3xl"
                         title="Pool Access"
@@ -110,7 +141,7 @@ const RoomDetails = () => {
                     </div>
                   )}
                   {room.facility.parkingInfo && (
-                    <div className="flex items-center justify-center w-1/4 mb-8">
+                    <div className="w-1/4 mb-8">
                       <FaParking
                         className="text-yellow-500 text-3xl"
                         title="Parking Available"
@@ -118,7 +149,7 @@ const RoomDetails = () => {
                     </div>
                   )}
                   {room.facility.bathInfo && (
-                    <div className="flex items-center justify-center w-1/4 mb-8">
+                    <div className="w-1/4 mb-8">
                       <FaBath
                         className="text-yellow-500 text-3xl"
                         title="Bath Included"
@@ -126,7 +157,7 @@ const RoomDetails = () => {
                     </div>
                   )}
                   {room.facility.coffeeInfo && (
-                    <div className="flex items-center justify-center w-1/4 mb-8">
+                    <div className="w-1/4 mb-8">
                       <FaCoffee
                         className="text-yellow-500 text-3xl"
                         title="Coffee Available"
@@ -134,7 +165,7 @@ const RoomDetails = () => {
                     </div>
                   )}
                   {room.facility.wifiInfo && (
-                    <div className="flex items-center justify-center w-1/4 mb-8">
+                    <div className="w-1/4 mb-8">
                       <FaWifi
                         className="text-yellow-500 text-3xl"
                         title="WiFi Included"
@@ -155,25 +186,34 @@ const RoomDetails = () => {
               <div className="flex flex-col space-y-4 mb-4">
                 <h3>Your Reservation</h3>
                 <div className="h-[60px]">
-                  {" "}
-                  <CheckIn />{" "}
+                  <CheckIn setCheckInDate={setCheckInDate} />
                 </div>
                 <div className="h-[60px]">
-                  {" "}
-                  <CheckOut />{" "}
+                  <CheckOut setCheckOutDate={setCheckOutDate} />
                 </div>
                 <div className="h-[60px]">
-                  {" "}
-                  <AdultsDropdown />{" "}
+                  <AdultsDropdown setNumOfAdults={setNumOfAdults} />
                 </div>
                 <div className="h-[60px]">
-                  {" "}
-                  <KidsDropdown />{" "}
+                  <KidsDropdown setNumOfChildren={setNumOfChildren} />
                 </div>
               </div>
-              <button className="btn btn-lg btn-primary w-full">
-                book now for {room?.roomPrice}$
+              <button
+                className="btn btn-lg btn-primary w-full"
+                onClick={handleChecking}
+              >
+                {/* book now for {room?.roomPrice}$ */}
+                Check
               </button>
+
+              {checkAvailable && (
+                <button
+                  className="btn btn-lg btn-secondary w-full mt-4 transition-all"
+                  onClick={handleBooking}
+                >
+                  book now for {room?.roomPrice}$
+                </button>
+              )}
             </div>
 
             {/* rules */}

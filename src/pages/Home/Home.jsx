@@ -144,7 +144,7 @@ const Home = () => {
                       <img
                         src={img9}
                         alt="Rooms"
-                        className="w-[90%] h-72 object-cover rounded-2xl shadow-lg"
+                        className="w-[90%] mb-4 lg:mb-0 h-72 object-cover rounded-2xl shadow-lg"
                       />
                     </div>
                     <div className="w-full lg:w-1/2">
@@ -165,7 +165,7 @@ const Home = () => {
                       <img
                         src={pool}
                         alt="Pool"
-                        className="w-[90%] h-72 object-cover rounded-2xl shadow-lg"
+                        className="w-[90%] mb-4 lg:mb-0 h-72 object-cover rounded-2xl shadow-lg"
                       />
                     </div>
                     <div className="w-full lg:w-1/2">
@@ -186,7 +186,7 @@ const Home = () => {
                       <img
                         src={food}
                         alt="Dining"
-                        className="w-[90%] h-72 object-cover rounded-2xl shadow-lg"
+                        className="w-[90%] mb-4 lg:mb-0 h-72 object-cover rounded-2xl shadow-lg"
                       />
                     </div>
                     <div className="w-full lg:w-1/2">
@@ -207,7 +207,7 @@ const Home = () => {
                       <img
                         src={party}
                         alt="Events & party"
-                        className="w-[90%] h-72 object-cover rounded-2xl shadow-lg"
+                        className="w-[90%] mb-4 lg:mb-0 h-72 object-cover rounded-2xl shadow-lg"
                       />
                     </div>
                     <div className="w-full lg:w-1/2">
@@ -228,7 +228,7 @@ const Home = () => {
                       <img
                         src={spa}
                         alt="Spa"
-                        className="w-[90%] h-72 object-cover rounded-2xl shadow-lg"
+                        className="w-[90%] mb-4 lg:mb-0 h-72 object-cover rounded-2xl shadow-lg"
                       />
                     </div>
                     <div className="w-full lg:w-1/2">
@@ -250,7 +250,7 @@ const Home = () => {
                       <img
                         src={fitness}
                         alt="Fitness"
-                        className="w-[90%] h-72 object-cover rounded-2xl shadow-lg"
+                        className="w-[90%] mb-4 lg:mb-0 h-72 object-cover rounded-2xl shadow-lg"
                       />
                     </div>
                     <div className="w-full lg:w-1/2">

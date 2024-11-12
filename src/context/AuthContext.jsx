@@ -11,22 +11,25 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userList, setUserList] = useState(null); // Store userList if the user is admin
   const [loading, setLoading] = useState(true); // Add loading state
-  const [intervalId, setIntervalId] = useState(null); // Store polling interval ID
-  const { fetchRoom } = useContext(RoomContext);
+  // const [intervalId, setIntervalId] = useState(null); // Store polling interval ID
+  const { fetchRoom, fetchAvailableRooms, setRoom } = useContext(RoomContext);
+  const [page, setPage] = useState(0); // Số trang hiện tại
+  const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       fetchUserData(token);
+      fetchRoom();
     } else {
       setLoading(false); // Stop loading if there's no token
     }
 
     // Cleanup interval when component unmounts
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, []);
+    // return () => {
+    //   if (intervalId) clearInterval(intervalId);
+    // };
+  }, [page]);
 
   const fetchUserData = async (token) => {
     try {
@@ -40,14 +43,14 @@ const AuthProvider = ({ children }) => {
 
         // If the user is an admin, fetch the userList and start polling every 3 seconds
         if (userData.role === "ADMIN") {
-          await fetchAllUsersData(token);
+          await fetchAllUsersData(token, page);
           await fetchRoom();
-          const id = setInterval(async () => {
-            await fetchAllUsersData(token);
-            // await fetchRoom();
-          }, 3000);
+          // const id = setInterval(async () => {
+          //   await fetchAllUsersData(token, page);
+          //   await fetchRoom();
+          // }, 3000);
 
-          setIntervalId(id);
+          // setIntervalId(id);
         }
       } else {
         console.error("Failed to fetch user data");
@@ -59,13 +62,14 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const fetchAllUsersData = async (token) => {
+  const fetchAllUsersData = async (token, page) => {
     try {
-      const response = await fetchAllUsers(token);
+      const response = await fetchAllUsers(token, page);
       // console.log(response);
       if (response.status === 200) {
         const data = response.data;
         setUserList(data.userList);
+        setTotalPages(data.totalPages);
         localStorage.setItem("userList", JSON.stringify(data.userList));
       } else {
         console.error("Failed to fetch userList");
@@ -80,14 +84,27 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("userList");
+    localStorage.removeItem("roomlist");
     setUser(null);
     setUserList(null); // Reset userList when logging out
-    if (intervalId) clearInterval(intervalId); // Clear polling interval on logout
+    setRoom(null);
+    // if (intervalId) clearInterval(intervalId); // Clear polling interval on logout
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, userList, setUser, logout, loading, fetchUserData }}
+      value={{
+        user,
+        userList,
+        setUser,
+        logout,
+        loading,
+        fetchUserData,
+        page,
+        setPage,
+        totalPages,
+        setTotalPages,
+      }}
     >
       {children}
     </AuthContext.Provider>

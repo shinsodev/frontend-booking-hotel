@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdNotifications } from "react-icons/io";
 import User1 from "../../assets/img/user1.png"; // Hình ảnh người dùng (có thể thay đổi)
+import UserIcon from "../../assets/img/userIcon.png";
 
-import { AuthContext } from '../../context/AuthContext'; // Đảm bảo import đúng đường dẫn
+import { AuthContext } from "../../context/AuthContext"; // Đảm bảo import đúng đường dẫn
 
 const DashboardHeader = ({ toggleSidebar }) => {
   const { user } = useContext(AuthContext); // Lấy thông tin người dùng từ context
@@ -11,7 +12,9 @@ const DashboardHeader = ({ toggleSidebar }) => {
   return (
     <div className="flex items-center justify-between lg:justify-end py-4 px-6 shadow-lg">
       {/* Hamburger menu */}
-      <button onClick={toggleSidebar} className="lg:hidden"> {/* Only visible on small screens */}
+      <button onClick={toggleSidebar} className="lg:hidden">
+        {" "}
+        {/* Only visible on small screens */}
         <GiHamburgerMenu size={22} />
       </button>
 
@@ -22,12 +25,20 @@ const DashboardHeader = ({ toggleSidebar }) => {
         </button>
         <div className="flex">
           <div className="flex items-center justify-center">
-            <img src={User1} alt="User Profile" className="w-10 object-cover rounded-full" />
+            <img
+              src={user.imageUrl || UserIcon}
+              alt="User Profile"
+              className="w-10 h-10 object-cover rounded-full"
+            />
           </div>
           <div className="flex flex-col mx-4">
             {/* Hiển thị tên và vai trò của người dùng */}
-            <div className="font-medium text-[17px]">{user ? user.name : 'User'}</div>
-            <div className="text-gray-500 text-[12px]">{user ? user.role : 'Guest'}</div>
+            <div className="font-medium text-[17px]">
+              {user ? user.name : "User"}
+            </div>
+            <div className="text-gray-500 text-[12px]">
+              {user ? user.role : "Guest"}
+            </div>
           </div>
         </div>
       </nav>

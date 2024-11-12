@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext"; // Đảm bảo đường dẫn này đúng
 import User1 from "../../assets/img/user1.png";
-import { updateMyInfo } from "../../services/UserService";
+import UserIcon from "../../assets/img/userIcon.png";
+import { updateMyInfo, uploadImage } from "../../services/UserService";
 import { toast } from "react-toastify";
 
 const commonClassNameOfInput =
@@ -13,7 +14,7 @@ const UserProfile = () => {
   const [name, setName] = useState(user?.name || ""); // Khởi tạo state cho tên
   const [email, setEmail] = useState(user?.email || ""); // Khởi tạo state cho email
   const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || ""); // Khởi tạo state cho số điện thoại
-  const [profilePicture, setProfilePicture] = useState(null); // Khởi tạo state cho hình ảnh đại diện
+  const [image, setImage] = useState(user?.imageUrl || null); // Khởi tạo state cho hình ảnh đại diện
   const { fetchUserData } = useContext(AuthContext);
 
   const handleUpdate = async (e) => {
@@ -31,6 +32,10 @@ const UserProfile = () => {
     try {
       const response = await updateMyInfo(token, userInfo);
 
+      if (image instanceof File) {
+        const result = await uploadImage(image);
+      }
+
       if (response.status === 200) {
         await fetchUserData(token);
         toast.success(response.data.message);
@@ -45,7 +50,7 @@ const UserProfile = () => {
       <section className="py-8 px-20">
         <div className="flex items-center gap-8">
           <img
-            src={User1}
+            src={user?.imageUrl || UserIcon}
             alt=""
             className="w-24 h-24 rounded-full object-cover"
           />
@@ -113,7 +118,7 @@ const UserProfile = () => {
             <input
               type="file"
               className={commonClassNameOfInput}
-              onChange={(e) => setProfilePicture(e.target.files[0])} // Cập nhật hình ảnh khi người dùng chọn
+              onChange={(e) => setImage(e.target.files[0])} // Cập nhật hình ảnh khi người dùng chọn
             />
           </div>
 

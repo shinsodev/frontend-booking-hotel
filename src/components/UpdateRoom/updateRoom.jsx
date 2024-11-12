@@ -84,9 +84,9 @@ const UpdateRoom = () => {
     const fetchRoomID = async () => {
       try {
         const roomData = await getRoomById(roomId);
-        // console.log("Fetched room data:", roomData);
-        setRoom(roomData.room);
-        setImageReview(roomData.room.roomPhotoUrl);
+
+        setRoom(roomData);
+        setImageReview(roomData.roomPhotoUrl);
       } catch (error) {
         toast.error(error.message);
       }
@@ -102,9 +102,9 @@ const UpdateRoom = () => {
       const response = await updateRoom(roomId, room);
       if (response.status === 200) {
         const updatedRoomData = await getRoomById(roomId);
-        setRoom(updatedRoomData.room);
+        setRoom(updatedRoomData);
 
-        setImageReview(updatedRoomData.room.roomPhotoUrl);
+        setImageReview(updatedRoomData.roomPhotoUrl);
 
         await fetchRoom();
         navigate("/admin/roomlist");

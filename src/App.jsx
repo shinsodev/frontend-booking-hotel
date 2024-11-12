@@ -17,12 +17,14 @@ import PrivateRoute from "./admin/PrivateRoute";
 import PublicRoute from "./public/PublicRoute"; // Import PublicRoute
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage"; // Import NotFoundPage
 import AddRoom from "./pages/Sidebar/AddRoom";
+import AdminBookingHistory from "./pages/Sidebar/AdminBookingHistory";
 import Report from "./pages/Sidebar/Report";
 import DiscountEvents from "./pages/Sidebar/DiscountEvents";
 import Contact from "./pages/Contact/Contact";
-import BookedRooms from "./pages/Sidebar/BookedRooms";
-import UpdateRoom from './components/UpdateRoom/updateRoom';
-import ViewRoom from './components/ViewRoom/viewRoom';
+import RecentBooking from "./pages/Sidebar/RecentBooking";
+import BookingHistory from "./pages/Sidebar/BookingHistory";
+import UpdateRoom from "./components/UpdateRoom/updateRoom";
+import ViewRoom from "./components/ViewRoom/viewRoom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -54,9 +56,11 @@ function App() {
         <Route
           path="rooms"
           element={
-            <Layout>
-              <RoomPage />
-            </Layout>
+            <PrivateRoute>
+              <Layout>
+                <RoomPage />
+              </Layout>
+            </PrivateRoute>
           }
         >
           <Route path=":id" element={<RoomDetails />} />
@@ -93,11 +97,22 @@ function App() {
         />
 
         <Route
-          path="/bookedrooms"
+          path="/recent-booking"
           element={
             <PrivateRoute userOnly={true}>
               <DashboardLayout>
-                <BookedRooms />
+                <RecentBooking />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/booking-history"
+          element={
+            <PrivateRoute userOnly={true}>
+              <DashboardLayout>
+                <BookingHistory />
               </DashboardLayout>
             </PrivateRoute>
           }
@@ -139,6 +154,17 @@ function App() {
         />
 
         <Route
+          path="/admin/booking-history"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <AdminBookingHistory></AdminBookingHistory>
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
           path="/admin/addroom"
           element={
             <PrivateRoute adminOnly={true}>
@@ -154,9 +180,7 @@ function App() {
           element={
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
-
                 <UpdateRoom />
-
               </DashboardLayout>
             </PrivateRoute>
           }
@@ -167,9 +191,7 @@ function App() {
           element={
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
-
                 <ViewRoom />
-
               </DashboardLayout>
             </PrivateRoute>
           }
