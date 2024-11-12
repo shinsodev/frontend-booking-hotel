@@ -6,6 +6,7 @@ import AdultsDropdown from "../../components/AdultsDropdown/AdultsDropdown";
 import KidsDropdown from "../../components/KidsDropdown/KidsDropdown";
 import CheckIn from "../../components/CheckIn/CheckIn";
 import CheckOut from "../../components/CheckOut/CheckOut";
+import { AuthContext } from "../../context/AuthContext";
 import {
   checkAvailableRooms,
   userBooking,
@@ -30,6 +31,7 @@ const RoomDetails = () => {
   const [numOfAdults, setNumOfAdults] = useState(2);
   const [numOfChildren, setNumOfChildren] = useState(0);
   const [checkAvailable, setCheckAvailable] = useState(false);
+  const { user } = useContext(AuthContext);
 
   // Sử dụng useEffect để lấy dữ liệu phòng khi component được mount
   useEffect(() => {
@@ -38,7 +40,7 @@ const RoomDetails = () => {
         const roomData = await getRoomById(id);
         setRoom(roomData);
       } catch (error) {
-        console.error("Lỗi khi lấy thông tin phòng:", error);
+        console.error("Failed to fetch rooms:", error);
       }
     };
 
@@ -46,21 +48,33 @@ const RoomDetails = () => {
   }, [id]);
 
   const handleChecking = async () => {
-    try {
-      const totalGuests = numOfAdults + numOfChildren;
-      const result = await checkAvailableRooms(
-        checkInDate,
-        checkOutDate,
-        totalGuests,
-        room.id
-      );
+    if (user.role === "USER") {
+      if (checkInDate && checkOutDate) {
+        if (new Date(checkOutDate) > new Date(checkInDate)) {
+          try {
+            const totalGuests = numOfAdults + numOfChildren;
+            const result = await checkAvailableRooms(
+              checkInDate,
+              checkOutDate,
+              totalGuests,
+              room.id
+            );
 
-      if (result.status === 200) {
-        setCheckAvailable(true);
-        toast.success("Còn phòng");
+            if (result.status === 200) {
+              setCheckAvailable(true);
+              toast.success("Available Rooms");
+            }
+          } catch (error) {
+            toast.error("No room available");
+          }
+        } else {
+          toast.error("Check-out date must be later than check-in date.");
+        }
+      } else {
+        toast.error("Please select both check-in and check-out dates.");
       }
-    } catch (error) {
-      toast.error("Hết phòng");
+    } else {
+      toast.error("Only user can check");
     }
   };
 
@@ -75,12 +89,12 @@ const RoomDetails = () => {
         totalNumOfGuest,
         room.id
       );
-      console.log(result);
+
       if (result.status === 200) {
-        toast.success("Book thành công");
+        toast.success("Booking successfully!");
       }
     } catch (error) {
-      toast.error("Lỗi booking");
+      toast.error("Something went wrong. Please try again");
     }
   };
 
@@ -206,7 +220,7 @@ const RoomDetails = () => {
                 Check
               </button>
 
-              {checkAvailable && (
+              {checkAvailable && user.role === "USER" && (
                 <button
                   className="btn btn-lg btn-secondary w-full mt-4 transition-all"
                   onClick={handleBooking}

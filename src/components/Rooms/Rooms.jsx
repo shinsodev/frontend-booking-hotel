@@ -23,9 +23,13 @@ const Rooms = () => {
   // Gọi hàm fetchAvailableRooms khi ngày check-in hoặc check-out thay đổi
   const handleFetchAvailableRooms = () => {
     if (checkInDate && checkOutDate) {
-      const totalGuest = numOfAdults + numOfChildren;
-      fetchAvailableRooms(checkInDate, checkOutDate, totalGuest);
-      setCheckRoom(true);
+      if (new Date(checkOutDate) > new Date(checkInDate)) {
+        const totalGuest = numOfAdults + numOfChildren;
+        fetchAvailableRooms(checkInDate, checkOutDate, totalGuest);
+        setCheckRoom(true);
+      } else {
+        toast.error("Check-out date must be later than check-in date.");
+      }
     } else {
       toast.error("Please select both check-in and check-out dates.");
     }
@@ -148,7 +152,7 @@ const Rooms = () => {
                 </Link>
               </div>
             ))
-          ) : rooms.length > 0 ? (
+          ) : rooms?.length > 0 ? (
             // Nếu không có check-in/check-out hoặc là ADMIN, hiển thị rooms
             rooms.map((room, index) => (
               <div
