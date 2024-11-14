@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import ModalConfirm from "../ModalConfirm/ModalConfirm";
 import ReactPaginate from "react-paginate";
+import { FaHistory } from "react-icons/fa";
 
 import {
   FaWifi,
@@ -238,6 +239,14 @@ const Table = () => {
                       >
                         <FaEye size={20} />
                       </NavLink>
+
+                      <NavLink
+                        to={`/admin/roomlist/booking/${room.id}`}
+                        className="font-medium text-blue-500"
+                      >
+                        <FaHistory size={20} />
+                      </NavLink>
+
                       <NavLink
                         to={`/admin/updateRoom/${room.id}`}
                         className="font-medium text-green-500"

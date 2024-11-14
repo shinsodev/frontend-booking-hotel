@@ -19,7 +19,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetchUserData(token);
+      fetchUserData(token, page);
       fetchRoom();
     } else {
       setLoading(false); // Stop loading if there's no token
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
     // };
   }, [page]);
 
-  const fetchUserData = async (token) => {
+  const fetchUserData = async (token, page) => {
     try {
       const response = await fetchUserInfo(token);
       // console.log(response);
@@ -100,6 +100,8 @@ const AuthProvider = ({ children }) => {
         logout,
         loading,
         fetchUserData,
+        fetchAllUsersData,
+        setUserList,
         page,
         setPage,
         totalPages,

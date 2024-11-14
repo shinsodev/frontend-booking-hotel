@@ -140,6 +140,9 @@ const AddRoom = () => {
                 <option value="Single">Single</option>
                 <option value="Double">Double</option>
                 <option value="Suite">Suite</option>
+                <option value="Deluxe">Deluxe</option>
+                <option value="Triple">Triple</option>
+                <option value="Quadruple">Quadruple</option>
               </select>
             </div>
 
@@ -222,9 +225,8 @@ const AddRoom = () => {
               >
                 Room Description
               </label>
-              <input
-                name="roomDescription" // Thêm thuộc tính name
-                type="text"
+              <textarea
+                name="roomDescription"
                 value={newRoom.roomDescription}
                 onChange={handleRoomInputChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"

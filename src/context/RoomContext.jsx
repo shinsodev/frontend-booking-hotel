@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { roomData } from "../data";
+
 import { getAllRooms, deleteRoom } from "../services/RoomService";
 import { getAvailableRooms } from "../services/BookingService";
 
@@ -16,6 +16,9 @@ const RoomProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [rooms, setRoom] = useState([]);
   const [roomsAvailable, setRoomAvailable] = useState([]);
+  const [page, setPage] = useState(0); // Số trang hiện tại
+  const [pageAvailable, setPageAvailable] = useState(0); // Số trang hiện tại
+  const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
 
   // useEffect(() => {
   //   setTotal(Number(adults[0]) + Number(kids[0]));
@@ -35,25 +38,33 @@ const RoomProvider = ({ children }) => {
   //   }, 3000);
   // };
 
-  const fetchRoom = async () => {
+  const fetchRoom = async (page) => {
     try {
-      const result = await getAllRooms();
+      const result = await getAllRooms(page);
       setRoom(result.roomList);
+      setTotalPages(result.totalPages);
       // console.log(result.roomList);
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  const fetchAvailableRooms = async (checkInDate, checkOutDate, totalGuest) => {
+  const fetchAvailableRooms = async (
+    checkInDate,
+    checkOutDate,
+    totalGuest,
+    pageAvailable
+  ) => {
     try {
       const result = await getAvailableRooms(
         checkInDate,
         checkOutDate,
-        totalGuest
+        totalGuest,
+        pageAvailable
       );
 
       setRoomAvailable(result.roomList);
+      setTotalPages(result.totalPages);
     } catch (error) {
       console.log(error.message);
     }
@@ -66,10 +77,12 @@ const RoomProvider = ({ children }) => {
         setRoom,
         roomsAvailable,
         setRoomAvailable,
-        // adults,
-        // setAdults,
-        // kids,
-        // setKids,
+        page,
+        setPage,
+        pageAvailable,
+        setPageAvailable,
+        totalPages,
+        setTotalPages,
         fetchRoom,
         loading,
         fetchAvailableRooms,

@@ -33,7 +33,12 @@ export async function userBooking(
   }
 }
 
-export async function getAvailableRooms(checkInDate, checkOutDate, totalGuest) {
+export async function getAvailableRooms(
+  checkInDate,
+  checkOutDate,
+  totalGuest,
+  page
+) {
   try {
     const token = localStorage.getItem("token");
 
@@ -45,6 +50,7 @@ export async function getAvailableRooms(checkInDate, checkOutDate, totalGuest) {
         checkInDate,
         checkOutDate,
         totalGuest,
+        page,
       },
     });
 
@@ -177,13 +183,16 @@ export async function adminGetBookingByRoom(id, page) {
   }
 }
 
-export async function adminGetBookingByUserId(id) {
+export async function adminGetBookingByUserId(id, page) {
   try {
     const token = localStorage.getItem("token");
 
     const result = await axios.get(`/bookings/get-by-user-id/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+      params: {
+        page,
       },
     });
 
@@ -193,17 +202,23 @@ export async function adminGetBookingByUserId(id) {
   }
 }
 
-export async function adminGetBookingByDate(startDate, endDate, page) {
+export async function adminGetBookingByDateType(
+  startDate,
+  endDate,
+  roomType,
+  page
+) {
   try {
     const token = localStorage.getItem("token");
 
-    const result = await axios.get(`/bookings/get-by-date`, {
+    const result = await axios.get(`/bookings/get-by-date-type`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
         startDate,
         endDate,
+        roomType,
         page,
       },
     });

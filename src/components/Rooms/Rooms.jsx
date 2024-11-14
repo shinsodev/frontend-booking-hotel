@@ -7,10 +7,21 @@ import introRoomPage from "../../assets/img/Rooms/room11.jpg";
 import { Link } from "react-router-dom";
 import { BsArrowsFullscreen, BsPeople } from "react-icons/bs";
 import { toast } from "react-toastify";
+import ReactPaginate from "react-paginate";
 
 const Rooms = () => {
-  const { roomsAvailable, rooms, loading, fetchAvailableRooms, fetchRoom } =
-    useContext(RoomContext);
+  const {
+    roomsAvailable,
+    rooms,
+    loading,
+    fetchAvailableRooms,
+    fetchRoom,
+    page,
+    setPage,
+    pageAvailable,
+    setPageAvailable,
+    totalPages,
+  } = useContext(RoomContext);
   const { user } = useContext(AuthContext);
 
   // State để lưu trữ ngày check-in và check-out
@@ -19,13 +30,28 @@ const Rooms = () => {
   const [numOfAdults, setNumOfAdults] = useState(2);
   const [numOfChildren, setNumOfChildren] = useState(0);
   const [checkRoom, setCheckRoom] = useState(false);
+  // const [page, setPage] = useState(0); // Số trang hiện tại
+  // const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
+
+  const handlePageClick = (event) => {
+    if (checkRoom) {
+      setPageAvailable(event.selected);
+    } else {
+      setPage(event.selected);
+    }
+  };
 
   // Gọi hàm fetchAvailableRooms khi ngày check-in hoặc check-out thay đổi
-  const handleFetchAvailableRooms = () => {
+  const handleFetchAvailable = () => {
     if (checkInDate && checkOutDate) {
       if (new Date(checkOutDate) > new Date(checkInDate)) {
         const totalGuest = numOfAdults + numOfChildren;
-        fetchAvailableRooms(checkInDate, checkOutDate, totalGuest);
+        fetchAvailableRooms(
+          checkInDate,
+          checkOutDate,
+          totalGuest,
+          pageAvailable
+        );
         setCheckRoom(true);
       } else {
         toast.error("Check-out date must be later than check-in date.");
@@ -35,12 +61,25 @@ const Rooms = () => {
     }
   };
 
+  const handleFetchAvailableRooms = () => {
+    setCheckRoom(true);
+  };
+
   // Fetch tất cả các phòng nếu user
   useEffect(() => {
     if (user) {
-      fetchRoom(); // Lấy tất cả các phòng
+      // if (checkInDate && checkOutDate) {
+      //   const totalGuest = numOfAdults + numOfChildren;
+      //   fetchAvailableRooms(checkInDate, checkOutDate, totalGuest, page);
+      // }
+
+      if (checkRoom) {
+        handleFetchAvailable();
+      } else {
+        fetchRoom(page);
+      }
     }
-  }, []);
+  }, [page, pageAvailable, checkRoom]);
 
   return (
     <section className="pb-20">
@@ -212,6 +251,28 @@ const Rooms = () => {
           )}
         </div>
       </div>
+
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="NEXT →"
+        onPageChange={handlePageClick}
+        forcePage={checkRoom ? pageAvailable : page} // Đảm bảo phản ánh đúng trạng thái trang hiện tại
+        pageRangeDisplayed={5}
+        pageCount={totalPages}
+        previousLabel="← PREVIOUS"
+        className="flex space-x-2 items-center justify-center my-8"
+        pageClassName="page-item"
+        pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+        activeLinkClassName="active bg-black text-white" // Active page style
+        previousClassName="page-item"
+        previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        nextClassName="page-item"
+        nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        disabledLinkClassName="text-gray-400 cursor-not-allowed"
+        containerClassName="pagination"
+      />
     </section>
   );
 };

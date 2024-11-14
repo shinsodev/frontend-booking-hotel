@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  adminGetAllBooking,
-  adminGetBookingByRoom,
-  adminGetBookingByDateType,
-} from "../../services/BookingService";
+import { adminGetBookingByUserId } from "../../services/BookingService";
 import { FaEye } from "react-icons/fa";
 import ModalConfirm from "../../components/ModalConfirm/ModalConfirm";
 import ReactPaginate from "react-paginate";
-import CheckStartDate from "../../components/CheckStartDate/CheckStartDate";
-import CheckEndDate from "../../components/CheckEndDate/CheckEndDate";
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
+
 import {
   FaWifi,
   FaCheck,
@@ -21,194 +19,136 @@ import {
   FaCocktail,
 } from "react-icons/fa";
 
-// Debounce Hook for Search
-const useDebounce = (value, delay) => {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-  return debouncedValue;
-};
-
-const AdminBookingHistory = () => {
+const BookingByUserId = () => {
   const [history, setHistory] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState(null);
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search, 500);
+  const [selectedBooking, setSelectedBooking] = useState(null); // Lưu thông tin đặt phòng đã chọn
+  const [page, setPage] = useState(0); // Số trang hiện tại
+  const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
 
-  const [startDate, setCheckStartDate] = useState("");
-  const [endDate, setCheckEndDate] = useState("");
-  // const [roomType, setRoomtype] = useState("");
-
-  // Reset page to 0 whenever search, startDate, or endDate change
-  useEffect(() => {
-    setPage(0);
-  }, [debouncedSearch, startDate, endDate]);
+  // Dùng useParams để lấy id từ URL
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchBookingHistory = async () => {
       try {
-        let result;
-
-        if (startDate && endDate && debouncedSearch) {
-          // Fetch by date range and search term
-          result = await adminGetBookingByDateType(
-            startDate,
-            endDate,
-            debouncedSearch,
-            page
-          );
-        } else if (startDate && endDate) {
-          // Fetch by date range only
-          result = await adminGetBookingByDateType(
-            startDate,
-            endDate,
-            null,
-            page
-          );
-        } else if (debouncedSearch) {
-          // Fetch by search term only
-          result = await adminGetBookingByRoom(debouncedSearch, page);
-        } else {
-          // Fetch all bookings without filters
-          result = await adminGetAllBooking(page);
-        }
-
+        const result = await adminGetBookingByUserId(id, page);
         // console.log(result);
-        // console.log(startDate);
-        // console.log(endDate);
         setHistory(result.bookingList);
-        setTotalPages(result.totalPages);
+        setTotalPages(result.totalPages); // Cập nhật tổng số trang
       } catch (error) {
-        console.error("Failed to fetch booking history:", error);
+        console.error(error);
       }
     };
+
     fetchBookingHistory();
-  }, [page, debouncedSearch, startDate, endDate]);
+  }, [id, page]);
 
   const handlePageClick = (event) => {
     setPage(event.selected);
   };
 
-  const handleSearchChange = (event) => {
-    setSearch(event.target.value);
-  };
-
+  // Xử lý mở modal khi nhấn FaEye
   const handleViewDetails = (booking) => {
     setSelectedBooking(booking);
     setModalOpen(true);
   };
 
+  // Đóng modal
   const handleCloseModal = () => {
     setModalOpen(false);
-    setSelectedBooking(null);
+    setSelectedBooking(null); // Reset thông tin khi đóng modal
   };
 
   return (
-    <section className="p-8">
-      <h2 className="font-medium text-3xl">Booking History</h2>
-      <hr className="my-5" />
-
-      <div className="flex items-center mb-6 space-x-4">
-        <div className="flex items-center">
-          <input
-            type="text"
-            placeholder="Search booking by room type..."
-            value={search}
-            onChange={handleSearchChange}
-            className="border-2 border-gray-400 p-2 w-[250px] h-[40px]"
-          />
+    <section>
+      <div className="container mx-auto px-8">
+        <div className="mt-4 flex items-center">
+          <Link
+            to="/admin/userlist"
+            className="font-semibold hover:underline transition-all flex items-center space-x-2 px-3 py-2 bg-accent text-white rounded-md"
+          >
+            <FaArrowLeft size={15} />
+            <div>Go back</div>
+          </Link>
         </div>
 
-        <div className="w-[200px] h-[40px] flex items-center border-2 border-gray-400">
-          <CheckStartDate
-            setCheckStartDate={setCheckStartDate}
-          ></CheckStartDate>
-        </div>
-        <div className="w-[200px] h-[40px] flex items-center border-2 border-gray-400">
-          <CheckEndDate setCheckEndDate={setCheckEndDate}></CheckEndDate>
-        </div>
-      </div>
-
-      {history.length === 0 ? (
-        <p className="text-center text-lg text-gray-500">
-          {debouncedSearch
-            ? "No results found."
-            : "There is no booking history."}
-        </p>
-      ) : (
-        <div className="relative overflow-x-auto rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-100">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  ID
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Room Type
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Room ID
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Code
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Check-in
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Check-out
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Guests
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Email
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {history.map((item, index) => (
-                <tr key={index} className="bg-white border-b hover:bg-gray-50">
-                  <td className="px-6 py-4">{index + 1}</td>
-                  <td className="px-6 py-4">{item.room.roomType}</td>
-                  <td className="px-6 py-4">{item.room.id}</td>
-                  <td className="px-6 py-4">{item.bookingCode}</td>
-                  <td className="px-6 py-4">{item.checkInDate}</td>
-                  <td className="px-6 py-4">{item.checkOutDate}</td>
-                  <td className="px-6 py-4">{item.totalNumOfGuest}</td>
-                  <td className="px-6 py-4">{item.user.email}</td>
-                  <td className="px-6 py-4">${item.room.roomPrice}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center">
-                      <button
-                        className="font-medium text-indigo-500"
-                        onClick={() => handleViewDetails(item)}
-                      >
-                        <FaEye size={20} />
-                      </button>
-                    </div>
-                  </td>
+        <h3 className="h3 text-[45px] text-center py-12">
+          Booking History - Room {id}
+        </h3>
+        {history.length === 0 ? (
+          <p className="text-center text-lg text-white">
+            There is no booking history.
+          </p>
+        ) : (
+          <div className="relative overflow-x-auto rounded-lg">
+            <table className="w-full text-sm text-left text-gray-500">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    ID
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Room Type
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Email
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Code
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Check-in Date
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Check-out Date
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Adults
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Children
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Price
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody>
+                {history.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="bg-white border-b hover:bg-gray-50"
+                  >
+                    <td className="px-6 py-4">{index + 1}</td>
+                    <td className="px-6 py-4">{item.room.roomType}</td>
+                    <td className="px-6 py-4">{item.user.email}</td>
+                    <td className="px-6 py-4">{item.bookingCode}</td>
+                    <td className="px-6 py-4">{item.checkInDate}</td>
+                    <td className="px-6 py-4">{item.checkOutDate}</td>
+                    <td className="px-6 py-4">{item.numOfAdults}</td>
+                    <td className="px-6 py-4">{item.numOfChildren}</td>
+                    <td className="px-6 py-4">${item.room.roomPrice}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">
+                        <button
+                          className="font-medium text-indigo-500"
+                          onClick={() => handleViewDetails(item)}
+                        >
+                          <FaEye size={20} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
       {/* Modal hiển thị chi tiết đặt phòng */}
       {selectedBooking && (
@@ -329,11 +269,11 @@ const AdminBookingHistory = () => {
         />
       )}
 
+      {/* Phân trang */}
       <ReactPaginate
         breakLabel="..."
         nextLabel="NEXT →"
         onPageChange={handlePageClick}
-        forcePage={page} // Đảm bảo phản ánh đúng trạng thái trang hiện tại
         pageRangeDisplayed={5}
         pageCount={totalPages}
         previousLabel="← PREVIOUS"
@@ -354,4 +294,4 @@ const AdminBookingHistory = () => {
   );
 };
 
-export default AdminBookingHistory;
+export default BookingByUserId;

@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext"; // Đảm bảo đường dẫn đúng đến AuthProvider
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { TiEyeOutline } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import UserIcon from "../../assets/img/userIcon.png";
 import ReactPaginate from "react-paginate";
+import { FaHistory } from "react-icons/fa";
 
 const UserList = () => {
-  const { userList, page, setPage, totalPages, setTotalPages } =
-    useContext(AuthContext); // Lấy userList từ AuthContext
+  const { userList, page, setPage, totalPages } = useContext(AuthContext); // Lấy userList từ AuthContext
 
   const handlePageClick = (event) => {
     setPage(event.selected);
@@ -74,9 +74,12 @@ const UserList = () => {
                   <td className="px-6 py-4">{user.phoneNumber}</td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex items-center gap-3">
-                      <NavLink to="#" className="font-medium text-indigo-500">
-                        <FaEye size={20} />
-                      </NavLink>
+                      <Link
+                        to={`/admin/userlist/booking/${user.id}`}
+                        className="font-medium text-blue-500"
+                      >
+                        <FaHistory size={20} />
+                      </Link>
                       {/* <NavLink to={`/category/update/${user.id}`} className="font-medium text-green-500">
                         <CiEdit size={25} />
                       </NavLink>
@@ -102,6 +105,7 @@ const UserList = () => {
         breakLabel="..."
         nextLabel="NEXT →"
         onPageChange={handlePageClick}
+        forcePage={page} // Đảm bảo phản ánh đúng trạng thái trang hiện tại
         pageRangeDisplayed={5}
         pageCount={totalPages}
         previousLabel="← PREVIOUS"

@@ -25,6 +25,8 @@ import RecentBooking from "./pages/Sidebar/RecentBooking";
 import BookingHistory from "./pages/Sidebar/BookingHistory";
 import UpdateRoom from "./components/UpdateRoom/updateRoom";
 import ViewRoom from "./components/ViewRoom/viewRoom";
+import RoomById from "./pages/Sidebar/RoomById";
+import BookingByUserId from "./pages/Sidebar/BookingByUserId";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -143,11 +145,33 @@ function App() {
         />
 
         <Route
+          path="/admin/userlist/booking/:id"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <BookingByUserId />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
           path="/admin/roomlist"
           element={
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
                 <AdminRoomList />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/roomlist/booking/:id"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <RoomById />
               </DashboardLayout>
             </PrivateRoute>
           }
