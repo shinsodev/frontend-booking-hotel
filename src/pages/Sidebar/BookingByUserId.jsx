@@ -73,9 +73,7 @@ const BookingByUserId = () => {
           </Link>
         </div>
 
-        <h3 className="h3 text-[45px] text-center py-12">
-          Booking History - Room {id}
-        </h3>
+        <h3 className="h3 text-[45px] text-center py-12">Booking History</h3>
         {history.length === 0 ? (
           <p className="text-center text-lg text-white">
             There is no booking history.

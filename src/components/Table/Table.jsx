@@ -234,7 +234,7 @@ const Table = () => {
                   <td className="px-6 py-4 text-center">
                     <div className="flex items-center gap-3">
                       <NavLink
-                        to="/admin/viewRoom"
+                        to={`/rooms/${room.id}`}
                         className="font-medium text-indigo-500"
                       >
                         <FaEye size={20} />

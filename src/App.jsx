@@ -24,7 +24,6 @@ import Contact from "./pages/Contact/Contact";
 import RecentBooking from "./pages/Sidebar/RecentBooking";
 import BookingHistory from "./pages/Sidebar/BookingHistory";
 import UpdateRoom from "./components/UpdateRoom/updateRoom";
-import ViewRoom from "./components/ViewRoom/viewRoom";
 import RoomById from "./pages/Sidebar/RoomById";
 import BookingByUserId from "./pages/Sidebar/BookingByUserId";
 import { ToastContainer } from "react-toastify";
@@ -205,17 +204,6 @@ function App() {
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
                 <UpdateRoom />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/admin/viewRoom"
-          element={
-            <PrivateRoute adminOnly={true}>
-              <DashboardLayout>
-                <ViewRoom />
               </DashboardLayout>
             </PrivateRoute>
           }
