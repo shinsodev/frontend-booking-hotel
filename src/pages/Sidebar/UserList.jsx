@@ -74,7 +74,7 @@ const UserList = () => {
                   <td className="px-6 py-4">{user.phoneNumber}</td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex items-center gap-3">
-                      <NavLink to="#" className="font-medium text-indigo-500">
+                      <NavLink to={`/admin/get-booking-by-user-id/${user.id}`} className="font-medium text-indigo-500">
                         <FaEye size={20} />
                       </NavLink>
                       {/* <NavLink to={`/category/update/${user.id}`} className="font-medium text-green-500">

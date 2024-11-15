@@ -117,6 +117,9 @@ const Table = () => {
               <th scope="col" className="px-6 py-3">
                 Actions
               </th>
+              <th scope="col" className="px-6 py-3">
+                Reviews
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -138,11 +141,10 @@ const Table = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center">
                       <div
-                        className={`h-2.5 w-2.5 rounded-full ${
-                          room.roomStatus === "Available"
-                            ? "bg-green-500"
-                            : "bg-red-500"
-                        } mr-2`}
+                        className={`h-2.5 w-2.5 rounded-full ${room.roomStatus === "Available"
+                          ? "bg-green-500"
+                          : "bg-red-500"
+                          } mr-2`}
                       ></div>
                       {room.roomStatus}
                     </div>
@@ -233,7 +235,7 @@ const Table = () => {
                   <td className="px-6 py-4 text-center">
                     <div className="flex items-center gap-3">
                       <NavLink
-                        to="/admin/viewRoom"
+                        to={`/admin/getbookingbyroom/${room.id}`}
                         className="font-medium text-indigo-500"
                       >
                         <FaEye size={20} />
@@ -250,6 +252,20 @@ const Table = () => {
                       >
                         <FaTrash size={20} />
                       </button>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center">
+                      <NavLink
+                        to={`/admin/get-review-by-room-id/${room.id}`}
+                        className="font-medium text-green-500"
+                      >
+                        <button
+                          className="bg-accent hover:opacity-60 transition-all text-white font-medium text-[10px] py-2 px-3 rounded-lg"
+                        >
+                          View
+                        </button>
+                      </NavLink>
                     </div>
                   </td>
                 </tr>

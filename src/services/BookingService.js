@@ -168,6 +168,7 @@ export async function adminGetBookingByRoom(id, page) {
       },
       params: {
         page,
+        id,
       },
     });
 
@@ -177,7 +178,7 @@ export async function adminGetBookingByRoom(id, page) {
   }
 }
 
-export async function adminGetBookingByUserId(id) {
+export async function adminGetBookingByUserId(id, page) {
   try {
     const token = localStorage.getItem("token");
 
@@ -185,6 +186,10 @@ export async function adminGetBookingByUserId(id) {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params: {
+        id,
+        page
+      }
     });
 
     return result.data; // Trả về dữ liệu từ kết quả

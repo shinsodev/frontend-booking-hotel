@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useCallback } from "react";
 import { fetchUserInfo } from "../services/UserService";
 import { fetchAllUsers } from "../services/UserService";
 import { RoomContext } from "./RoomContext";
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
     // };
   }, [page]);
 
-  const fetchUserData = async (token) => {
+  const fetchUserData =  useCallback(async (token) => {
     try {
       const response = await fetchUserInfo(token);
       // console.log(response);
@@ -60,7 +60,7 @@ const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false); // Stop loading once user data is fetched
     }
-  };
+  }, [fetchRoom, page]);
 
   const fetchAllUsersData = async (token, page) => {
     try {

@@ -23,8 +23,11 @@ import DiscountEvents from "./pages/Sidebar/DiscountEvents";
 import Contact from "./pages/Contact/Contact";
 import RecentBooking from "./pages/Sidebar/RecentBooking";
 import BookingHistory from "./pages/Sidebar/BookingHistory";
+import UserReview from "./pages/Sidebar/UserReview.jsx"
+import GetBookingByRoom from "./components/GetBookingByRoomID/GetBookingByRoomID";
 import UpdateRoom from "./components/UpdateRoom/updateRoom";
-import ViewRoom from "./components/ViewRoom/viewRoom";
+import GetBookingByUserID from "./components/GetBookingByUserID/getBookingByUserID";
+import GetReviewByRoomID from "./components/GetReviewByRoomID/getReviewByRoomID.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -118,6 +121,17 @@ function App() {
           }
         />
 
+        <Route
+          path="/user-review"
+          element={
+            <PrivateRoute userOnly={true}>
+              <DashboardLayout>
+                <UserReview />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
         {/* Route cho Profile */}
         <Route
           path="/profile"
@@ -158,7 +172,7 @@ function App() {
           element={
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
-                <AdminBookingHistory></AdminBookingHistory>
+                <AdminBookingHistory />
               </DashboardLayout>
             </PrivateRoute>
           }
@@ -187,11 +201,33 @@ function App() {
         />
 
         <Route
-          path="/admin/viewRoom"
+          path="/admin/getbookingbyroom/:roomId"
           element={
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
-                <ViewRoom />
+                <GetBookingByRoom />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/get-booking-by-user-id/:userId"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <GetBookingByUserID />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/get-review-by-room-id/:roomId"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <GetReviewByRoomID />
               </DashboardLayout>
             </PrivateRoute>
           }
