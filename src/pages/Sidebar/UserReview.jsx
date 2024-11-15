@@ -63,12 +63,13 @@ const UserReview = () => {
     const handleDelete = async () => {
         if (!reviewToDelete) return
         try {
-            const result = await deleteReview(reviewToDelete)
+            await deleteReview(reviewToDelete)
             toast.success("Delete successfully review.")
         } catch (error) {
             toast.error("Error delete review")
         } finally {
             setModalOpen(false);
+            fetchReviewByUserID(user.id, page);
         }
     }
 
@@ -136,13 +137,13 @@ const UserReview = () => {
                                     <div className="ml-auto flex space-x-2">
                                         <button
                                             className="flex items-center px-4 py-2 text-white bg-accent hover:opacity-60 rounded-lg"
-                                            onClick={() => handleUpdateReview(2)}
+                                            onClick={() => handleUpdateReview(item.id)}
                                         >
                                             <FaEdit className="mr-1" /> Update
                                         </button>
                                         <button
                                             className="flex items-center px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg"
-                                            onClick={() => handleDeleteReview(1)}
+                                            onClick={() => handleDeleteReview(item.id)}
                                         >
                                             <FaTrash className="mr-1" /> Delete
                                         </button>

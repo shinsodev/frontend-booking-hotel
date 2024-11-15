@@ -84,7 +84,7 @@ export const getReviewByUserId = async (userId, page) => {
 export const getReviewByRoomId = async (roomId, page) => {
     try {
         const token = localStorage.getItem("token");
-        const result = await api.get("/reviews/get-review-by-room-id",{
+        const result = await api.get(`/reviews/get-review-by-room-id/${roomId}`,{
             headers: {
                 Authorization: `Bearer ${token}`,
             },
