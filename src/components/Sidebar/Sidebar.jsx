@@ -9,6 +9,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import { TbCurrencyDollar } from "react-icons/tb";
 import { FaHistory } from "react-icons/fa";
+import { FaStar, FaThumbsUp } from 'react-icons/fa';
 
 import ModalConfirm from "../ModalConfirm/ModalConfirm";
 import logoutImage from "../../assets/img/logout.jpg";
@@ -127,6 +128,14 @@ const Sidebar = () => {
               >
                 <FaHistory size={22} />
                 <span>Booking History</span>
+              </NavLink>
+
+              <NavLink
+                to="/user-review"
+                className={({ isActive }) => getNavLinkClass(isActive)}
+              >
+                <FaStar size={22} />
+                <span>Review</span>
               </NavLink>
 
               {/* <NavLink to="/favorites" className={({ isActive }) => getNavLinkClass(isActive)}>

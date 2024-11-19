@@ -174,6 +174,7 @@ export async function adminGetBookingByRoom(id, page) {
       },
       params: {
         page,
+        id,
       },
     });
 

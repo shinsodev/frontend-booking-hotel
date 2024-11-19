@@ -84,7 +84,6 @@ const UpdateRoom = () => {
     const fetchRoomID = async () => {
       try {
         const roomData = await getRoomById(roomId);
-
         setRoom(roomData);
         setImageReview(roomData.roomPhotoUrl);
       } catch (error) {

@@ -118,6 +118,9 @@ const Table = () => {
               <th scope="col" className="px-6 py-3">
                 Actions
               </th>
+              <th scope="col" className="px-6 py-3">
+                Reviews
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -259,6 +262,18 @@ const Table = () => {
                       >
                         <FaTrash size={20} />
                       </button>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center">
+                      <NavLink
+                        to={`/admin/get-review-by-room-id/${room.id}`}
+                        className="font-medium text-green-500"
+                      >
+                        <button className="bg-accent hover:opacity-60 transition-all text-white font-medium text-[10px] py-2 px-3 rounded-lg">
+                          View
+                        </button>
+                      </NavLink>
                     </div>
                   </td>
                 </tr>

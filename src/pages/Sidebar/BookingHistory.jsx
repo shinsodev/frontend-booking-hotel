@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { bookingHistory } from "../../services/BookingService";
 import { FaEye } from "react-icons/fa";
 import ModalConfirm from "../../components/ModalConfirm/ModalConfirm";
 import ReactPaginate from "react-paginate";
+import HoverRating from "./HoverRating";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { toast } from "react-toastify";
 
 import {
+  FaTimes,
   FaWifi,
   FaCheck,
   FaCoffee,
@@ -15,6 +22,8 @@ import {
   FaStopwatch,
   FaCocktail,
 } from "react-icons/fa";
+import { addReview } from "../../services/ReviewService";
+import { AuthContext } from "../../context/AuthContext";
 
 const BookingHistory = () => {
   const [history, setHistory] = useState([]);
@@ -23,20 +32,25 @@ const BookingHistory = () => {
   const [page, setPage] = useState(0); // Số trang hiện tại
   const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
 
+  const [isReviewModalOpen, setReviewModalOpen] = useState(false); // Review modal
+  const [reviewRate, setReviewRate] = useState(0);
+  const [reviewComment, setReviewComment] = useState("");
+  const { user, setUser } = useContext(AuthContext)
+
+
   useEffect(() => {
     const fetchBookingHistory = async () => {
       try {
         const result = await bookingHistory(page);
-        console.log(result);
         setHistory(result.bookingList);
         setTotalPages(result.totalPages); // Cập nhật tổng số trang
       } catch (error) {
-        console.error(error);
+        toast.error(error);
       }
     };
 
     fetchBookingHistory();
-  }, [page]);
+  }, [page, selectedBooking]);
 
   const handlePageClick = (event) => {
     setPage(event.selected);
@@ -53,6 +67,54 @@ const BookingHistory = () => {
     setModalOpen(false);
     setSelectedBooking(null); // Reset thông tin khi đóng modal
   };
+
+  const handleOpenReviewModal = (booking) => {
+    setSelectedBooking(booking);
+    setReviewModalOpen(true);
+  };
+
+  const handleCloseReviewModal = () => {
+    setReviewModalOpen(false);
+    setReviewRate(0);
+    setReviewComment("");
+    setSelectedBooking(null);
+  };
+
+  const handleSubmitReview = async () => {
+    if (reviewRate > 0 && reviewComment.trim()) {
+      try {
+        const roomId = selectedBooking.room.id
+        // Dữ liệu review cần gửi lên
+        const reviewData = {
+          reviewRate,
+          comment: reviewComment,
+          createdTime: new Date().toISOString(),
+          roomId: selectedBooking.room.id, // Thêm roomId
+          userId: user.id, // Thêm userId
+        };
+        // Gửi dữ liệu review tới API
+        await addReview(roomId, reviewData);
+        toast.success("Add review successfully!");
+        handleCloseReviewModal(); // Đóng modal sau khi thành công
+      } catch (error) {
+        toast.error("Error adding review:", error);
+      }
+    } else {
+      toast.error("Please fill in both the rating and the comment.");
+    }
+  }
+
+  // const handleSubmitReview = () => {
+  //   if (reviewRate > 0 && reviewComment.trim()) {
+  //     console.log({
+  //       reviewRate,
+  //       comment: reviewComment,
+  //     });
+  //     handleCloseReviewModal();
+  //   } else {
+  //     alert("Please fill in both the rating and the comment.");
+  //   }
+  // };
 
   return (
     <section>
@@ -97,6 +159,9 @@ const BookingHistory = () => {
                   <th scope="col" className="px-6 py-3">
                     Actions
                   </th>
+                  <th scope="col" className="px-6 py-3">
+                    Review
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -121,6 +186,16 @@ const BookingHistory = () => {
                           onClick={() => handleViewDetails(item)}
                         >
                           <FaEye size={20} />
+                        </button>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">
+                        <button
+                          className="bg-accent hover:opacity-60 transition-all text-white font-medium text-[10px] py-2 px-2 rounded-lg"
+                          onClick={() => handleOpenReviewModal(item)}
+                        >
+                          Rating
                         </button>
                       </div>
                     </td>
@@ -247,6 +322,57 @@ const BookingHistory = () => {
           }
         />
       )}
+
+      {/* Modal Đánh giá */}
+      <Modal open={isReviewModalOpen}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <div className="absolute top-0 right-0 p-2 cursor-pointer" onClick={handleCloseReviewModal}>
+            <FaTimes size={24} color="gray" />
+          </div>
+          <h2 className="text-center mb-4 h3 text-[20px] text-center">REVIEW ROOM</h2>
+          <HoverRating
+            value={reviewRate}
+            onChange={(event, newValue) => setReviewRate(newValue)}
+          />
+          <TextField
+            label="Comment"
+            multiline
+            rows={4}
+            value={reviewComment}
+            onChange={(e) => setReviewComment(e.target.value)}
+            fullWidth
+            sx={{ mt: 2 }}
+          />
+          <Button
+            onClick={handleSubmitReview}
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{
+              mt: 2,
+              backgroundColor: '#A37D4C', // Màu bạn muốn
+              color: 'white',
+              '&:hover': {
+                backgroundColor: '#C5AF92', // Màu hover
+              },
+            }}
+          >
+            Submit Review
+          </Button>
+        </Box>
+      </Modal>
 
       {/* Phân trang */}
       <ReactPaginate

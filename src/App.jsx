@@ -23,6 +23,8 @@ import DiscountEvents from "./pages/Sidebar/DiscountEvents";
 import Contact from "./pages/Contact/Contact";
 import RecentBooking from "./pages/Sidebar/RecentBooking";
 import BookingHistory from "./pages/Sidebar/BookingHistory";
+import UserReview from "./pages/Sidebar/UserReview.jsx";
+import GetBookingByRoom from "./components/GetBookingByRoomID/GetBookingByRoomID";
 import UpdateRoom from "./components/UpdateRoom/updateRoom";
 import RoomById from "./pages/Sidebar/RoomById";
 import BookingByUserId from "./pages/Sidebar/BookingByUserId";
@@ -119,6 +121,17 @@ function App() {
           }
         />
 
+        <Route
+          path="/user-review"
+          element={
+            <PrivateRoute userOnly={true}>
+              <DashboardLayout>
+                <UserReview />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
         {/* Route cho Profile */}
         <Route
           path="/profile"
@@ -181,7 +194,7 @@ function App() {
           element={
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
-                <AdminBookingHistory></AdminBookingHistory>
+                <AdminBookingHistory />
               </DashboardLayout>
             </PrivateRoute>
           }
