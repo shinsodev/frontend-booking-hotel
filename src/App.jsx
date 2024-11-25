@@ -28,6 +28,7 @@ import GetBookingByRoom from "./components/GetBookingByRoomID/GetBookingByRoomID
 import UpdateRoom from "./components/UpdateRoom/updateRoom";
 import RoomById from "./pages/Sidebar/RoomById";
 import BookingByUserId from "./pages/Sidebar/BookingByUserId";
+import GetReviewByRoomID from "./components/GetReviewByRoomID/getReviewByRoomID.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -217,6 +218,17 @@ function App() {
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
                 <UpdateRoom />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/get-review-by-room-id/:roomId"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <GetReviewByRoomID />
               </DashboardLayout>
             </PrivateRoute>
           }
