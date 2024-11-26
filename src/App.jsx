@@ -29,6 +29,7 @@ import UpdateRoom from "./components/UpdateRoom/updateRoom";
 import RoomById from "./pages/Sidebar/RoomById";
 import BookingByUserId from "./pages/Sidebar/BookingByUserId";
 import GetReviewByRoomID from "./components/GetReviewByRoomID/getReviewByRoomID.jsx";
+import CreatePromotion from "./pages/Sidebar/CreatePromotion.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -251,6 +252,17 @@ function App() {
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
                 <DiscountEvents />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/create-promotion"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <CreatePromotion />
               </DashboardLayout>
             </PrivateRoute>
           }
