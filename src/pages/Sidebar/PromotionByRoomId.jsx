@@ -1,39 +1,43 @@
 import React, { useState, useEffect } from "react";
 import {
-  getAllPromotions,
   deletePromotion,
+  getPromotionByRoomId,
 } from "../../services/PromotionService";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import ModalConfirm from "../../components/ModalConfirm/ModalConfirm";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 
-const DiscountEvents = () => {
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+const PromotionByRoomId = () => {
+  // const [page, setPage] = useState(0);
+  // const [totalPages, setTotalPages] = useState(0);
   const [promotions, setPromotions] = useState([]);
   const [deleteID, setDeleteID] = useState(null);
   const [isModalDelete, setModalDelete] = useState(false);
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchPromotions = async () => {
       try {
-        const result = await getAllPromotions(page);
-
+        console.log(id);
+        const result = await getPromotionByRoomId(id);
+        console.log(result);
         setPromotions(result.data.promotionList);
-        setTotalPages(result.data.totalPages); // Giả sử API trả về totalPages
+        // setTotalPages(result.data.totalPages); // Giả sử API trả về totalPages
       } catch (error) {
         console.error("Error fetching promotions:", error);
       }
     };
 
     fetchPromotions();
-  }, [page]);
+  }, [id]);
 
-  const handlePageClick = (event) => {
-    setPage(event.selected);
-  };
+  // const handlePageClick = (event) => {
+  //   setPage(event.selected);
+  // };
 
   const handleDelete = (id) => {
     setDeleteID(id);
@@ -48,9 +52,9 @@ const DiscountEvents = () => {
         toast.success("Promotion deleted successfully");
 
         // Fetch updated promotion list after deletion
-        const updatedResult = await getAllPromotions(page);
+        const updatedResult = await getPromotionByRoomId(id);
         setPromotions(updatedResult.data.promotionList);
-        setTotalPages(updatedResult.data.totalPages);
+        // setTotalPages(updatedResult.data.totalPages);
       } else {
         toast.error("Error deleting promotion");
       }
@@ -64,19 +68,19 @@ const DiscountEvents = () => {
   return (
     <section>
       <div className="p-8">
-        <h2 className="font-medium text-3xl">Promotion</h2>
-        <hr className="my-5" />
-
-        {/* Form to add a new promotion */}
-        <div className="my-5 flex justify-end">
+        <div className="mt-4 flex items-center">
           <Link
-            to="/admin/create-promotion"
-            // onClick={handleAddEvent}
-            className="bg-accent font-medium text-[17px] text-white p-2 rounded hover:opacity-60 transition-all"
+            to="/admin/roomlist"
+            className="font-semibold hover:underline transition-all flex items-center space-x-2 px-3 py-2 bg-accent text-white rounded-md"
           >
-            Create Promotion
+            <FaArrowLeft size={15} />
+            <div>Go back</div>
           </Link>
         </div>
+        <h3 className="h3 text-[45px] text-center py-12">
+          Promotion - Room {id}
+        </h3>
+        <hr className="my-5" />
 
         {/* Promotion List */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-8">
@@ -104,12 +108,12 @@ const DiscountEvents = () => {
                     </span>
                   </h3>
                   <p className="text-gray-600">{promotion.description}</p>
-                  <p className="text-sm">
+                  {/* <p className="text-sm">
                     Room Types:{" "}
                     <span className="font-medium">
                       {promotion.listRoomTypes.join(", ")}
                     </span>
-                  </p>
+                  </p> */}
                   <p className="text-sm text-gray-500">
                     Time: {promotion.startDate} to {promotion.endDate}
                   </p>
@@ -150,7 +154,7 @@ const DiscountEvents = () => {
       />
 
       {/* Pagination */}
-      <ReactPaginate
+      {/* <ReactPaginate
         breakLabel="..."
         nextLabel="NEXT →"
         onPageChange={handlePageClick}
@@ -170,9 +174,9 @@ const DiscountEvents = () => {
         breakLinkClassName="page-link"
         disabledLinkClassName="text-gray-400 cursor-not-allowed"
         containerClassName="pagination"
-      />
+      /> */}
     </section>
   );
 };
 
-export default DiscountEvents;
+export default PromotionByRoomId;

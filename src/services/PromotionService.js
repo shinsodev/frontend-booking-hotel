@@ -4,12 +4,12 @@ export async function createPromotion(promotion, imageFile) {
     const token = localStorage.getItem("token");
     const formData = new FormData();
 
-    formData.append("promotion", JSON.stringify(promotion)); // Upload cấu hình in dưới dạng JSON
+    formData.append(
+      "promotion",
+      new Blob([JSON.stringify(promotion)], { type: "application/json" })
+    );
     formData.append("imageFile", imageFile);
-    // Kiểm tra nội dung của formData bằng cách duyệt qua nó
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+
     const result = await axios.post("/promotions/create-promotion", formData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -18,6 +18,114 @@ export async function createPromotion(promotion, imageFile) {
     });
 
     return result; // Trả về kết quả của API
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getAllPromotions(page) {
+  try {
+    const token = localStorage.getItem("token");
+    const result = await axios.get("/promotions/get-all-promotions", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { page },
+    });
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deletePromotion(id) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const result = await axios.delete(
+      `/promotions/delete-promotion/${id}`,
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getPromotionById(id) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const result = await axios.get(`/promotions/get-by-id/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function updatePromotion(id, promotion, imageFile) {
+  try {
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append(
+      "promotion",
+      new Blob([JSON.stringify(promotion)], { type: "application/json" })
+    );
+    if (imageFile) {
+      formData.append("imageFile", imageFile);
+    }
+
+    const response = await axios.put(
+      `/promotions/update-promotion/${id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getPromotionByRoomId(id) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const result = await axios.get(`/promotions/get-promotion-by-room/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getLatestPromotions(page) {
+  try {
+    const token = localStorage.getItem("token");
+    const result = await axios.get("/promotions/get-latest-promotion", {
+      params: { page },
+    });
+    return result;
   } catch (error) {
     console.error(error);
   }

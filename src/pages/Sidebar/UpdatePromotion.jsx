@@ -1,12 +1,16 @@
-import React, { useState } from "react";
-import { createPromotion } from "../../services/PromotionService";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  getPromotionById,
+  updatePromotion,
+} from "../../services/PromotionService";
 import { toast } from "react-toastify";
 
-const CreatePromotion = () => {
+const UpdatePromotion = () => {
+  const { id } = useParams(); // Get promotion ID from the URL
   const navigate = useNavigate();
 
-  const [newPromotion, setNewPromotion] = useState({
+  const [promotion, setPromotion] = useState({
     promotionTitle: "",
     percentOfDiscount: 0,
     description: "",
@@ -14,30 +18,50 @@ const CreatePromotion = () => {
     endDate: "",
     listRoomTypes: [],
   });
-
   const [imageFile, setImageFile] = useState(null);
   const [imageReview, setImageReview] = useState("");
 
-  // Lấy ngày hiện tại ở định dạng yyyy-mm-dd
+  // Fetch promotion data by ID
+  useEffect(() => {
+    const fetchPromotionData = async () => {
+      try {
+        const response = await getPromotionById(id);
+
+        if (response && response.data.promotion) {
+          setPromotion({
+            promotionTitle: response.data.promotion.promotionTitle,
+            percentOfDiscount: response.data.promotion.percentOfDiscount,
+            description: response.data.promotion.description,
+            startDate: response.data.promotion.startDate,
+            endDate: response.data.promotion.endDate,
+            listRoomTypes: response.data.promotion.listRoomTypes || [],
+          });
+          setImageReview(response.data.promotion.promotionPhotoUrl); // Assuming the API returns image URL
+        }
+      } catch (error) {
+        toast.error("Failed to load promotion details");
+      }
+    };
+    fetchPromotionData();
+  }, [id]);
+
+  // Get current date in yyyy-mm-dd format
   const getCurrentDate = () => {
     const today = new Date();
     return today.toLocaleDateString("en-CA");
   };
 
-  // Xử lý thay đổi dữ liệu đầu vào
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewPromotion((prevState) => ({
+    setPromotion((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  // Xử lý thay đổi danh sách các loại phòng
   const handleRoomTypeChange = (e) => {
     const { value, checked } = e.target;
-
-    setNewPromotion((prevState) => {
+    setPromotion((prevState) => {
       const { listRoomTypes } = prevState;
       if (checked) {
         return {
@@ -53,20 +77,17 @@ const CreatePromotion = () => {
     });
   };
 
-  // Xử lý thay đổi file ảnh
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
     setImageFile(selectedImage);
     setImageReview(URL.createObjectURL(selectedImage));
   };
 
-  // Xử lý submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { startDate, endDate } = newPromotion;
+    const { startDate, endDate } = promotion;
 
-    // Kiểm tra điều kiện ngày
     if (new Date(startDate) < new Date(getCurrentDate())) {
       toast.error("Start date must be today or later.");
       return;
@@ -78,13 +99,15 @@ const CreatePromotion = () => {
     }
 
     try {
-      const success = await createPromotion(newPromotion, imageFile);
-      if (success) {
-        toast.success("Create promotion successfully!");
+      // Assuming you have an updatePromotion API that works similarly to createPromotion
 
+      const result = await updatePromotion(id, promotion, imageFile);
+
+      if (result.status === 200) {
+        toast.success("Promotion updated successfully!");
         navigate("/admin/promotion");
       } else {
-        toast.error("Error adding promotion.");
+        toast.error("Error updating promotion.");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -94,7 +117,7 @@ const CreatePromotion = () => {
   return (
     <section className="p-8 relative">
       <div>
-        <h2 className="font-medium text-3xl">Create New Promotion</h2>
+        <h2 className="font-medium text-3xl">Update Promotion</h2>
       </div>
       <hr className="my-5" />
       <div className="flex justify-center">
@@ -103,7 +126,7 @@ const CreatePromotion = () => {
             onSubmit={handleSubmit}
             className="space-y-4 bg-white p-6 rounded-lg"
           >
-            {/* Tiêu đề */}
+            {/* Promotion Title */}
             <div>
               <label
                 htmlFor="promotionTitle"
@@ -114,7 +137,7 @@ const CreatePromotion = () => {
               <input
                 name="promotionTitle"
                 type="text"
-                value={newPromotion.promotionTitle}
+                value={promotion.promotionTitle}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter promotion title"
@@ -122,7 +145,7 @@ const CreatePromotion = () => {
               />
             </div>
 
-            {/* Phần trăm giảm giá */}
+            {/* Discount Percentage */}
             <div>
               <label
                 htmlFor="percentOfDiscount"
@@ -133,7 +156,7 @@ const CreatePromotion = () => {
               <input
                 name="percentOfDiscount"
                 type="number"
-                value={newPromotion.percentOfDiscount}
+                value={promotion.percentOfDiscount}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter discount percentage"
@@ -143,7 +166,7 @@ const CreatePromotion = () => {
               />
             </div>
 
-            {/* Mô tả */}
+            {/* Description */}
             <div>
               <label
                 htmlFor="description"
@@ -153,7 +176,7 @@ const CreatePromotion = () => {
               </label>
               <textarea
                 name="description"
-                value={newPromotion.description}
+                value={promotion.description}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter description"
@@ -161,7 +184,7 @@ const CreatePromotion = () => {
               />
             </div>
 
-            {/* Ngày bắt đầu */}
+            {/* Start Date */}
             <div>
               <label
                 htmlFor="startDate"
@@ -172,15 +195,15 @@ const CreatePromotion = () => {
               <input
                 name="startDate"
                 type="date"
-                value={newPromotion.startDate}
+                value={promotion.startDate}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                min={getCurrentDate()} // Đặt ngày tối thiểu là hôm nay
+                min={getCurrentDate()}
                 required
               />
             </div>
 
-            {/* Ngày kết thúc */}
+            {/* End Date */}
             <div>
               <label
                 htmlFor="endDate"
@@ -191,15 +214,15 @@ const CreatePromotion = () => {
               <input
                 name="endDate"
                 type="date"
-                value={newPromotion.endDate}
+                value={promotion.endDate}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                min={newPromotion.startDate || getCurrentDate()} // Ngày tối thiểu là startDate
+                min={promotion.startDate || getCurrentDate()}
                 required
               />
             </div>
 
-            {/* Loại phòng */}
+            {/* Room Types */}
             <div>
               <label
                 htmlFor="listRoomTypes"
@@ -221,7 +244,7 @@ const CreatePromotion = () => {
                       type="checkbox"
                       id={roomType}
                       value={roomType}
-                      checked={newPromotion.listRoomTypes.includes(roomType)}
+                      checked={promotion.listRoomTypes.includes(roomType)}
                       onChange={handleRoomTypeChange}
                       className="mr-2"
                     />
@@ -233,7 +256,7 @@ const CreatePromotion = () => {
               </div>
             </div>
 
-            {/* Tải ảnh */}
+            {/* Image Upload */}
             <div>
               <label
                 htmlFor="imageFile"
@@ -247,7 +270,6 @@ const CreatePromotion = () => {
                 onChange={handleImageChange}
                 className="w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 py-6"
                 accept="image/*"
-                required
               />
               {imageReview && (
                 <img
@@ -259,19 +281,20 @@ const CreatePromotion = () => {
               )}
             </div>
 
-            {/* Điều hướng */}
+            {/* Navigation Buttons */}
             <div className="flex justify-between items-center">
-              <Link
-                to="/admin/promotion"
+              <button
+                type="button"
+                onClick={() => navigate("/admin/promotion")}
                 className="text-accent hover:underline transition-all"
               >
                 Back to Promotion List
-              </Link>
+              </button>
               <button
                 type="submit"
                 className="bg-accent text-white py-2 px-4 rounded-lg font-semibold hover:opacity-60 transition-all"
               >
-                Create Promotion
+                Update Promotion
               </button>
             </div>
           </form>
@@ -281,4 +304,4 @@ const CreatePromotion = () => {
   );
 };
 
-export default CreatePromotion;
+export default UpdatePromotion;

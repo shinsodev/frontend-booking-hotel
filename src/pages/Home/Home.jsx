@@ -20,9 +20,9 @@ import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import introImg from "../../assets/img/Rooms/room6.jpg";
 import introImg1 from "../../assets/img/Rooms/room2.jpg";
-
+import { getLatestPromotions } from "../../services/PromotionService";
 import { useEffect, useState } from "react";
-
+import ReactPaginate from "react-paginate";
 const ScrollAnimation = ({ children, direction }) => {
   const [isMobile, setIsMobile] = useState(false);
   const { ref, inView } = useInView({
@@ -63,6 +63,28 @@ const ScrollAnimation = ({ children, direction }) => {
 };
 
 const Home = () => {
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [promotions, setPromotions] = useState([]);
+  useEffect(() => {
+    const fetchPromotions = async () => {
+      try {
+        const result = await getLatestPromotions(page);
+
+        setPromotions(result.data.promotionList);
+        setTotalPages(result.data.totalPages); // Giả sử API trả về totalPages
+      } catch (error) {
+        console.error("Error fetching promotions:", error);
+      }
+    };
+
+    fetchPromotions();
+  }, [page]);
+
+  const handlePageClick = (event) => {
+    setPage(event.selected);
+  };
+
   return (
     <>
       <HeroSlider />
@@ -273,62 +295,91 @@ const Home = () => {
       <section className="bg-slate-500 py-14">
         <div className="container mx-auto lg:px-0">
           <h3 className="h3 text-[45px] text-white text-center py-12">
-            Discount on Rooms
+            Promotions
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Sample Event 1 */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img
-                src={img1}
-                alt="Room Discount 1"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h4 className="text-lg font-semibold">
-                  Valentine's Day Special
-                </h4>
-                <p className="text-gray-600">
-                  Enjoy a romantic getaway in our premium room with a 20%
-                  discount.
-                </p>
-                <p className="text-accent font-bold">Price: $80</p>
-              </div>
-            </div>
-            {/* Sample Event 2 */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img
-                src={img2}
-                alt="Room Discount 2"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h4 className="text-lg font-semibold">Relaxation Package</h4>
-                <p className="text-gray-600">
-                  Book a room for the weekend and get 15% off your stay.
-                </p>
-                <p className="text-accent font-bold">Price: $100</p>
-              </div>
-            </div>
-            {/* Sample Event 3 */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img
-                src={img3}
-                alt="Room Discount 3"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h4 className="text-lg font-semibold">
-                  Birthday Bash Room Package
-                </h4>
-                <p className="text-gray-600">
-                  Book a room for your birthday and get a complimentary
-                  decoration.
-                </p>
-                <p className="text-accent font-bold">Price: $300</p>
-              </div>
-            </div>
+          {/* Promotion List */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-8">
+            {promotions.length > 0 ? (
+              promotions.map((promotion) => (
+                <div
+                  key={promotion.id}
+                  className="rounded-lg p-0 shadow-md bg-white flex flex-col"
+                >
+                  {/* Promotion Image - Chiếm nửa phần trên */}
+                  <div className="w-full h-52">
+                    <img
+                      src={promotion.promotionPhotoUrl}
+                      alt={promotion.description}
+                      className="w-full h-full object-cover rounded-t-lg"
+                    />
+                  </div>
+
+                  {/* Promotion Details */}
+                  <div className="p-6 flex flex-col flex-1">
+                    <h3 className="text-4xl font-semibold font-primary mb-4">
+                      {promotion.promotionTitle} -{" "}
+                      <span className="text-red-700">
+                        {promotion.percentOfDiscount}%
+                      </span>
+                    </h3>
+                    <p className="text-gray-600">{promotion.description}</p>
+                    <p className="text-sm">
+                      Room Types:{" "}
+                      <span className="font-medium">
+                        {promotion.listRoomTypes.join(", ")}
+                      </span>
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Time: {promotion.startDate} to {promotion.endDate}
+                    </p>
+                  </div>
+
+                  {/* Action Buttons */}
+                  {/* <div className="flex justify-end space-x-4 mb-4 px-8">
+                    <Link
+                      to={`/admin/promotion/update/${promotion.id}`}
+                      className="bg-yellow-500 text-white px-4 py-2 rounded hover:opacity-80 transition"
+                    >
+                      <FaEdit size={20} />
+                    </Link>
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded hover:opacity-80 transition"
+                      onClick={() => handleDelete(promotion.id)}
+                    >
+                      <FaTrash size={20} />
+                    </button>
+                  </div> */}
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 text-center">
+                No promotions available.
+              </p>
+            )}
           </div>
         </div>
+        {/* Pagination */}
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="NEXT →"
+          onPageChange={handlePageClick}
+          forcePage={page}
+          pageRangeDisplayed={5}
+          pageCount={totalPages}
+          previousLabel="← PREVIOUS"
+          className="flex space-x-2 items-center justify-center my-8"
+          pageClassName="page-item text-white"
+          pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+          activeLinkClassName="active bg-white text-black"
+          previousClassName="page-item text-white"
+          previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+          nextClassName="page-item text-white"
+          nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          disabledLinkClassName="text-gray-400 cursor-not-allowed"
+          containerClassName="pagination"
+        />
       </section>
 
       {/* Ratings Section */}

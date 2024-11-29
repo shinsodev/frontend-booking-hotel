@@ -182,6 +182,9 @@ const UpdateRoom = () => {
                 <option value="Single">Single</option>
                 <option value="Double">Double</option>
                 <option value="Suite">Suite</option>
+                <option value="Deluxe">Deluxe</option>
+                <option value="Triple">Triple</option>
+                <option value="Quadruple">Quadruple</option>
               </select>
             </div>
 

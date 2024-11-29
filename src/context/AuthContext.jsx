@@ -45,7 +45,6 @@ const AuthProvider = ({ children }) => {
       if (response.status === 200) {
         const userData = response.data.user;
         setUser(userData);
-        localStorage.setItem("user", JSON.stringify(userData));
 
         // If the user is an admin, fetch the userList and start polling every 3 seconds
         if (userData.role === "ADMIN") {
@@ -76,7 +75,6 @@ const AuthProvider = ({ children }) => {
         const data = response.data;
         setUserList(data.userList);
         setTotalPages(data.totalPages);
-        localStorage.setItem("userList", JSON.stringify(data.userList));
       } else {
         console.error("Failed to fetch userList");
       }
@@ -88,9 +86,7 @@ const AuthProvider = ({ children }) => {
   // Hàm để xử lý đăng xuất
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("userList");
-    localStorage.removeItem("roomlist");
+
     setUser(null);
     setUserList(null); // Reset userList when logging out
     setRoom(null);

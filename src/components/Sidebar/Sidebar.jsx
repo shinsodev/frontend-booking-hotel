@@ -9,7 +9,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import { TbCurrencyDollar } from "react-icons/tb";
 import { FaHistory } from "react-icons/fa";
-import { FaStar, FaThumbsUp } from 'react-icons/fa';
+import { FaStar, FaThumbsUp } from "react-icons/fa";
 
 import ModalConfirm from "../ModalConfirm/ModalConfirm";
 import logoutImage from "../../assets/img/logout.jpg";
@@ -89,11 +89,11 @@ const Sidebar = () => {
               </NavLink>
 
               <NavLink
-                to="/admin/events"
+                to="/admin/promotion"
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >
                 <MdOutlineCategory size={22} />
-                <span>Events</span>
+                <span>Promotion</span>
               </NavLink>
 
               <NavLink
