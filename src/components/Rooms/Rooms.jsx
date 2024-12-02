@@ -179,14 +179,43 @@ const Rooms = () => {
                     <h3 className="h3">{room.roomType}</h3>
                   </Link>
                   <p className="max-w-[300px] mx-auto mb-3 lg:mb-6">
-                    {room.roomDescription.length > 70
-                      ? room.roomDescription.slice(0, 70) + "..."
+                    {room.roomDescription.length > 100
+                      ? room.roomDescription.slice(0, 100) + "..."
                       : room.roomDescription}
                   </p>
+                  <div className="flex justify-center items-center gap-2 text-lg font-semibold">
+                    {room.percentOfDiscount > 0 && (
+                      <>
+                        {/* Giá gốc với gạch ngang */}
+                        <span className="text-gray-500 line-through mt-2">
+                          {room.roomPrice.toLocaleString("en-US")}₫
+                        </span>
+                        {room.percentOfDiscount > 0 && (
+                          <div className=" text-sm flex flex-col items-center">
+                            <div className="bg-red-500 text-white px-3 py-1 rounded-md font-semibold mt-2">
+                              -{room.percentOfDiscount}% Off
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {room.percentOfDiscount === 0 && (
+                      <span className="text-black">
+                        {room.roomPrice.toLocaleString("en-US")}₫
+                      </span>
+                    )}
+                  </div>
+                  {/* Giá sau khi giảm */}
+                  {room.percentOfDiscount > 0 && (
+                    <span span className="text-red-500 text-2xl">
+                      {room.newPrice.toLocaleString("en-US")}₫
+                    </span>
+                  )}
                 </div>
+
                 <Link
                   to={`/rooms/${room.id}`}
-                  className="btn btn-secondary btn-sm max-w-[240px] mx-auto mb-8"
+                  className="btn btn-secondary btn-sm max-w-[240px] mx-auto mb-8 mt-1"
                 >
                   Book now
                 </Link>
