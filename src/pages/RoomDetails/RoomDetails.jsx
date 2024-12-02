@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getRoomById } from "../../services/RoomService";
 import { toast } from "react-toastify";
+import { getReviewByRoomId } from "../../services/ReviewService";
 import AdultsDropdown from "../../components/AdultsDropdown/AdultsDropdown";
 import KidsDropdown from "../../components/KidsDropdown/KidsDropdown";
 import CheckIn from "../../components/CheckIn/CheckIn";
@@ -22,16 +23,55 @@ import {
   FaStopwatch,
   FaCocktail,
 } from "react-icons/fa";
+import Rating from '@mui/material/Rating';
+import Box from '@mui/material/Box';
+import StarIcon from '@mui/icons-material/Star';
+import { FaStar, FaSuitcase } from "react-icons/fa";
+import moment from "moment";
+import ReactPaginate from "react-paginate";
+
+function RatingDisplay({ averageRating }) {
+  const roundedRating = averageRating ? averageRating.toFixed(1) : 0;
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '1px' }}>
+      <Box
+        sx={{
+          fontWeight: 'bold',
+          textDecoration: 'underline',
+          marginRight: '8px'
+        }}
+      >
+        {roundedRating}
+      </Box>
+      <Rating
+        name="read-only"
+        value={Number(roundedRating)}
+        precision={0.5}
+        readOnly
+        getLabelText={(value) => `${value} Star${value !== 1 ? 's' : ''}`}
+        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+      />
+      <Box sx={{ ml: 2 }}>{ }</Box>
+    </Box>
+  );
+}
 
 const RoomDetails = () => {
   const { id } = useParams();
   const [room, setRoom] = useState(null);
   const [checkInDate, setCheckInDate] = useState("");
+  const [reviews, setReviews] = useState([]);
   const [checkOutDate, setCheckOutDate] = useState("");
   const [numOfAdults, setNumOfAdults] = useState(2);
   const [numOfChildren, setNumOfChildren] = useState(0);
   const [checkAvailable, setCheckAvailable] = useState(false);
   const { user } = useContext(AuthContext);
+
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const handlePageClick = (event) => {
+    setPage(event.selected);
+  };
 
   // Sử dụng useEffect để lấy dữ liệu phòng khi component được mount
   useEffect(() => {
@@ -44,8 +84,20 @@ const RoomDetails = () => {
       }
     };
 
+    const fetchReviews = async () => {
+      try {
+        const result = await getReviewByRoomId(id, page); // Lấy page đầu tiên
+        setReviews(result.reviewList);
+        console.log(result.reviewList)
+        setTotalPages(result.totalPages);
+      } catch (error) {
+        toast.error("Failed to fetch reviews.");
+      }
+    };
+    fetchReviews();
+
     fetchRoomData();
-  }, [id]);
+  }, [id, page]);
 
   const handleChecking = async () => {
     if (user.role === "USER") {
@@ -107,6 +159,27 @@ const RoomDetails = () => {
             <h2 className="h2">Room Detail - {room?.roomType}</h2>
             <p className="mb-8">{room?.roomDescription}</p>
             <img className="mb-8" src={room?.roomPhotoUrl} alt="" />
+            <div className="mb-8 flex items-center">
+              <RatingDisplay averageRating={room?.averageRating || 0} />
+              <span className="mx-4">|</span>
+              <span className="mr-4 flex items-center gap-2">
+                <FaSuitcase className="text-accent" /> {/* Icon cho đặt phòng */}
+                Đặt phòng: {room?.numberOfBooking}
+              </span>
+              <span className="mx-4">|</span>
+              <span className="flex items-center gap-2">
+                <FaStar className="text-yellow-500" /> {/* Icon cho đánh giá */}
+                Đánh giá: {room?.numberOfRating}
+              </span>
+              <span className="mx-4">|</span>
+              {room?.percentOfDiscount > 0 && (
+                <div className=" text-sm flex flex-col items-center">
+                  <div className="bg-red-500 text-white px-3 py-1 rounded-md font-semibold mt-2 mx-4 mb-2">
+                    -{room?.percentOfDiscount}% Off
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* facilities */}
             <div className="mt-12">
@@ -225,7 +298,22 @@ const RoomDetails = () => {
                   className="btn btn-lg btn-secondary w-full mt-4 transition-all"
                   onClick={handleBooking}
                 >
-                  book now for {room?.roomPrice}$
+                  <div>
+                    {room?.percentOfDiscount > 0 ? (
+                      <>
+                        <span className="text-lg font-semibold text-grey-500">
+                          {room?.newPrice.toLocaleString()}₫
+                        </span>
+                        <span className="ml-4 text-sm line-through text-gray-500">
+                          {room?.roomPrice.toLocaleString()}₫
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-lg font-semibold">
+                        {room?.roomPrice.toLocaleString()}₫
+                      </span>
+                    )}
+                  </div>
                 </button>
               )}
             </div>
@@ -257,6 +345,76 @@ const RoomDetails = () => {
                   No Smoking
                 </li>
               </ul>
+            </div>
+            <div className="mt-8">
+              <h3 className="h3">Reviews</h3>
+              {reviews.length > 0 ? (
+                <>
+                  {/* Hiển thị danh sách reviews */}
+                  <div className="space-y-4 max-h-[500px] overflow-y-auto pr-4">
+                    {reviews.map((review) => (
+                      <div
+                        key={review.id}
+                        className="bg-gray-100 bg-opacity-90 rounded-lg shadow-lg p-4 flex items-start space-x-4"
+                      >
+                        {/* Avatar */}
+                        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                          {review.user.imageUrl ? (
+                            <img
+                              src={review.user.imageUrl}
+                              alt={review.user.name || "User Avatar"}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-gray-500 text-sm">No Image</span>
+                          )}
+                        </div>
+                        {/* Nội dung review */}
+                        <div className="flex-1">
+                          <div className="flex items-center">
+                            <h4 className="font-semibold">{review.user.name}</h4>
+                            <span className="ml-auto text-yellow-500">
+                              <Rating
+                                name="read-only"
+                                value={review.reviewRate}
+                                precision={0.5}
+                                readOnly
+                              />
+                            </span>
+                          </div>
+                          <p className="text-gray-600">{review.comment}</p>
+                          <p className="text-gray-500 text-sm">
+                            {moment(review.createdTime).format("MMMM Do YYYY, h:mm:ss a")}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* ReactPaginate */}
+                </>
+              ) : (
+                <p>No reviews available for this room.</p>
+              )}
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="NEXT →"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={totalPages}
+                previousLabel="← PREVIOUS"
+                className="flex space-x-2 items-center justify-center my-8"
+                pageClassName="page-item"
+                pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+                activeLinkClassName="active bg-black text-white" // Active page style
+                previousClassName="page-item"
+                previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+                nextClassName="page-item"
+                nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+                breakClassName="page-item"
+                breakLinkClassName="page-link"
+                disabledLinkClassName="text-gray-400 cursor-not-allowed"
+                containerClassName="pagination"
+              />
             </div>
           </div>
         </div>

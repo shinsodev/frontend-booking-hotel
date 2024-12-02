@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { BsArrowsFullscreen, BsPeople } from "react-icons/bs";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
+import Rating from '@mui/material/Rating';
 
 const Rooms = () => {
   const {
@@ -237,12 +238,40 @@ const Rooms = () => {
                       ? room.roomDescription.slice(0, 100) + "..."
                       : room.roomDescription}
                   </p>
+                  <div className="flex justify-center items-center gap-2 text-lg font-semibold">
+                    {room.percentOfDiscount > 0 && (
+                      <>
+                        {/* Giá gốc với gạch ngang */}
+                        <span className="text-gray-500 line-through mt-2">
+                          {room.roomPrice.toLocaleString("en-US")}₫
+                        </span>
+                        {room.percentOfDiscount > 0 && (
+                          <div className=" text-sm flex flex-col items-center">
+                            <div className="bg-red-500 text-white px-3 py-1 rounded-md font-semibold mt-2">
+                              -{room.percentOfDiscount}% Off
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {room.percentOfDiscount === 0 && (
+                      <span className="text-black">
+                        {room.roomPrice.toLocaleString("en-US")}₫
+                      </span>
+                    )}
+                  </div>
+                  {/* Giá sau khi giảm */}
+                  {room.percentOfDiscount > 0 && (
+                    <span span className="text-red-500 text-2xl">
+                      {room.newPrice.toLocaleString("en-US")}₫
+                    </span>
+                  )}
                 </div>
                 <Link
                   to={`/rooms/${room.id}`}
-                  className="btn btn-secondary btn-sm max-w-[240px] mx-auto mb-8"
+                  className="btn btn-secondary btn-sm max-w-[240px] mx-auto mb-8 mt-5"
                 >
-                  Book now from {room.roomPrice}$
+                  Book now from {room.newPrice.toLocaleString("en-US")}₫
                 </Link>
               </div>
             ))
