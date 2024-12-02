@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import Logo from "../../assets/img/LogoHotel.jpg";
-import User1 from "../../assets/img/User1.png";
+import User1 from "../../assets/img/user1.png";
 import UserIcon from "../../assets/img/userIcon.png";
 
 import { AuthContext } from "../../context/AuthContext";
