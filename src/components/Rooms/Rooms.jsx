@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { BsArrowsFullscreen, BsPeople } from "react-icons/bs";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
-import Rating from '@mui/material/Rating';
+import Rating from "@mui/material/Rating";
 
 const Rooms = () => {
   const {
@@ -188,7 +188,7 @@ const Rooms = () => {
                   to={`/rooms/${room.id}`}
                   className="btn btn-secondary btn-sm max-w-[240px] mx-auto mb-8"
                 >
-                  Book now from {room.roomPrice}$
+                  Book now
                 </Link>
               </div>
             ))
@@ -271,7 +271,7 @@ const Rooms = () => {
                   to={`/rooms/${room.id}`}
                   className="btn btn-secondary btn-sm max-w-[240px] mx-auto mb-8 mt-5"
                 >
-                  Book now from {room.newPrice.toLocaleString("en-US")}₫
+                  Book now
                 </Link>
               </div>
             ))

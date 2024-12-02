@@ -23,9 +23,9 @@ import {
   FaStopwatch,
   FaCocktail,
 } from "react-icons/fa";
-import Rating from '@mui/material/Rating';
-import Box from '@mui/material/Box';
-import StarIcon from '@mui/icons-material/Star';
+import Rating from "@mui/material/Rating";
+import Box from "@mui/material/Box";
+import StarIcon from "@mui/icons-material/Star";
 import { FaStar, FaSuitcase } from "react-icons/fa";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
@@ -33,12 +33,12 @@ import ReactPaginate from "react-paginate";
 function RatingDisplay({ averageRating }) {
   const roundedRating = averageRating ? averageRating.toFixed(1) : 0;
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '1px' }}>
+    <Box sx={{ display: "flex", alignItems: "center", marginTop: "1px" }}>
       <Box
         sx={{
-          fontWeight: 'bold',
-          textDecoration: 'underline',
-          marginRight: '8px'
+          fontWeight: "bold",
+          textDecoration: "underline",
+          marginRight: "8px",
         }}
       >
         {roundedRating}
@@ -48,10 +48,10 @@ function RatingDisplay({ averageRating }) {
         value={Number(roundedRating)}
         precision={0.5}
         readOnly
-        getLabelText={(value) => `${value} Star${value !== 1 ? 's' : ''}`}
+        getLabelText={(value) => `${value} Star${value !== 1 ? "s" : ""}`}
         emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
       />
-      <Box sx={{ ml: 2 }}>{ }</Box>
+      <Box sx={{ ml: 2 }}>{}</Box>
     </Box>
   );
 }
@@ -88,7 +88,7 @@ const RoomDetails = () => {
       try {
         const result = await getReviewByRoomId(id, page); // Lấy page đầu tiên
         setReviews(result.reviewList);
-        console.log(result.reviewList)
+        console.log(result.reviewList);
         setTotalPages(result.totalPages);
       } catch (error) {
         toast.error("Failed to fetch reviews.");
@@ -150,6 +150,23 @@ const RoomDetails = () => {
     }
   };
 
+  // Hàm tính giá phòng sau giảm giá
+  const calculatePrice = () => {
+    if (checkInDate && checkOutDate) {
+      const start = moment(checkInDate);
+      const end = moment(checkOutDate);
+      const numberOfNights = end.diff(start, "days"); // Số ngày giữa checkIn và checkOut
+
+      if (numberOfNights > 0) {
+        // Tính giá sau giảm giá
+        const priceAfterDiscount =
+          room?.roomPrice * (1 - room?.percentOfDiscount / 100);
+        return priceAfterDiscount * numberOfNights; // Giá phòng nhân số ngày
+      }
+    }
+    return room?.roomPrice * (1 - room?.percentOfDiscount / 100); // Trả về giá gốc nếu không có ngày đặt
+  };
+
   return (
     <section>
       <div className="container mx-auto">
@@ -163,13 +180,14 @@ const RoomDetails = () => {
               <RatingDisplay averageRating={room?.averageRating || 0} />
               <span className="mx-4">|</span>
               <span className="mr-4 flex items-center gap-2">
-                <FaSuitcase className="text-accent" /> {/* Icon cho đặt phòng */}
-                Đặt phòng: {room?.numberOfBooking}
+                <FaSuitcase className="text-accent" />{" "}
+                {/* Icon cho đặt phòng */}
+                Booked: {room?.numberOfBooking}
               </span>
               <span className="mx-4">|</span>
               <span className="flex items-center gap-2">
                 <FaStar className="text-yellow-500" /> {/* Icon cho đánh giá */}
-                Đánh giá: {room?.numberOfRating}
+                Reviews: {room?.numberOfRating}
               </span>
               <span className="mx-4">|</span>
               {room?.percentOfDiscount > 0 && (
@@ -302,7 +320,7 @@ const RoomDetails = () => {
                     {room?.percentOfDiscount > 0 ? (
                       <>
                         <span className="text-lg font-semibold text-grey-500">
-                          {room?.newPrice.toLocaleString()}₫
+                          {calculatePrice()?.toLocaleString()}₫
                         </span>
                         <span className="ml-4 text-sm line-through text-gray-500">
                           {room?.roomPrice.toLocaleString()}₫
@@ -366,13 +384,17 @@ const RoomDetails = () => {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <span className="text-gray-500 text-sm">No Image</span>
+                            <span className="text-gray-500 text-sm">
+                              No Image
+                            </span>
                           )}
                         </div>
                         {/* Nội dung review */}
                         <div className="flex-1">
                           <div className="flex items-center">
-                            <h4 className="font-semibold">{review.user.name}</h4>
+                            <h4 className="font-semibold">
+                              {review.user.name}
+                            </h4>
                             <span className="ml-auto text-yellow-500">
                               <Rating
                                 name="read-only"
@@ -384,7 +406,9 @@ const RoomDetails = () => {
                           </div>
                           <p className="text-gray-600">{review.comment}</p>
                           <p className="text-gray-500 text-sm">
-                            {moment(review.createdTime).format("MMMM Do YYYY, h:mm:ss a")}
+                            {moment(review.createdTime).format(
+                              "MMMM Do YYYY, h:mm:ss a"
+                            )}
                           </p>
                         </div>
                       </div>
