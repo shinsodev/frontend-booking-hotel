@@ -87,7 +87,7 @@ const CreatePromotion = () => {
         toast.error("Error adding promotion.");
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
+      console.error("An error occurred. Please try again.");
     }
   };
 

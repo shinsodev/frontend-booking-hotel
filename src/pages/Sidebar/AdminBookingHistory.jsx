@@ -76,7 +76,12 @@ const AdminBookingHistory = () => {
           );
         } else if (debouncedSearch) {
           // Fetch by search term only
-          result = await adminGetBookingByRoom(debouncedSearch, page);
+          result = await adminGetBookingByDateType(
+            null,
+            null,
+            debouncedSearch,
+            page
+          );
         } else {
           // Fetch all bookings without filters
           result = await adminGetAllBooking(page);
@@ -177,6 +182,9 @@ const AdminBookingHistory = () => {
                   Price
                 </th>
                 <th scope="col" className="px-6 py-3">
+                  Payment Status
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Actions
                 </th>
               </tr>
@@ -192,7 +200,9 @@ const AdminBookingHistory = () => {
                   <td className="px-6 py-4">{item.checkOutDate}</td>
                   <td className="px-6 py-4">{item.totalNumOfGuest}</td>
                   <td className="px-6 py-4">{item.user.email}</td>
-                  <td className="px-6 py-4">${item.room.roomPrice}</td>
+                  <td className="px-6 py-4">${item.finalPrice}</td>
+                  <td className="px-6 py-4">{item.paymentStatus}</td>
+
                   <td className="px-6 py-4">
                     <div className="flex items-center">
                       <button
@@ -246,7 +256,7 @@ const AdminBookingHistory = () => {
                 <strong>Booking Code:</strong> {selectedBooking.bookingCode}
               </p>
               <p>
-                <strong>Price:</strong> ${selectedBooking.room.roomPrice}
+                <strong>Price:</strong> ${selectedBooking.finalPrice}
               </p>
               <p>
                 <strong>Facilities:</strong>

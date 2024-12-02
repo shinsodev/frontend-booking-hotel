@@ -35,8 +35,7 @@ const BookingHistory = () => {
   const [isReviewModalOpen, setReviewModalOpen] = useState(false); // Review modal
   const [reviewRate, setReviewRate] = useState(0);
   const [reviewComment, setReviewComment] = useState("");
-  const { user, setUser } = useContext(AuthContext)
-
+  const { user, setUser } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchBookingHistory = async () => {
@@ -83,7 +82,7 @@ const BookingHistory = () => {
   const handleSubmitReview = async () => {
     if (reviewRate > 0 && reviewComment.trim()) {
       try {
-        const roomId = selectedBooking.room.id
+        const roomId = selectedBooking.room.id;
         // Dữ liệu review cần gửi lên
         const reviewData = {
           reviewRate,
@@ -102,7 +101,7 @@ const BookingHistory = () => {
     } else {
       toast.error("Please fill in both the rating and the comment.");
     }
-  }
+  };
 
   // const handleSubmitReview = () => {
   //   if (reviewRate > 0 && reviewComment.trim()) {
@@ -157,6 +156,9 @@ const BookingHistory = () => {
                     Price
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    Payment Status
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     Actions
                   </th>
                   <th scope="col" className="px-6 py-3">
@@ -178,7 +180,8 @@ const BookingHistory = () => {
                     <td className="px-6 py-4">{item.checkOutDate}</td>
                     <td className="px-6 py-4">{item.numOfAdults}</td>
                     <td className="px-6 py-4">{item.numOfChildren}</td>
-                    <td className="px-6 py-4">${item.room.roomPrice}</td>
+                    <td className="px-6 py-4">${item.finalPrice}</td>
+                    <td className="px-6 py-4">{item.paymentStatus}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center">
                         <button
@@ -240,7 +243,7 @@ const BookingHistory = () => {
                 <strong>Booking Code:</strong> {selectedBooking.bookingCode}
               </p>
               <p>
-                <strong>Price:</strong> ${selectedBooking.room.roomPrice}
+                <strong>Price:</strong> ${selectedBooking.finalPrice}
               </p>
               <p>
                 <strong>Facilities:</strong>
@@ -338,10 +341,15 @@ const BookingHistory = () => {
             p: 4,
           }}
         >
-          <div className="absolute top-0 right-0 p-2 cursor-pointer" onClick={handleCloseReviewModal}>
+          <div
+            className="absolute top-0 right-0 p-2 cursor-pointer"
+            onClick={handleCloseReviewModal}
+          >
             <FaTimes size={24} color="gray" />
           </div>
-          <h2 className="text-center mb-4 h3 text-[20px] text-center">REVIEW ROOM</h2>
+          <h2 className="text-center mb-4 h3 text-[20px] text-center">
+            REVIEW ROOM
+          </h2>
           <HoverRating
             value={reviewRate}
             onChange={(event, newValue) => setReviewRate(newValue)}
@@ -362,10 +370,10 @@ const BookingHistory = () => {
             fullWidth
             sx={{
               mt: 2,
-              backgroundColor: '#A37D4C', // Màu bạn muốn
-              color: 'white',
-              '&:hover': {
-                backgroundColor: '#C5AF92', // Màu hover
+              backgroundColor: "#A37D4C", // Màu bạn muốn
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#C5AF92", // Màu hover
               },
             }}
           >

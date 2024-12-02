@@ -1,4 +1,5 @@
 import axios from "./customize-axios";
+import { toast } from "react-toastify";
 export async function createPromotion(promotion, imageFile) {
   try {
     const token = localStorage.getItem("token");
@@ -20,6 +21,8 @@ export async function createPromotion(promotion, imageFile) {
     return result; // Trả về kết quả của API
   } catch (error) {
     console.error(error);
+    if (error.status === 404) toast.error("This room type does not exist yet.");
+    else toast.error("An error occurred. Please try again.");
   }
 }
 
@@ -100,6 +103,8 @@ export async function updatePromotion(id, promotion, imageFile) {
     return response;
   } catch (error) {
     console.error(error);
+    if (error.status === 404) toast.error("This room type does not exist yet.");
+    else toast.error("An error occurred. Please try again.");
   }
 }
 

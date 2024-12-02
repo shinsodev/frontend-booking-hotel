@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { recentBooking, cancelBooking } from "../../services/BookingService";
+import { userPay } from "../../services/PaymentService";
 import { FaEye, FaTrash } from "react-icons/fa";
 import ModalConfirm from "../../components/ModalConfirm/ModalConfirm";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
+import { MdPayment } from "react-icons/md";
 
 import {
   FaWifi,
@@ -25,6 +27,8 @@ const RecentBooking = () => {
   const [isModalCancel, setModalCancel] = useState(false);
   const [page, setPage] = useState(0); // Số trang hiện tại
   const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
+
+  const URL = "http://localhost:8080/order/confirm";
 
   useEffect(() => {
     const fetchRecentBooking = async () => {
@@ -71,6 +75,31 @@ const RecentBooking = () => {
       toast.error(error.message);
     } finally {
       setModalCancel(false); // Close the modal after action
+    }
+  };
+
+  const handlePay = async (item) => {
+    try {
+      console.log(item.room.roomType);
+      console.log(item.bookingCode);
+      console.log(item.finalPrice.toString());
+      console.log(URL);
+      console.log(URL);
+      const result = await userPay(
+        item.room.roomType,
+        item.bookingCode,
+        item.finalPrice,
+        URL,
+        URL
+      );
+      console.log(result);
+      // Kiểm tra nếu kết quả trả về status là 200 và có checkoutUrl
+      if (result.status === 200 && result.data.data.checkoutUrl) {
+        // Chuyển hướng người dùng đến checkoutUrl
+        window.location.href = result.data.data.checkoutUrl;
+      }
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
@@ -127,6 +156,9 @@ const RecentBooking = () => {
                     Price
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    Payment Status
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     Actions
                   </th>
                 </tr>
@@ -145,7 +177,20 @@ const RecentBooking = () => {
                     <td className="px-6 py-4">{item.checkOutDate}</td>
                     <td className="px-6 py-4">{item.numOfAdults}</td>
                     <td className="px-6 py-4">{item.numOfChildren}</td>
-                    <td className="px-6 py-4">${item.room.roomPrice}</td>
+                    <td className="px-6 py-4">${item.finalPrice}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-row gap-x-1 items-center justify-center">
+                        {item.paymentStatus}
+                        {item.paymentStatus === "UNPAID" && (
+                          <button
+                            className="font-medium text-green-700"
+                            onClick={() => handlePay(item)}
+                          >
+                            <MdPayment size={22} />
+                          </button>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-6 py-4">
                       <div className="text-center flex items-center gap-3">
                         <button
@@ -154,6 +199,7 @@ const RecentBooking = () => {
                         >
                           <FaEye size={20} />
                         </button>
+
                         <button
                           className="font-medium text-red-500"
                           onClick={() => handleCancel(item.id)}
@@ -203,7 +249,7 @@ const RecentBooking = () => {
                 <strong>Booking Code:</strong> {selectedBooking.bookingCode}
               </p>
               <p>
-                <strong>Price:</strong> ${selectedBooking.room.roomPrice}
+                <strong>Price:</strong> ${selectedBooking.finalPrice}
               </p>
               <p>
                 <strong>Facilities:</strong>

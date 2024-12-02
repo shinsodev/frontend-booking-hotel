@@ -12,8 +12,8 @@ import { useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 const PromotionByRoomId = () => {
-  // const [page, setPage] = useState(0);
-  // const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [promotions, setPromotions] = useState([]);
   const [deleteID, setDeleteID] = useState(null);
   const [isModalDelete, setModalDelete] = useState(false);
@@ -22,7 +22,6 @@ const PromotionByRoomId = () => {
   useEffect(() => {
     const fetchPromotions = async () => {
       try {
-        console.log(id);
         const result = await getPromotionByRoomId(id);
         console.log(result);
         setPromotions(result.data.promotionList);
@@ -35,9 +34,9 @@ const PromotionByRoomId = () => {
     fetchPromotions();
   }, [id]);
 
-  // const handlePageClick = (event) => {
-  //   setPage(event.selected);
-  // };
+  const handlePageClick = (event) => {
+    setPage(event.selected);
+  };
 
   const handleDelete = (id) => {
     setDeleteID(id);
@@ -154,7 +153,7 @@ const PromotionByRoomId = () => {
       />
 
       {/* Pagination */}
-      {/* <ReactPaginate
+      <ReactPaginate
         breakLabel="..."
         nextLabel="NEXT →"
         onPageChange={handlePageClick}
@@ -174,7 +173,7 @@ const PromotionByRoomId = () => {
         breakLinkClassName="page-link"
         disabledLinkClassName="text-gray-400 cursor-not-allowed"
         containerClassName="pagination"
-      /> */}
+      />
     </section>
   );
 };

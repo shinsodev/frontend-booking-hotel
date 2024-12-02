@@ -46,10 +46,10 @@ const UpdatePromotion = () => {
   }, [id]);
 
   // Get current date in yyyy-mm-dd format
-  const getCurrentDate = () => {
-    const today = new Date();
-    return today.toLocaleDateString("en-CA");
-  };
+  // const getCurrentDate = () => {
+  //   const today = new Date();
+  //   return today.toLocaleDateString("en-CA");
+  // };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -88,10 +88,10 @@ const UpdatePromotion = () => {
 
     const { startDate, endDate } = promotion;
 
-    if (new Date(startDate) < new Date(getCurrentDate())) {
-      toast.error("Start date must be today or later.");
-      return;
-    }
+    // if (new Date(startDate) < new Date(getCurrentDate())) {
+    //   toast.error("Start date must be today or later.");
+    //   return;
+    // }
 
     if (new Date(endDate) <= new Date(startDate)) {
       toast.error("End date must be greater than start date.");
@@ -110,7 +110,7 @@ const UpdatePromotion = () => {
         toast.error("Error updating promotion.");
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
+      console.error("An error occurred. Please try again.");
     }
   };
 
@@ -198,7 +198,7 @@ const UpdatePromotion = () => {
                 value={promotion.startDate}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                min={getCurrentDate()}
+                min={promotion.startDate}
                 required
               />
             </div>
@@ -217,7 +217,7 @@ const UpdatePromotion = () => {
                 value={promotion.endDate}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                min={promotion.startDate || getCurrentDate()}
+                min={promotion.startDate}
                 required
               />
             </div>
