@@ -80,11 +80,11 @@ const RecentBooking = () => {
 
   const handlePay = async (item) => {
     try {
-      console.log(item.room.roomType);
-      console.log(item.bookingCode);
-      console.log(item.finalPrice.toString());
-      console.log(URL);
-      console.log(URL);
+      // console.log(item.room.roomType);
+      // console.log(item.bookingCode);
+      // console.log(item.finalPrice.toString());
+      // console.log(URL);
+      // console.log(URL);
       const result = await userPay(
         item.room.roomType,
         item.bookingCode,
@@ -92,7 +92,7 @@ const RecentBooking = () => {
         URL,
         URL
       );
-      console.log(result);
+      // console.log(result);
       // Kiểm tra nếu kết quả trả về status là 200 và có checkoutUrl
       if (result.status === 200 && result.data.data.checkoutUrl) {
         // Chuyển hướng người dùng đến checkoutUrl
