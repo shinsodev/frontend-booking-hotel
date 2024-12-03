@@ -292,7 +292,7 @@ const Home = () => {
       </section>
 
       {/* Discount Events Section */}
-      <section className="bg-slate-500 py-14">
+      <section className="bg-gradient-to-r from-slate-400 to-slate-500 py-14">
         <div className="container mx-auto lg:px-0">
           <h3 className="h3 text-[45px] text-white text-center py-12">
             Promotions
@@ -303,7 +303,7 @@ const Home = () => {
               promotions.map((promotion) => (
                 <div
                   key={promotion.id}
-                  className="rounded-lg p-0 shadow-md bg-white flex flex-col"
+                  className="rounded-lg p-0 shadow-2xl bg-white flex flex-col"
                 >
                   {/* Promotion Image - Chiếm nửa phần trên */}
                   <div className="w-full h-52">
@@ -383,13 +383,13 @@ const Home = () => {
       </section>
 
       {/* Ratings Section */}
-      <section className="py-14">
+      {/* <section className="py-14">
         <div className="container mx-auto lg:px-0">
           <h3 className="h3 text-[45px] text-center mb-12">
             What Our Guests Say
           </h3>
           <div className="flex flex-col space-y-8">
-            {/* Sample Review 1 */}
+            Sample Review 1
             <div className="flex items-start bg-white rounded-lg shadow-md p-6">
               <img
                 src={User1}
@@ -409,7 +409,7 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Sample Review 2 */}
+            Sample Review 2
             <div className="flex items-start bg-white rounded-lg shadow-md p-6">
               <img
                 src={User1}
@@ -429,7 +429,7 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Sample Review 3 */}
+            Sample Review 3
             <div className="flex items-start bg-white rounded-lg shadow-md p-6">
               <img
                 src={User1}
@@ -450,7 +450,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 };

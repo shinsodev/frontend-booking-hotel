@@ -34,6 +34,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UpdatePromotion from "./pages/Sidebar/UpdatePromotion.jsx";
 import PromotionByRoomId from "./pages/Sidebar/PromotionByRoomId.jsx";
+import AdminBookingLatePayment from "./pages/Sidebar/AdminBookingLatePayment.jsx";
 
 function App() {
   return (
@@ -210,6 +211,17 @@ function App() {
             <PrivateRoute adminOnly={true}>
               <DashboardLayout>
                 <AdminBookingHistory />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/booking-late-payments"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <AdminBookingLatePayment />
               </DashboardLayout>
             </PrivateRoute>
           }

@@ -89,6 +89,14 @@ const Sidebar = () => {
               </NavLink>
 
               <NavLink
+                to="/admin/booking-late-payments"
+                className={({ isActive }) => getNavLinkClass(isActive)}
+              >
+                <FaHistory size={22} />
+                <span>Booking Late Payment</span>
+              </NavLink>
+
+              <NavLink
                 to="/admin/promotion"
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >

@@ -229,3 +229,36 @@ export async function adminGetBookingByDateType(
     console.error("Error get all booking by date", error);
   }
 }
+
+export async function adminGetBookingLatePayment(page) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const result = await axios.get("/bookings/late-payment", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        page,
+      },
+    });
+
+    return result.data; // Trả về dữ liệu từ kết quả
+  } catch (error) {
+    console.error("Error get all booking", error);
+  }
+}
+
+export async function cancelBookingLatePayment(id) {
+  try {
+    const token = localStorage.getItem("token");
+    const result = await axios.delete(`/bookings/delete-booking/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return result.data;
+  } catch (error) {
+    console.error("Error cancel recent booking", error);
+  }
+}

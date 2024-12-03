@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
-  adminGetAllBooking,
-  adminGetBookingByRoom,
-  adminGetBookingByDateType,
+  adminGetBookingLatePayment,
+  cancelBookingLatePayment,
 } from "../../services/BookingService";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaTrash } from "react-icons/fa";
 import ModalConfirm from "../../components/ModalConfirm/ModalConfirm";
 import ReactPaginate from "react-paginate";
 import CheckStartDate from "../../components/CheckStartDate/CheckStartDate";
 import CheckEndDate from "../../components/CheckEndDate/CheckEndDate";
+import { toast } from "react-toastify";
+
 import {
   FaWifi,
   FaCheck,
@@ -22,90 +23,94 @@ import {
 } from "react-icons/fa";
 
 // Debounce Hook for Search
-const useDebounce = (value, delay) => {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-  return debouncedValue;
-};
+// const useDebounce = (value, delay) => {
+//   const [debouncedValue, setDebouncedValue] = useState(value);
+//   useEffect(() => {
+//     const handler = setTimeout(() => {
+//       setDebouncedValue(value);
+//     }, delay);
+//     return () => {
+//       clearTimeout(handler);
+//     };
+//   }, [value, delay]);
+//   return debouncedValue;
+// };
 
-const AdminBookingHistory = () => {
+const AdminBookingLatePayment = () => {
   const [history, setHistory] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search, 500);
+  const [cancelID, setCancelID] = useState(null);
+  const [isModalCancel, setModalCancel] = useState(false);
+  //   const [search, setSearch] = useState("");
+  //   const debouncedSearch = useDebounce(search, 500);
 
-  const [startDate, setCheckStartDate] = useState("");
-  const [endDate, setCheckEndDate] = useState("");
+  //   const [startDate, setCheckStartDate] = useState("");
+  //   const [endDate, setCheckEndDate] = useState("");
   // const [roomType, setRoomtype] = useState("");
 
   // Reset page to 0 whenever search, startDate, or endDate change
-  useEffect(() => {
-    setPage(0);
-  }, [debouncedSearch, startDate, endDate]);
+  //   useEffect(() => {
+  //     setPage(0);
+  //   }, [debouncedSearch, startDate, endDate]);
 
   useEffect(() => {
-    const fetchBookingHistory = async () => {
-      try {
-        let result;
-
-        if (startDate && endDate && debouncedSearch) {
-          // Fetch by date range and search term
-          result = await adminGetBookingByDateType(
-            startDate,
-            endDate,
-            debouncedSearch,
-            page
-          );
-        } else if (startDate && endDate) {
-          // Fetch by date range only
-          result = await adminGetBookingByDateType(
-            startDate,
-            endDate,
-            null,
-            page
-          );
-        } else if (debouncedSearch) {
-          // Fetch by search term only
-          result = await adminGetBookingByDateType(
-            null,
-            null,
-            debouncedSearch,
-            page
-          );
-        } else {
-          // Fetch all bookings without filters
-          result = await adminGetAllBooking(page);
-        }
-
-        // console.log(result);
-        // console.log(startDate);
-        // console.log(endDate);
-        setHistory(result.bookingList);
-        setTotalPages(result.totalPages);
-      } catch (error) {
-        console.error("Failed to fetch booking history:", error);
-      }
-    };
     fetchBookingHistory();
-  }, [page, debouncedSearch, startDate, endDate]);
+  }, [page]);
+
+  const fetchBookingHistory = async () => {
+    try {
+      // let result;
+
+      // if (startDate && endDate && debouncedSearch) {
+      //   // Fetch by date range and search term
+      //   result = await adminGetBookingByDateType(
+      //     startDate,
+      //     endDate,
+      //     debouncedSearch,
+      //     page
+      //   );
+      // } else if (startDate && endDate) {
+      //   // Fetch by date range only
+      //   result = await adminGetBookingByDateType(
+      //     startDate,
+      //     endDate,
+      //     null,
+      //     page
+      //   );
+      // } else if (debouncedSearch) {
+      //   // Fetch by search term only
+      //   result = await adminGetBookingByDateType(
+      //     null,
+      //     null,
+      //     debouncedSearch,
+      //     page
+      //   );
+      // } else {
+      //   // Fetch all bookings without filters
+      //   result = await adminGetAllBooking(page);
+      // }
+
+      const result = await adminGetBookingLatePayment(page);
+      console.log(result);
+      // console.log(startDate);
+      // console.log(endDate);
+      setHistory(result.bookingList);
+      setTotalPages(result.totalPages);
+    } catch (error) {
+      console.error("Failed to fetch booking history:", error);
+    }
+  };
 
   const handlePageClick = (event) => {
     setPage(event.selected);
   };
 
-  const handleSearchChange = (event) => {
-    setSearch(event.target.value);
-  };
+  //   const handleSearchChange = (event) => {
+  //     setSearch(event.target.value);
+  //   };
 
   const handleViewDetails = (booking) => {
     setSelectedBooking(booking);
@@ -117,12 +122,33 @@ const AdminBookingHistory = () => {
     setSelectedBooking(null);
   };
 
+  const handleCancel = (id) => {
+    setCancelID(id);
+    setModalCancel(true);
+  };
+
+  const handleCancelBooking = async () => {
+    try {
+      const result = await cancelBookingLatePayment(cancelID);
+      if (result.statusCode === 200) {
+        fetchBookingHistory();
+        toast.success(`Booking was cancelled`);
+      } else {
+        toast.error(`Error cancel booking`);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setModalCancel(false); // Close the modal after action
+    }
+  };
+
   return (
     <section className="p-8">
-      <h2 className="font-medium text-3xl">Booking History</h2>
+      <h2 className="font-medium text-3xl">Booking Late Payment</h2>
       <hr className="my-5" />
 
-      <div className="flex items-center mb-6 space-x-4">
+      {/* <div className="flex items-center mb-6 space-x-4">
         <div className="flex items-center">
           <input
             type="text"
@@ -141,13 +167,14 @@ const AdminBookingHistory = () => {
         <div className="w-[200px] h-[40px] flex items-center border-2 border-gray-400">
           <CheckEndDate setCheckEndDate={setCheckEndDate}></CheckEndDate>
         </div>
-      </div>
+      </div> */}
 
       {history.length === 0 ? (
         <p className="text-center text-lg text-gray-500">
-          {debouncedSearch
+          {/* {debouncedSearch
             ? "No results found."
-            : "There is no booking history."}
+            : "There is no booking history."} */}
+          {"There is no booking history."}
         </p>
       ) : (
         <div className="relative overflow-x-auto rounded-lg">
@@ -204,12 +231,18 @@ const AdminBookingHistory = () => {
                   <td className="px-6 py-4">{item.paymentStatus}</td>
 
                   <td className="px-6 py-4">
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-3">
                       <button
                         className="font-medium text-indigo-500"
                         onClick={() => handleViewDetails(item)}
                       >
                         <FaEye size={20} />
+                      </button>
+                      <button
+                        className="font-medium text-red-500"
+                        onClick={() => handleCancel(item.id)}
+                      >
+                        <FaTrash size={20} />
                       </button>
                     </div>
                   </td>
@@ -339,6 +372,14 @@ const AdminBookingHistory = () => {
         />
       )}
 
+      <ModalConfirm
+        open={isModalCancel}
+        onClose={() => setModalCancel(false)}
+        title="Confirm cancel?"
+        message="Are you sure you want to cancel this booking?"
+        onConfirm={handleCancelBooking} // Call handleDelete when confirmed
+      />
+
       <ReactPaginate
         breakLabel="..."
         nextLabel="NEXT →"
@@ -364,4 +405,4 @@ const AdminBookingHistory = () => {
   );
 };
 
-export default AdminBookingHistory;
+export default AdminBookingLatePayment;
