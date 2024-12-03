@@ -331,8 +331,9 @@ const RoomDetails = () => {
                           {calculatePrice()?.toLocaleString()}₫
                         </span>
                         <span className="ml-4 text-sm line-through text-gray-500">
-                          {room?.roomPrice.toLocaleString() *
-                            countNumberOfNights()}
+                          {(
+                            room?.roomPrice * countNumberOfNights()
+                          ).toLocaleString()}
                           ₫
                         </span>
                       </>
