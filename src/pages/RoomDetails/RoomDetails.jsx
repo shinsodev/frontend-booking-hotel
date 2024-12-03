@@ -150,6 +150,14 @@ const RoomDetails = () => {
     }
   };
 
+  const countNumberOfNights = () => {
+    const start = moment(checkInDate);
+    const end = moment(checkOutDate);
+    const numberOfNights = end.diff(start, "days"); // Số ngày giữa checkIn và checkOut
+
+    return numberOfNights;
+  };
+
   // Hàm tính giá phòng sau giảm giá
   const calculatePrice = () => {
     if (checkInDate && checkOutDate) {
@@ -323,7 +331,9 @@ const RoomDetails = () => {
                           {calculatePrice()?.toLocaleString()}₫
                         </span>
                         <span className="ml-4 text-sm line-through text-gray-500">
-                          {room?.roomPrice.toLocaleString()}₫
+                          {room?.roomPrice.toLocaleString() *
+                            countNumberOfNights()}
+                          ₫
                         </span>
                       </>
                     ) : (
