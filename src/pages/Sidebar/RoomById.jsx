@@ -74,11 +74,11 @@ const RoomById = () => {
         </div>
 
         <h3 className="h3 text-[45px] text-center py-12">
-          Booking History - Room {id}
+          Recent Booking - Room {id}
         </h3>
         {history.length === 0 ? (
           <p className="text-center text-lg text-white">
-            There is no booking history.
+            This room has no recent booking.
           </p>
         ) : (
           <div className="relative overflow-x-auto rounded-lg">
@@ -113,6 +113,9 @@ const RoomById = () => {
                     Price
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    Payment Status
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     Actions
                   </th>
                 </tr>
@@ -131,7 +134,8 @@ const RoomById = () => {
                     <td className="px-6 py-4">{item.checkOutDate}</td>
                     <td className="px-6 py-4">{item.numOfAdults}</td>
                     <td className="px-6 py-4">{item.numOfChildren}</td>
-                    <td className="px-6 py-4">${item.room.roomPrice}</td>
+                    <td className="px-6 py-4">${item.finalPrice}</td>
+                    <td className="px-6 py-4">{item.paymentStatus}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center">
                         <button
@@ -186,7 +190,7 @@ const RoomById = () => {
                 <strong>Booking Code:</strong> {selectedBooking.bookingCode}
               </p>
               <p>
-                <strong>Price:</strong> ${selectedBooking.room.roomPrice}
+                <strong>Price:</strong> ${selectedBooking.finalPrice}
               </p>
               <p>
                 <strong>Facilities:</strong>
