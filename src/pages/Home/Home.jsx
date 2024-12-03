@@ -23,6 +23,7 @@ import introImg1 from "../../assets/img/Rooms/room2.jpg";
 import { getLatestPromotions } from "../../services/PromotionService";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import { Link } from "react-router-dom";
 const ScrollAnimation = ({ children, direction }) => {
   const [isMobile, setIsMobile] = useState(false);
   const { ref, inView } = useInView({
@@ -127,9 +128,12 @@ const Home = () => {
                 </p>
               </div>
 
-              <button className="btn btn-lg btn-primary mx-auto mb-8">
+              <Link
+                to="/rooms"
+                className="btn btn-lg btn-primary mx-auto mb-8 w-48"
+              >
                 See our rooms
-              </button>
+              </Link>
             </div>
 
             {/* right  */}

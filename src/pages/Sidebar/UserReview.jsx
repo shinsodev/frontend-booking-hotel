@@ -145,13 +145,13 @@ const UserReview = () => {
                       className="flex items-center px-4 py-2 text-white bg-accent hover:opacity-60 rounded-lg"
                       onClick={() => handleUpdateReview(item.id)}
                     >
-                      <FaEdit className="mr-1" /> Update
+                      <FaEdit className="mr-1" />
                     </button>
                     <button
                       className="flex items-center px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg"
                       onClick={() => handleDeleteReview(item.id)}
                     >
-                      <FaTrash className="mr-1" /> Delete
+                      <FaTrash className="mr-1" />
                     </button>
                   </div>
                 </div>
