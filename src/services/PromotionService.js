@@ -108,7 +108,7 @@ export async function updatePromotion(id, promotion, imageFile) {
   }
 }
 
-export async function getPromotionByRoomId(id) {
+export async function getPromotionByRoomId(id, page) {
   try {
     const token = localStorage.getItem("token");
 
@@ -116,6 +116,7 @@ export async function getPromotionByRoomId(id) {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params: { page },
     });
 
     return result;

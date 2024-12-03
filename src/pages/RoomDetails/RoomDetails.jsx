@@ -132,6 +132,7 @@ const RoomDetails = () => {
 
   const handleBooking = async () => {
     try {
+      setCheckAvailable(false);
       const totalNumOfGuest = numOfAdults + numOfChildren;
       const result = await userBooking(
         checkInDate,
@@ -328,7 +329,7 @@ const RoomDetails = () => {
                     {room?.percentOfDiscount > 0 ? (
                       <>
                         <span className="text-lg font-semibold text-grey-500">
-                          {calculatePrice()?.toLocaleString()}₫
+                          Book now - {calculatePrice()?.toLocaleString()}₫
                         </span>
                         <span className="ml-4 text-sm line-through text-gray-500">
                           {(
@@ -339,7 +340,7 @@ const RoomDetails = () => {
                       </>
                     ) : (
                       <span className="text-lg font-semibold">
-                        {room?.roomPrice.toLocaleString()}₫
+                        Book now - {room?.roomPrice.toLocaleString()}₫
                       </span>
                     )}
                   </div>

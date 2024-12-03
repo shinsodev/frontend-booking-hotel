@@ -22,17 +22,17 @@ const PromotionByRoomId = () => {
   useEffect(() => {
     const fetchPromotions = async () => {
       try {
-        const result = await getPromotionByRoomId(id);
+        const result = await getPromotionByRoomId(id, page);
         console.log(result);
         setPromotions(result.data.promotionList);
-        // setTotalPages(result.data.totalPages); // Giả sử API trả về totalPages
+        setTotalPages(result.data.totalPages); // Giả sử API trả về totalPages
       } catch (error) {
         console.error("Error fetching promotions:", error);
       }
     };
 
     fetchPromotions();
-  }, [id]);
+  }, [id, page]);
 
   const handlePageClick = (event) => {
     setPage(event.selected);
@@ -51,9 +51,9 @@ const PromotionByRoomId = () => {
         toast.success("Promotion deleted successfully");
 
         // Fetch updated promotion list after deletion
-        const updatedResult = await getPromotionByRoomId(id);
+        const updatedResult = await getPromotionByRoomId(id, page);
         setPromotions(updatedResult.data.promotionList);
-        // setTotalPages(updatedResult.data.totalPages);
+        setTotalPages(updatedResult.data.totalPages);
       } else {
         toast.error("Error deleting promotion");
       }
