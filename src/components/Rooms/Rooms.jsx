@@ -80,7 +80,15 @@ const Rooms = () => {
         fetchRoom(page);
       }
     }
-  }, [page, pageAvailable, checkRoom]);
+  }, [
+    page,
+    pageAvailable,
+    checkRoom,
+    checkInDate,
+    checkOutDate,
+    numOfAdults,
+    numOfChildren,
+  ]);
 
   return (
     <section className="pb-20">
@@ -128,99 +136,103 @@ const Rooms = () => {
       <div className="container mx-auto lg:px-0">
         <div className="grid grid-cols-1 max-w-sm mx-auto gap-[30px] lg:grid-cols-3 lg:max-w-none lg:mx-0">
           {/* Hiển thị các phòng tùy thuộc vào vai trò người dùng và ngày check-in/check-out */}
-          {checkInDate && checkOutDate && roomsAvailable.length > 0 ? (
+          {checkRoom && roomsAvailable ? (
             // Nếu có check-in/check-out, hiển thị roomsAvailable
-            roomsAvailable.map((room, index) => (
-              <div
-                key={index}
-                className="bg-white shadow-2xl min-h-[550px] group"
-              >
-                <div className="overflow-hidden">
-                  <img
-                    className="group-hover:scale-110 transition-all duration-300 h-[250px] w-full"
-                    src={room.roomPhotoUrl}
-                    alt=""
-                  />
-                </div>
-                <div className="bg-white shadow-lg max-w-[300px] mx-auto h-[60px] -translate-y-1/2 flex justify-center items-center uppercase font-tertiary tracking-[1px] font-semibold text-base">
-                  <div className="flex justify-between w-[80%]">
-                    <div className="flex items-center gap-x-2">
-                      <div className="text-accent">
-                        <BsArrowsFullscreen className="text-[15px]" />
+            roomsAvailable.length === 0 ? (
+              <div className="text-center col-span-3">No rooms available.</div>
+            ) : (
+              roomsAvailable.map((room, index) => (
+                <div
+                  key={index}
+                  className="bg-white shadow-2xl min-h-[550px] group"
+                >
+                  <div className="overflow-hidden">
+                    <img
+                      className="group-hover:scale-110 transition-all duration-300 h-[250px] w-full"
+                      src={room.roomPhotoUrl}
+                      alt=""
+                    />
+                  </div>
+                  <div className="bg-white shadow-lg max-w-[300px] mx-auto h-[60px] -translate-y-1/2 flex justify-center items-center uppercase font-tertiary tracking-[1px] font-semibold text-base">
+                    <div className="flex justify-between w-[80%]">
+                      <div className="flex items-center gap-x-2">
+                        <div className="text-accent">
+                          <BsArrowsFullscreen className="text-[15px]" />
+                        </div>
+                        <div className="flex gap-x-1">
+                          <div>size</div>
+                          <div>{room.roomSize}m²</div>
+                        </div>
                       </div>
-                      <div className="flex gap-x-1">
-                        <div>size</div>
-                        <div>{room.roomSize}m²</div>
-                      </div>
-                    </div>
 
-                    <div className="flex items-center gap-x-2">
-                      <div className="text-accent">
-                        <BsPeople className="text-[18px]" />
-                      </div>
-                      <div className="flex gap-x-1">
-                        <div>max people</div>
-                        <div>{room.roomCapacity}</div>
+                      <div className="flex items-center gap-x-2">
+                        <div className="text-accent">
+                          <BsPeople className="text-[18px]" />
+                        </div>
+                        <div className="flex gap-x-1">
+                          <div>max people</div>
+                          <div>{room.roomCapacity}</div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {checkRoom && (
-                  <div className="flex justify-end px-6 pb-4">
-                    <div className="p-2 font-semibold bg-green-600 text-white rounded-lg">
-                      Remain: {room.remain}
+                  {checkRoom && (
+                    <div className="flex justify-end px-6 pb-4">
+                      <div className="p-2 font-semibold bg-green-600 text-white rounded-lg">
+                        Remain: {room.remain}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                <div className="text-center">
-                  <Link to={`/rooms/${room.id}`}>
-                    <h3 className="h3">{room.roomType}</h3>
-                  </Link>
-                  <p className="max-w-[300px] mx-auto mb-3 lg:mb-6">
-                    {room.roomDescription.length > 100
-                      ? room.roomDescription.slice(0, 100) + "..."
-                      : room.roomDescription}
-                  </p>
-                  <div className="flex justify-center items-center gap-2 text-lg font-semibold">
-                    {room.percentOfDiscount > 0 && (
-                      <>
-                        {/* Giá gốc với gạch ngang */}
-                        <span className="text-gray-500 line-through mt-2">
+                  <div className="text-center">
+                    <Link to={`/rooms/${room.id}`}>
+                      <h3 className="h3">{room.roomType}</h3>
+                    </Link>
+                    <p className="max-w-[300px] mx-auto mb-3 lg:mb-6">
+                      {room.roomDescription.length > 100
+                        ? room.roomDescription.slice(0, 100) + "..."
+                        : room.roomDescription}
+                    </p>
+                    <div className="flex justify-center items-center gap-2 text-lg font-semibold">
+                      {room.percentOfDiscount > 0 && (
+                        <>
+                          {/* Giá gốc với gạch ngang */}
+                          <span className="text-gray-500 line-through mt-2">
+                            {room.roomPrice.toLocaleString("en-US")}₫
+                          </span>
+                          {room.percentOfDiscount > 0 && (
+                            <div className=" text-sm flex flex-col items-center">
+                              <div className="bg-red-500 text-white px-3 py-1 rounded-md font-semibold mt-2">
+                                -{room.percentOfDiscount}% Off
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {room.percentOfDiscount === 0 && (
+                        <span className="text-black">
                           {room.roomPrice.toLocaleString("en-US")}₫
                         </span>
-                        {room.percentOfDiscount > 0 && (
-                          <div className=" text-sm flex flex-col items-center">
-                            <div className="bg-red-500 text-white px-3 py-1 rounded-md font-semibold mt-2">
-                              -{room.percentOfDiscount}% Off
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    )}
-                    {room.percentOfDiscount === 0 && (
-                      <span className="text-black">
-                        {room.roomPrice.toLocaleString("en-US")}₫
+                      )}
+                    </div>
+                    {/* Giá sau khi giảm */}
+                    {room.percentOfDiscount > 0 && (
+                      <span className="text-red-500 text-2xl">
+                        {room.newPrice.toLocaleString("en-US")}₫
                       </span>
                     )}
                   </div>
-                  {/* Giá sau khi giảm */}
-                  {room.percentOfDiscount > 0 && (
-                    <span span className="text-red-500 text-2xl">
-                      {room.newPrice.toLocaleString("en-US")}₫
-                    </span>
-                  )}
-                </div>
 
-                <Link
-                  to={`/rooms/${room.id}`}
-                  className="btn btn-secondary btn-sm max-w-[240px] mx-auto mb-8 mt-1"
-                >
-                  Book now
-                </Link>
-              </div>
-            ))
+                  <Link
+                    to={`/rooms/${room.id}`}
+                    className="btn btn-secondary btn-sm max-w-[240px] mx-auto mb-8 mt-1"
+                  >
+                    Book now
+                  </Link>
+                </div>
+              ))
+            )
           ) : rooms?.length > 0 ? (
             // Nếu không có check-in/check-out hoặc là ADMIN, hiển thị rooms
             rooms.map((room, index) => (
@@ -291,7 +303,7 @@ const Rooms = () => {
                   </div>
                   {/* Giá sau khi giảm */}
                   {room.percentOfDiscount > 0 && (
-                    <span span className="text-red-500 text-2xl">
+                    <span className="text-red-500 text-2xl">
                       {room.newPrice.toLocaleString("en-US")}₫
                     </span>
                   )}

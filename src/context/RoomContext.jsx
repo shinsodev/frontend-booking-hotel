@@ -15,7 +15,7 @@ const RoomProvider = ({ children }) => {
   // const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [rooms, setRoom] = useState([]);
-  const [roomsAvailable, setRoomAvailable] = useState([]);
+  const [roomsAvailable, setRoomAvailable] = useState(null);
   const [page, setPage] = useState(0); // Số trang hiện tại
   const [pageAvailable, setPageAvailable] = useState(0); // Số trang hiện tại
   const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
